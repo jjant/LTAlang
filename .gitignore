@@ -1,9 +1,2 @@
-# Ignore lex compiled files
-lex.yy.c
-
-# Ignore yacc compiled files
-y.tab.c
-y.tab.h
-
-# Ignore comppiled project
-calc
+# Ignored compiled files
+/dist
