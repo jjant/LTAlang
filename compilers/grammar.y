@@ -28,11 +28,10 @@ void updateSymbolValue(char symbol, int value);
 
 %%
 line:
-    assignment
+    line NEWLINE line    { ; }
+  | assignment
   | EXIT_COMMAND         { exit(0); }
   | expression           { printf("# => %d\n", $1); }
-  | line NEWLINE
-  | line NEWLINE line
   ;
 
 assignment:

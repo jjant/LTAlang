@@ -15,6 +15,8 @@ newline     \n
 exit        ("exit"|"quit")
 
 %%
+";"             { return ';'; }
+"-"             { return '-'; }
 "+"             { return '+'; }
 "{"             { return OPEN_BRACE; }
 "}"             { return CLOSE_BRACE; }
@@ -23,7 +25,7 @@ exit        ("exit"|"quit")
 {number}        { yylval.num = atoi(yytext); return NUMBER; }
 {identifier}    { yylval.id = yytext[0]; return IDENTIFIER; }
 {whitespace}    { ; }
-{newline}       { return NEWLINE; }
+{newline}       { yylineno++; return NEWLINE; }
 {exit}          { return EXIT_COMMAND; }
 
 %%
