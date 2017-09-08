@@ -1,5 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "hashtable.h"
 #include "types.h"
+
+static int new_size(int);
 
 #define do_hash(key,table) (unsigned int)(*(table)->type->hash)((key))
 
@@ -20,19 +24,19 @@
 #define EQUAL(table, x, y) \
   ((x) == (y) || (*table->type->compare)((x), (y)) == 0)
 
-typedef struct st_table_entry{
+struct st_table_entry{
   unsigned int hash;
   char *key;
   char *record;
   struct st_table_entry *next;
-} st_table_entry;
+};
 
-typedef struct st_table {
+struct st_table {
   struct st_hash_type *type;
   int num_bins;
   int num_entries;
   struct st_table_entry **bins;
-} st_table;
+};
 
 struct st_hash_type {
   int (*compare)();
@@ -74,4 +78,66 @@ int st_lookup(st_table *table, register char key, char **value) {
     *value = ptr->record;
   }
   return 1;
+}
+
+// Allocates memory for a given type and returns a pointer to that.
+#define alloc(type) (type *)malloc((unsigned)sizeof(type))
+
+// Initializes a table with a given size.
+st_table * st_init_table_with_size(st_hash_type * type, int size) {
+  st_table * table;
+  int real_size = new_size(size);
+  table = alloc(st_table);
+  table->type = type;
+  table->num_entries = 0;
+  table->num_bins = real_size;
+  table->bins = (st_table_entry **)calloc(size, sizeof(st_table_entry *));
+  return table;
+}
+
+st_table * st_init_table(st_hash_type * type) {
+    return st_init_table_with_size(type, 0);
+}
+
+// Table of prime numbers 2^n+a, 2<=n<=30.
+static long primes[] = {
+	8 + 3,
+	16 + 3,
+	32 + 5,
+	64 + 3,
+	128 + 3,
+	256 + 27,
+	512 + 9,
+	1024 + 9,
+	2048 + 5,
+	4096 + 3,
+	8192 + 27,
+	16384 + 43,
+	32768 + 3,
+	65536 + 45,
+	131072 + 29,
+	262144 + 3,
+	524288 + 21,
+	1048576 + 7,
+	2097152 + 17,
+	4194304 + 15,
+	8388608 + 9,
+	16777216 + 43,
+	33554432 + 35,
+	67108864 + 15,
+	134217728 + 29,
+	268435456 + 3,
+	536870912 + 11,
+	1073741824 + 85,
+	0
+};
+#define MINSIZE 8
+
+static int new_size(int size) {
+  int i, real_size, primes_count = sizeof(primes)/sizeof(primes[0]);
+
+  for (i = 0, real_size = MINSIZE; i < primes_count; i++, real_size = real_size << 1) {
+    if (real_size > size) return primes[i];
+  }
+  return -1;
 }
