@@ -15,13 +15,21 @@ newline     \n
 exit        ("exit"|"quit")
 
 %%
+"if"            { return IF; }
+"do"            { return DO; }
+"while"         { return WHILE; }
 ";"             { return ';'; }
 "-"             { return '-'; }
 "+"             { return '+'; }
 "{"             { return OPEN_BRACE; }
 "}"             { return CLOSE_BRACE; }
-"="             { return EQUAL; }
 "=>"            { return RIGHT_ARROW; }
+"=="            { return CMP_EQUAL; }
+">="            { return CMP_GREATER_EQUAL; }
+"<="            { return CMP_LOWER_EQUAL; }
+">"             { return CMP_GREATER; }
+"<"             { return CMP_LOWER; }
+"="             { return EQUAL; }
 {number}        { yylval.num = atoi(yytext); return NUMBER; }
 {identifier}    { yylval.id = yytext[0]; return IDENTIFIER; }
 {whitespace}    { ; }

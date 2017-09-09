@@ -1,10 +1,12 @@
+#ifndef _BUILTIN_H
+#define _BUILTIN_H
+
 #include "hashtable.h"
 #include "types.h"
 
+#define LTA_NIL (VALUE)NULL
+
 // All built in types are defined here.
-
-typedef enum Type Type;
-
 typedef struct Basic Basic;
 typedef struct Number Number;
 typedef struct String String;
@@ -17,29 +19,35 @@ enum Type {
   function
 };
 
+typedef enum Type Type;
+
 struct Basic {
   Type type;
+  st_table * properties;
   Basic * super; // Should this be here?
 };
 
 struct Number {
-  Basic basic;
+  Basic * basic;
   int raw_value;
 };
 
+#define STRING(value) ((String *)(value))
 struct String {
-  Basic basic;
+  Basic * basic;
   long length;
   char * raw_value;
 };
 
 struct Array {
-  Basic basic;
+  Basic * basic;
   long length;
   VALUE * ptr;
 };
 
 // Perhaps this is unneeded.
 struct Object {
-  Basic basic;
+  Basic * basic;
 };
+
+#endif

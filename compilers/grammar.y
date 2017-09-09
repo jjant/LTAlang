@@ -20,7 +20,15 @@ void updateSymbolValue(char symbol, int value);
 %token <id> IDENTIFIER
 %token <num> NUMBER
 %token <text> OPERATOR
-%token RIGHT_ARROW OPEN_BRACE CLOSE_BRACE EQUAL OPEN_PARENS CLOSE_PARENS EXIT_COMMAND NEWLINE
+
+// Punctuation
+%token RIGHT_ARROW OPEN_BRACE CLOSE_BRACE EQUAL OPEN_PARENS CLOSE_PARENS NEWLINE
+
+// Keywords
+%token IF DO WHILE EXIT_COMMAND
+
+// Comparison operators
+%token CMP_EQUAL CMP_GREATER_EQUAL CMP_LOWER_EQUAL CMP_GREATER CMP_LOWER
 
 %type <num> expression term
 
@@ -56,6 +64,16 @@ parameter_declaration:
 
 function_body:
     OPEN_BRACE CLOSE_BRACE
+
+if_expression:
+    IF expression OPEN_BRACE expression CLOSE_BRACE optional_else
+
+optional_else:
+    empty_expression
+  | ELSE OPEN_BRACE expression CLOSE_BRACE
+
+empty_expression:
+  ;
 %%
 
 void yyerror(char *msg) {
