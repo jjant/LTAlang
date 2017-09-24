@@ -19,8 +19,10 @@ exit        ("exit"|"quit")
 "do"            { return DO; }
 "while"         { return WHILE; }
 ";"             { return ';'; }
-"-"             { return '-'; }
-"+"             { return '+'; }
+"-"             { return MINUS; }
+"+"             { return PLUS; }
+"*"             { return TIMES; }
+"/"             { return DIVIDE; }
 "{"             { return OPEN_BRACE; }
 "}"             { return CLOSE_BRACE; }
 "=>"            { return RIGHT_ARROW; }
