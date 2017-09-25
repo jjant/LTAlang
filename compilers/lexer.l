@@ -9,12 +9,15 @@
 digit       [0-9]
 number      [0-9]+(\.[0-9]+)?
 /*operator    [-+*\\]*/
-identifier  \w
+identifier  [a-z]+
 whitespace  [ \t\v]
 newline     \n
 exit        ("exit"|"quit")
 
 %%
+","             { return COMMA; }
+"("             { return OPEN_PARENS; }
+")"             { return CLOSE_PARENS; }
 "if"            { return IF; }
 "do"            { return DO; }
 "while"         { return WHILE; }
@@ -33,7 +36,7 @@ exit        ("exit"|"quit")
 "<"             { return CMP_LOWER; }
 "="             { return EQUAL; }
 {number}        { yylval.num = atoi(yytext); return NUMBER; }
-{identifier}    { yylval.id = yytext[0]; return IDENTIFIER; }
+{identifier}    { yylval.id = yytext; return IDENTIFIER; }
 {whitespace}    { ; }
 {newline}       { yylineno++; return NEWLINE; }
 {exit}          { return EXIT_COMMAND; }

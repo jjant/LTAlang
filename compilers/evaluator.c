@@ -17,33 +17,37 @@
 #define TEST(value) ((value) == LTA_NIL)
 
 // TODO: Use inspect method on object called instead of expecting a string
-#define PRINT(string) do { printf("# => "); string_print(string); } while(0)
+#define PRINT(string) do { printf("# => "); string_print((string)); printf("\n"); } while (0)
 
-static VALUE evaluate_function_call(VALUE);
-static VALUE evaluate_node_constant(VALUE);
+static VALUE evaluate_function_call(Node *);
+static VALUE evaluate_node_constant(Node *);
 
-VALUE evaluate(VALUE node) {
+VALUE evaluate(Node * node) {
   switch (NODE_TYPE(node)) {
     case ND_FUNCTION_CALL:
       return evaluate_function_call(node);
-    case ND_IF:
-      if(TEST(evaluate((VALUE)NODE_IF(node)->node_condition))) {
-        return evaluate((VALUE)NODE_IF(node)->node_body);
+    case ND_IF: {
+      VALUE cond = evaluate(NODE_IF(node)->node_condition);
+      if(TEST(cond)) {
+        return evaluate(NODE_IF(node)->node_body);
       } else {
-        return evaluate((VALUE)NODE_IF(node)->node_else);
+        return evaluate(NODE_IF(node)->node_else);
       }
+    }
     case ND_CONSTANT:
       return evaluate_node_constant(node);
     case ND_EMPTY:
+    case ND_FUNC_PARAMETER_DECLARATION:
+    case ND_FUNC_PARAMETERS:
       ;
   }
   return 0;
 }
 
 // TODO: Implement this
-static VALUE evaluate_function_call(VALUE node) {
-  VALUE caller = NODE_FUNCTION_CALL(node)->caller;
-  VALUE arguments = NODE_FUNCTION_CALL(node)->arguments;
+static VALUE evaluate_function_call(Node * node) {
+  VALUE caller = evaluate(NODE_FUNCTION_CALL(node)->caller);
+  VALUE arguments = evaluate(NODE_FUNCTION_CALL(node)->arguments);
   VALUE method_identifier = NODE_FUNCTION_CALL(node)->method_identifier;
 
   // TODO: remove this
@@ -64,7 +68,7 @@ static VALUE evaluate_function_call(VALUE node) {
 
 #define CONSTANT_TYPE(node) NODE_CONSTANT(node)->constant_type
 
-static VALUE evaluate_node_constant(VALUE node) {
+static VALUE evaluate_node_constant(Node * node) {
   // TODO: other types
   switch(CONSTANT_TYPE(node)) {
     case CONST_NUMBER:

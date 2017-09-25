@@ -49,19 +49,20 @@
      OPEN_PARENS = 265,
      CLOSE_PARENS = 266,
      NEWLINE = 267,
-     IF = 268,
-     DO = 269,
-     WHILE = 270,
-     EXIT_COMMAND = 271,
-     CMP_EQUAL = 272,
-     CMP_GREATER_EQUAL = 273,
-     CMP_LOWER_EQUAL = 274,
-     CMP_GREATER = 275,
-     CMP_LOWER = 276,
-     PLUS = 277,
-     MINUS = 278,
-     TIMES = 279,
-     DIVIDE = 280
+     COMMA = 268,
+     IF = 269,
+     DO = 270,
+     WHILE = 271,
+     EXIT_COMMAND = 272,
+     CMP_EQUAL = 273,
+     CMP_GREATER_EQUAL = 274,
+     CMP_LOWER_EQUAL = 275,
+     CMP_GREATER = 276,
+     CMP_LOWER = 277,
+     PLUS = 278,
+     MINUS = 279,
+     TIMES = 280,
+     DIVIDE = 281
    };
 #endif
 /* Tokens.  */
@@ -75,34 +76,35 @@
 #define OPEN_PARENS 265
 #define CLOSE_PARENS 266
 #define NEWLINE 267
-#define IF 268
-#define DO 269
-#define WHILE 270
-#define EXIT_COMMAND 271
-#define CMP_EQUAL 272
-#define CMP_GREATER_EQUAL 273
-#define CMP_LOWER_EQUAL 274
-#define CMP_GREATER 275
-#define CMP_LOWER 276
-#define PLUS 277
-#define MINUS 278
-#define TIMES 279
-#define DIVIDE 280
+#define COMMA 268
+#define IF 269
+#define DO 270
+#define WHILE 271
+#define EXIT_COMMAND 272
+#define CMP_EQUAL 273
+#define CMP_GREATER_EQUAL 274
+#define CMP_LOWER_EQUAL 275
+#define CMP_GREATER 276
+#define CMP_LOWER 277
+#define PLUS 278
+#define MINUS 279
+#define TIMES 280
+#define DIVIDE 281
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 18 "grammar.y"
+#line 20 "grammar.y"
 {
   int num;
-  char id;
+  char * id;
   char * text;
   struct Node * node;
 }
 /* Line 1529 of yacc.c.  */
-#line 106 "y.tab.h"
+#line 108 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
