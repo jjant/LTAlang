@@ -1,7 +1,10 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib/node.h"
+#include "node.h"
+#include "evaluator.h"
+#include "types.h"
+#include "numbers.h"
 
 void yyerror(char * msg);
 extern int yylex();
@@ -16,6 +19,7 @@ void updateSymbolValue(char symbol, int value);
   int num;
   char id;
   char * text;
+  struct Node * node;
 }
 
 %token <id> IDENTIFIER
@@ -34,16 +38,25 @@ void updateSymbolValue(char symbol, int value);
 // Operators
 %token PLUS MINUS TIMES DIVIDE
 
-%type <num> expression term
+%type <node> expression term
 
-%start line
+%start program
 
 %%
-line:
+/*line:
     line NEWLINE line    { ; }
   | assignment
   | EXIT_COMMAND         { exit(0); }
   | expression           { printf("# => %d\n", $1); }
+  ;*/
+program:
+  function {; }
+  ;
+
+function:
+  expression NEWLINE                  { evaluate((VALUE)$1); }
+  /*function expression { evaluate((VALUE)$2); }
+  | empty_expression*/
   ;
 
 assignment:
@@ -52,16 +65,16 @@ assignment:
 
 expression:
     term                         { $$ = $1; }
-  | expression PLUS term         { $$ = create_function_call_node("+", $1, $3); }
-  | expression MINUS term        { $$ = create_function_call_node("-", $1, $3); }
-  | expression TIMES term        { $$ = create_function_call_node("*", $1, $3); }
-  | expression DIVIDE term       { $$ = create_function_call_node("/", $1, $3); }
-  | if_expression                { $$ = $1; }
+  | expression PLUS term         { $$ = (struct Node *)create_function_call_node((VALUE)"+", (VALUE)$1, (VALUE)$3); }
+  | expression MINUS term        { $$ = (struct Node *)create_function_call_node((VALUE)"-", (VALUE)$1, (VALUE)$3); }
+  | expression TIMES term        { $$ = (struct Node *)create_function_call_node((VALUE)"*", (VALUE)$1, (VALUE)$3); }
+  | expression DIVIDE term       { $$ = (struct Node *)create_function_call_node((VALUE)"/", (VALUE)$1, (VALUE)$3); }
+  /*| if_expression                { $$ = $1; }*/
   ;
 
 term:
-    NUMBER      { $$ = create_constant_node($1, CONST_NUMBER); }
-  | IDENTIFIER  { $$ = getSymbolValue($1); }
+    NUMBER      { $$ = (struct Node *)create_constant_node($1, CONST_NUMBER); }
+  /*| IDENTIFIER  { $$ = getSymbolValue($1); }*/
 
 function_expression:
     parameter_declaration RIGHT_ARROW function_body
@@ -72,12 +85,12 @@ parameter_declaration:
 function_body:
     OPEN_BRACE CLOSE_BRACE
 
-if_expression:
+/*if_expression:
     IF expression OPEN_BRACE expression CLOSE_BRACE optional_else { $$ = create_if_node($2, $4, $6) }
 
 optional_else:
     empty_expression                        { $$ = create_empty_node() }
-  | ELSE OPEN_BRACE expression CLOSE_BRACE  { $$ = $3 }
+  | ELSE OPEN_BRACE expression CLOSE_BRACE  { $$ = $3 }*/
 
 empty_expression:
   ;

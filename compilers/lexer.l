@@ -1,7 +1,7 @@
 %{
   #include <stdio.h>
   #include <stdlib.h>
-  #include "compiled_grammar.h" // Generated via yacc -d
+  #include "y.tab.h" // Generated via yacc -d
 %}
 
 %option noyywrap
