@@ -6,7 +6,10 @@
 #include "types.h"
 #include "numbers.h"
 
-#define EVAL 0
+/* Turns evaluation on/off */
+/*OFF = 0*/
+/*ON  = 1*/
+#define EVAL 1
 
 void yyerror(char * msg);
 extern int yylex();
@@ -52,12 +55,17 @@ void updateSymbolValue(char symbol, int value);
   | expression           { printf("# => %d\n", $1); }
   ;*/
 program:
-  function { ; }
+  a { ; }
+  ;
+
+a:
+  function NEWLINE
+  | a NEWLINE a
   ;
 
 function:
-  expression NEWLINE                  { if(EVAL) evaluate($1); }
-  | empty_expression
+  expression                  { if(EVAL) evaluate($1); }
+  | empty_expression          { printf("empty exp\n");}
   /*function expression { evaluate((VALUE)$2); }
   | empty_expression*/
   ;
@@ -127,7 +135,7 @@ void updateSymbolValue(char symbol, int value) {
 
 int main() {
   if(EVAL)
-    printf("evaluando...\n\n\n");
+    printf("[[EVALUATION MODE]]\n\n");
 
   int i;
   for(i = 0; i < 52; i++) {
