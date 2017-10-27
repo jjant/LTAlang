@@ -6,10 +6,6 @@
 #include "types.h"
 #include "numbers.h"
 
-/* TODO:
-  * LLamadas a function
-*/
-
 /* Turns evaluation on/off */
 /*OFF = 0*/
 /*ON  = 1*/
@@ -89,6 +85,26 @@ assignment:
 */
 
 /*
+  Function call
+*/
+
+function_call:
+  identifier OPEN_PARENS call_parameters CLOSE_PARENS
+  ;
+
+call_parameters:
+    empty_expression
+  | call_parameter
+  ;
+
+parameter:
+    logic_expression
+  | identifier
+  | call_parameter
+  // TODO: Add comma between parameters.
+  ;
+
+/*
   JS Objects alike
 */
 object:
@@ -96,11 +112,13 @@ object:
   ;
 
 object_body:
-  identifier EQUAL logic_expression
+    identifier EQUAL logic_expression
+  | NEWLINE object_body
   ;
 
 object_value:
   identifier OBJECT_RETRIEVE identifier
+  // TODO: Check how to assign this to a variable. Check if it's ok to do this like this.
   ;
 
 /*
