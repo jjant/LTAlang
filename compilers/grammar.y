@@ -6,6 +6,10 @@
 #include "types.h"
 #include "numbers.h"
 
+/* TODO:
+  * LLamadas a function
+*/
+
 /* Turns evaluation on/off */
 /*OFF = 0*/
 /*ON  = 1*/
@@ -34,11 +38,20 @@ void updateSymbolValue(char symbol, int value);
 // Punctuation: =>, {, }, =, (, ), \n
 %token RIGHT_ARROW OPEN_BRACE CLOSE_BRACE EQUAL OPEN_PARENS CLOSE_PARENS NEWLINE COMMA
 
-// Keywords: if, do, while, exit
-%token IF DO WHILE EXIT_COMMAND
+// Keywords: if, do, while, exit, do while {}, do {} while
+%token IF DO WHILE EXIT_COMMAND REPEAT_BEFORE REPEAT_AFTER
 
 // Comparison operators: ==, >=, <=, >, <
 %token CMP_EQUAL CMP_GREATER_EQUAL CMP_LOWER_EQUAL CMP_GREATER CMP_LOWER
+
+// Logic Operators: !, &
+%token NOT AND
+
+// Object operators: .
+%token OBJECT_RETRIEVE
+
+// Logic Literals: true, false
+%token TRUE FALSE
 
 // Operators
 %token PLUS MINUS TIMES DIVIDE
@@ -63,17 +76,119 @@ a:
   | a NEWLINE a
   ;
 
-function:
+/*function:
   expression                  { if(EVAL) evaluate($1); }
   | empty_expression          { printf("empty exp\n");}
-  /*function expression { evaluate((VALUE)$2); }
+  function expression { evaluate((VALUE)$2); }
   | empty_expression*/
   ;
 /*
 assignment:
-  IDENTIFIER EQUAL expression  { updateSymbolValue($1, $3); printf("# => pija %d", $3); }
+  IDENTIFIER EQUAL logic_expression  { updateSymbolValue($1, $3); printf("# => pija %d", $3); }
   ;
 */
+
+/*
+  JS Objects alike
+*/
+object:
+  identifier EQUAL OPEN_BRACE object_body CLOSE_BRACE
+  ;
+
+object_body:
+  identifier EQUAL logic_expression
+  ;
+
+object_value:
+  identifier OBJECT_RETRIEVE identifier
+  ;
+
+/*
+  Loops
+*/
+while:
+    repeat testable_expression code_block
+  | repeat testable_expression assignment
+  | repeat testable_expression logic_expression
+  ;
+
+testable_expression:
+  OPEN_PARENS logic_expression CLOSE_PARENS
+  ;
+
+repeat:
+    REPEAT_BEFORE
+  | REPEAT_AFTER
+  ;
+
+code_block:
+  OPEN_BRACE body CLOSE_BRACE // TODO: body should be several lines of code. HOW TO?
+  ;
+
+
+/*
+  Logic expressions grammar
+*/
+logic_expression:
+    logic_term
+  | logic_expression AND logic_term
+  ;
+
+logic_term:
+    logic_factor
+  | NOT logic_term
+  ;
+
+logic_factor:
+    literal
+  | logic_comparison
+  | OPEN_PARENS logic_expression CLOSE_PARENS
+  ;
+
+logic_comparison:
+    expression CMP_LOWER         expression
+  | expression CMP_GREATER       expression
+  | expression CMP_GREATER_EQUAL expression
+  | expression CMP_LOWER_EQUAL   expression
+  | expression CMP_EQUAL         expression
+  ;
+
+logic_literal:
+    TRUE
+  | FALSE
+  ;
+
+/*
+  Arithmetic expressions grammar
+*/
+expression:
+    term
+  | expression PLUS term
+  | expression MINUS term
+  ;
+
+term:
+    factor
+  | term TIMES factor
+  | term DIVIDE factor
+  ;
+
+factor:
+    literal
+  | OPEN_PARENS expression CLOSE_PARENS
+  ;
+
+literal:
+    logic_literal
+  | number
+  | identifier
+  | function_call
+  // TODO: Add function declaration?
+  ;
+
+/*value:
+  term
+
 expression:
     term                         { $$ = $1; }
   | expression PLUS term         { $$ = (struct Node *)create_function_call_node((VALUE)"+", $1, $3); }
@@ -81,11 +196,11 @@ expression:
   | expression TIMES term        { $$ = (struct Node *)create_function_call_node((VALUE)"*", $1, $3); }
   | expression DIVIDE term       { $$ = (struct Node *)create_function_call_node((VALUE)"/", $1, $3); }
   | function_expression          { $$ = (struct Node *)create_constant_node((VALUE)$1, CONST_FUNC); /* como pija hago esto bien*/ }
-  /*| if_expression                { $$ = $1; }*/
-  ;
-
+  /*| if_expression                { $$ = $1; }
+  ;*/
+/*
 term:
-    NUMBER      { $$ = (struct Node *)create_constant_node($1, CONST_NUMBER); }
+    NUMBER
   /*| IDENTIFIER  { $$ = getSymbolValue($1); }*/
 
 function_expression:
