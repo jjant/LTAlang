@@ -61,6 +61,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 "=="			{ count(); return(EQ_OP); }
 "=>"			{ count(); return(LAMDA_ASSIGN); }
 "_"			{ count(); return(PLACEHOLDER); }
+"|"			{ count(); return(SIMPLE_BAR); }
 "!="			{ count(); return(NE_OP); }
 ";"			{ count(); return(ENDMARKER); }
 ("{")		{ count(); return(BRACKETS_OPEN); }

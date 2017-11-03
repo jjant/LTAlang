@@ -22,6 +22,9 @@
 // Usually [, ]. Idem before
 %token ARRAY_OPEN ARRAY_CLOSE
 
+// |, |
+%token SIMPLE_BAR
+
 // ,
 %token LIST_DELIMITER
 
@@ -47,7 +50,7 @@
 
 // Lamda functions are first class citizens
 lamda_declaration
-	: PARENS_OPEN parameter_list PARENS_CLOSE LAMDA_ASSIGN compound_statement
+	: SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement
 	;
 
 // Objects are key-value pairs
@@ -77,7 +80,6 @@ primary_expression
 	| CONSTANT
 	| THIS
 	| lamda_declaration
-	| object_declaration
 	| STRING_LITERAL
 	| array_declaration
 	| PARENS_OPEN expression PARENS_CLOSE
@@ -161,6 +163,7 @@ conditional_expression
 assignment_expression
 	: conditional_expression
 	| unary_expression assignment_operator assignment_expression
+	| unary_expression REG_ASSIGN object_declaration
 	;
 
 // Assignment terminals
