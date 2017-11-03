@@ -23,7 +23,6 @@ void count();
 "if"			{ count(); return(IF); }
 "_"			{ count(); return(PLACEHOLDER); }
 "return"		{ count(); return(RETURN); }
-"struct"		{ count(); return(STRUCT); }
 "switch"		{ count(); return(SWITCH); }
 "while"			{ count(); return(WHILE); }
 "this"			{ count(); return(THIS); }
@@ -68,7 +67,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 ("{")		{ count(); return(BRACKETS_OPEN); }
 ("}")		{ count(); return(BRACKETS_CLOSE); }
 ","			{ count(); return(LIST_DELIMITER); }
-":"			{ count(); return(LABEL_DELIMITER); }
+":"			{ count(); return(COLONS); }
 "="			{ count(); return(REG_ASSIGN); }
 "("			{ count(); return(PARENS_OPEN); }
 ")"			{ count(); return(PARENS_CLOSE); }
