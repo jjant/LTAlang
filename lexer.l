@@ -21,10 +21,13 @@ void count();
 "else"			{ count(); return(ELSE); }
 "for"			{ count(); return(FOR); }
 "if"			{ count(); return(IF); }
+"_"			{ count(); return(PLACEHOLDER); }
 "return"		{ count(); return(RETURN); }
 "struct"		{ count(); return(STRUCT); }
 "switch"		{ count(); return(SWITCH); }
 "while"			{ count(); return(WHILE); }
+"this"			{ count(); return(THIS); }
+
 
 {L}({L}|{D})*		{ count(); return(check_type()); }
 
@@ -57,10 +60,8 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 "||"			{ count(); return(OR_OP); }
 "<="			{ count(); return(LE_OP); }
 ">="			{ count(); return(GE_OP); }
-"this"			{ count(); return(THIS); }
 "=="			{ count(); return(EQ_OP); }
 "=>"			{ count(); return(LAMDA_ASSIGN); }
-"_"			{ count(); return(PLACEHOLDER); }
 "|"			{ count(); return(SIMPLE_BAR); }
 "!="			{ count(); return(NE_OP); }
 ";"			{ count(); return(ENDMARKER); }
