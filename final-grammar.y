@@ -2,7 +2,7 @@
 %token IDENTIFIER CONSTANT STRING_LITERAL
 
 // Comparision and assignment operators
-%token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
+%token INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
 %token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN REG_ASSIGN
 %token XOR_ASSIGN OR_ASSIGN
@@ -93,7 +93,6 @@ postfix_expression
 	| postfix_expression FN_CALL_OPEN FN_CALL_CLOSE
 	| postfix_expression FN_CALL_OPEN argument_expression_list FN_CALL_CLOSE
 	| postfix_expression OBJECT_ACCESSOR IDENTIFIER
-	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP
 	| postfix_expression DEC_OP
 	;
