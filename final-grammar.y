@@ -14,14 +14,10 @@
 %token LAMDA_ASSIGN PLACEHOLDER
 
 // Usually (, ). I separate them just in case we want to use different symbols for each.
-%token PARAMETER_ENCLOSER_OPEN PARAMETER_ENCLOSER_CLOSE
-%token FN_CALL_OPEN FN_CALL_CLOSE
-%token FLOW_ENCLOSER_OPEN FLOW_ENCLOSER_CLOSE
-%token EXPRESSION_OPEN EXPRESSION_CLOSE
+%token PARENS_OPEN PARENS_CLOSE
 
 // Usually { }. Idem before
-%token OBJECT_ENCLOSER_OPEN OBJECT_ENCLOSER_CLOSE
-%token BLOCK_OPEN BLOCK_CLOSE
+%token BRACKETS_OPEN BRACKETS_CLOSE
 
 // Usually [, ]. Idem before
 %token ARRAY_OPEN ARRAY_CLOSE
@@ -30,14 +26,14 @@
 %token LIST_DELIMITER
 
 // :
-%token LABEL_DELIMITER
+%token COLONS
 
 // Operators
 %token PROD MOD COCIENT PLUS MINUS
 %token LESS GREATER
 
 // Ternary Operator
-%token THEN OTHER_WAY
+%token THEN
 
 // Object property accessor .
 %token OBJECT_ACCESSOR
@@ -51,13 +47,13 @@
 
 // Lamda functions are first class citizens
 lamda_declaration
-	: PARAMETER_ENCLOSER_OPEN parameter_list PARAMETER_ENCLOSER_CLOSE LAMDA_ASSIGN compound_statement
+	: PARENS_OPEN parameter_list PARENS_CLOSE LAMDA_ASSIGN compound_statement
 	;
 
 // Objects are key-value pairs
 object_declaration
-	: OBJECT_ENCLOSER_OPEN OBJECT_ENCLOSER_CLOSE
-	| OBJECT_ENCLOSER_OPEN object_body OBJECT_ENCLOSER_CLOSE
+	: BRACKETS_OPEN BRACKETS_CLOSE
+	| BRACKETS_OPEN object_body BRACKETS_CLOSE
 	;
 
 object_body
@@ -66,7 +62,7 @@ object_body
 	;
 
 object_property_declaration
-	: IDENTIFIER LABEL_DELIMITER expression
+	: IDENTIFIER COLONS expression
 	;
 
 // Array as JS
@@ -84,14 +80,14 @@ primary_expression
 	| object_declaration
 	| STRING_LITERAL
 	| array_declaration
-	| EXPRESSION_OPEN expression EXPRESSION_CLOSE
+	| PARENS_OPEN expression PARENS_CLOSE
 	;
 
 postfix_expression
 	: primary_expression
 	| postfix_expression ARRAY_OPEN expression ARRAY_CLOSE
-	| postfix_expression FN_CALL_OPEN FN_CALL_CLOSE
-	| postfix_expression FN_CALL_OPEN argument_expression_list FN_CALL_CLOSE
+	| postfix_expression PARENS_OPEN PARENS_CLOSE
+	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE
 	| postfix_expression OBJECT_ACCESSOR IDENTIFIER
 	| postfix_expression INC_OP
 	| postfix_expression DEC_OP
@@ -159,7 +155,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression
-	| logical_or_expression THEN expression OTHER_WAY conditional_expression
+	| logical_or_expression THEN expression COLONS conditional_expression
 	;
 
 assignment_expression
@@ -205,14 +201,14 @@ statement
 	;
 
 labeled_statement
-	: CASE constant_expression LABEL_DELIMITER statement
-	| DEFAULT LABEL_DELIMITER statement
+	: CASE constant_expression COLONS statement
+	| DEFAULT COLONS statement
 	;
 
 // List of statements between enclosers
 compound_statement
-	: BLOCK_OPEN BLOCK_CLOSE
-	| BLOCK_OPEN statement_list BLOCK_CLOSE
+	: BRACKETS_OPEN BRACKETS_CLOSE
+	| BRACKETS_OPEN statement_list BRACKETS_CLOSE
 	;
 
 // List of statements
@@ -227,16 +223,16 @@ expression_statement
 	;
 
 selection_statement
-	: IF FLOW_ENCLOSER_OPEN expression FLOW_ENCLOSER_CLOSE compound_statement
-	| IF FLOW_ENCLOSER_OPEN expression FLOW_ENCLOSER_CLOSE compound_statement ELSE compound_statement
-	| SWITCH FLOW_ENCLOSER_OPEN expression FLOW_ENCLOSER_CLOSE compound_statement
+	: IF PARENS_OPEN expression PARENS_CLOSE compound_statement
+	| IF PARENS_OPEN expression PARENS_CLOSE compound_statement ELSE compound_statement
+	| SWITCH PARENS_OPEN expression PARENS_CLOSE compound_statement
 	;
 
 iteration_statement
-	: WHILE FLOW_ENCLOSER_OPEN expression FLOW_ENCLOSER_CLOSE compound_statement
-	| DO compound_statement WHILE FLOW_ENCLOSER_OPEN expression FLOW_ENCLOSER_CLOSE ENDMARKER
-	| FOR FLOW_ENCLOSER_OPEN expression_statement expression_statement FLOW_ENCLOSER_CLOSE compound_statement
-	| FOR FLOW_ENCLOSER_OPEN expression_statement expression_statement expression FLOW_ENCLOSER_CLOSE compound_statement
+	: WHILE PARENS_OPEN expression PARENS_CLOSE compound_statement
+	| DO compound_statement WHILE PARENS_OPEN expression PARENS_CLOSE ENDMARKER
+	| FOR PARENS_OPEN expression_statement expression_statement PARENS_CLOSE compound_statement
+	| FOR PARENS_OPEN expression_statement expression_statement expression PARENS_CLOSE compound_statement
 	;
 
 jump_statement
