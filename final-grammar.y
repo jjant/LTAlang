@@ -1,4 +1,7 @@
+// Variables and constants
 %token IDENTIFIER CONSTANT STRING_LITERAL
+
+// Comparision and assignment operators
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
 %token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN REG_ASSIGN
@@ -39,7 +42,8 @@
 // Object property accessor .
 %token OBJECT_ACCESSOR
 
-%token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR    RETURN
+// Flow tokens
+%token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR RETURN
 
 %start statement_list
 
