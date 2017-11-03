@@ -63,6 +63,7 @@ object_declaration
 object_body
 	: object_property_declaration
 	| object_property_declaration LIST_DELIMITER object_body
+	;
 
 object_property_declaration
 	: IDENTIFIER LABEL_DELIMITER expression
