@@ -10,8 +10,8 @@
 // This can be called from wherever
 %token THIS ENDMARKER
 
-// Lamdas =>
-%token LAMDA_ASSIGN
+// Lamdas =>, _. The placeholder is to ignore a parameter, returning a function with setted parameters
+%token LAMDA_ASSIGN PLACEHOLDER
 
 // Usually (, ). I separate them just in case we want to use different symbols for each.
 %token PARAMETER_ENCLOSER_OPEN PARAMETER_ENCLOSER_CLOSE
@@ -71,7 +71,7 @@ object_property_declaration
 // Array as JS
 array_declaration
 	: ARRAY_OPEN ARRAY_CLOSE
-	| ARRAY_OPEN argument_expression_list ARRAY_CLOSE
+	| ARRAY_OPEN array_values_list ARRAY_CLOSE
 	;
 
 // Terminals for an expression
@@ -97,8 +97,13 @@ postfix_expression
 	| postfix_expression DEC_OP
 	;
 
+array_values_list
+	: assignment_expression
+	| argument_expression_list LIST_DELIMITER assignment_expression
+	;
 argument_expression_list
 	: assignment_expression
+	| PLACEHOLDER
 	| argument_expression_list LIST_DELIMITER assignment_expression
 	;
 
