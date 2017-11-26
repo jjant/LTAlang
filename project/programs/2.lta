@@ -1,0 +1,24 @@
+(: Primality test implemented in LTA language :)
+
+sqrt = |n| => {
+  (: Returns the square root for a given number n :)
+}
+
+prime? = |n| => {
+ if (n%1 || n<2) return false
+ if (n%2==0) return (n==2);
+
+ m = sqrt(n);
+
+ for (i=3; i<=m; i+=2) {
+  if (n%i==0) {
+    return false
+  }
+ }
+
+ return true
+}
+
+prime?(2) (: TRUE :)
+prime?(3) (: TRUE :)
+prime?(4) (: FALSE :)

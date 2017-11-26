@@ -1,0 +1,12 @@
+(: Parameter placeholding implemented in LTA language :)
+
+times => |x, y| => {
+  return x * y
+}
+
+times2 => times(2, _);
+
+times(2,4) (: 8 :)
+times(3,5) (: 15 :)
+times2(4) (: 8 :)
+times2(1) (: 2 :)

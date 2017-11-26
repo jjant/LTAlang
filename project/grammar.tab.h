@@ -71,29 +71,31 @@
      PARENS_CLOSE = 287,
      BRACKETS_OPEN = 288,
      BRACKETS_CLOSE = 289,
-     ARRAY_OPEN = 290,
-     ARRAY_CLOSE = 291,
-     SIMPLE_BAR = 292,
-     LIST_DELIMITER = 293,
-     COLONS = 294,
-     PROD = 295,
-     MOD = 296,
-     COCIENT = 297,
-     PLUS = 298,
-     MINUS = 299,
-     LESS = 300,
-     GREATER = 301,
-     THEN = 302,
-     OBJECT_ACCESSOR = 303,
-     CASE = 304,
-     DEFAULT = 305,
-     IF = 306,
-     ELSE = 307,
-     SWITCH = 308,
-     WHILE = 309,
-     DO = 310,
-     FOR = 311,
-     RETURN = 312
+     LESS_OPEN = 290,
+     LESS_CLOSE = 291,
+     ARRAY_OPEN = 292,
+     ARRAY_CLOSE = 293,
+     SIMPLE_BAR = 294,
+     LIST_DELIMITER = 295,
+     COLONS = 296,
+     PROD = 297,
+     MOD = 298,
+     COCIENT = 299,
+     PLUS = 300,
+     MINUS = 301,
+     LESS = 302,
+     GREATER = 303,
+     THEN = 304,
+     OBJECT_ACCESSOR = 305,
+     CASE = 306,
+     DEFAULT = 307,
+     IF = 308,
+     ELSE = 309,
+     SWITCH = 310,
+     WHILE = 311,
+     DO = 312,
+     FOR = 313,
+     RETURN = 314
    };
 #endif
 /* Tokens.  */
@@ -129,29 +131,31 @@
 #define PARENS_CLOSE 287
 #define BRACKETS_OPEN 288
 #define BRACKETS_CLOSE 289
-#define ARRAY_OPEN 290
-#define ARRAY_CLOSE 291
-#define SIMPLE_BAR 292
-#define LIST_DELIMITER 293
-#define COLONS 294
-#define PROD 295
-#define MOD 296
-#define COCIENT 297
-#define PLUS 298
-#define MINUS 299
-#define LESS 300
-#define GREATER 301
-#define THEN 302
-#define OBJECT_ACCESSOR 303
-#define CASE 304
-#define DEFAULT 305
-#define IF 306
-#define ELSE 307
-#define SWITCH 308
-#define WHILE 309
-#define DO 310
-#define FOR 311
-#define RETURN 312
+#define LESS_OPEN 290
+#define LESS_CLOSE 291
+#define ARRAY_OPEN 292
+#define ARRAY_CLOSE 293
+#define SIMPLE_BAR 294
+#define LIST_DELIMITER 295
+#define COLONS 296
+#define PROD 297
+#define MOD 298
+#define COCIENT 299
+#define PLUS 300
+#define MINUS 301
+#define LESS 302
+#define GREATER 303
+#define THEN 304
+#define OBJECT_ACCESSOR 305
+#define CASE 306
+#define DEFAULT 307
+#define IF 308
+#define ELSE 309
+#define SWITCH 310
+#define WHILE 311
+#define DO 312
+#define FOR 313
+#define RETURN 314
 
 
 

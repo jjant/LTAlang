@@ -1,3 +1,8 @@
+%{extern int yylineno;
+
+	void yyerror(char *);
+%}
+
 // Variables and constants
 %token IDENTIFIER CONSTANT STRING_LITERAL
 
@@ -18,6 +23,8 @@
 
 // Usually { }. Idem before
 %token BRACKETS_OPEN BRACKETS_CLOSE
+
+%token LESS_OPEN LESS_CLOSE
 
 // Usually [, ]. Idem before
 %token ARRAY_OPEN ARRAY_CLOSE
@@ -55,8 +62,8 @@ lamda_declaration
 
 // Objects are key-value pairs
 object_declaration
-	: BRACKETS_OPEN BRACKETS_CLOSE
-	| BRACKETS_OPEN object_body BRACKETS_CLOSE
+	: LESS_OPEN LESS_CLOSE
+	| LESS_OPEN object_body LESS_CLOSE
 	;
 
 object_body
@@ -79,9 +86,10 @@ primary_expression
 	: IDENTIFIER
 	| CONSTANT
 	| THIS
-	| lamda_declaration
 	| STRING_LITERAL
 	| array_declaration
+	| object_declaration
+	| lamda_declaration
 	| PARENS_OPEN expression PARENS_CLOSE
 	;
 
@@ -163,7 +171,6 @@ conditional_expression
 assignment_expression
 	: conditional_expression
 	| unary_expression assignment_operator assignment_expression
-	| unary_expression REG_ASSIGN object_declaration
 	;
 
 // Assignment terminals
@@ -242,3 +249,15 @@ jump_statement
 	: RETURN ENDMARKER
 	| RETURN expression ENDMARKER
 	;
+
+%%
+
+void yyerror(char *msg) {
+  printf("%s on line %d\n\n", msg, yylineno);
+  exit(1);
+}
+
+int main() {
+  int i;
+  return yyparse();
+}

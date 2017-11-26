@@ -1,0 +1,9 @@
+(: Functions as first-class citizens implemented in LTA language :)
+
+fnToString = |str, fn| => {
+  return fn(str);
+}
+
+fnToString("Hi frIenD", |str| => {
+  return str;
+}) (: HI FRIEND :)
