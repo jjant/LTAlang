@@ -1,4 +1,4 @@
-(: Fibonacci with memoization implemented in LTA language :)
+(: Fibonacci with memoization and `this` reference implemented in LTA language :)
 
 fibonacci = |num, memo| => {
   memo = memo || {};
@@ -6,7 +6,7 @@ fibonacci = |num, memo| => {
   if (memo[num]) { return memo[num] }
   if (num <= 1) { return 1 }
 
-  return memo[num] = fibonacci(num - 1, memo) + fibonacci(num - 2, memo)
+  return memo[num] = this(num - 1, memo) + this(num - 2, memo)
 
 }
 

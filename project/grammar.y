@@ -24,8 +24,6 @@
 // Usually { }. Idem before
 %token BRACKETS_OPEN BRACKETS_CLOSE
 
-%token LESS_OPEN LESS_CLOSE
-
 // Usually [, ]. Idem before
 %token ARRAY_OPEN ARRAY_CLOSE
 
@@ -62,8 +60,8 @@ lamda_declaration
 
 // Objects are key-value pairs
 object_declaration
-	: LESS_OPEN LESS_CLOSE
-	| LESS_OPEN object_body LESS_CLOSE
+	: LESS GREATER
+	| LESS object_body GREATER
 	;
 
 object_body
