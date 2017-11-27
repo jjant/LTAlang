@@ -83,8 +83,8 @@ object_property_declaration
 
 // Array as JS
 array_declaration
-	: ARRAY_OPEN ARRAY_CLOSE
-	| ARRAY_OPEN array_values_list ARRAY_CLOSE
+	: ARRAY_OPEN ARRAY_CLOSE { $$ = NULL; }
+	| ARRAY_OPEN array_values_list ARRAY_CLOSE { $$ = $1; }
 	;
 
 // Terminals for an expression
@@ -95,7 +95,7 @@ primary_expression
 	| STRING_LITERAL { $$ = newNodeConstant($1, "STRING"); }
 	| array_declaration { $$ = $1; }
 	| object_declaration { $$ = $1; }
-//	| lamda_declaration { $$ = $1; }
+	| lamda_declaration { $$ = $1; }
 	| PARENS_OPEN expression PARENS_CLOSE { $$ = $1; }
 	;
 
@@ -104,7 +104,7 @@ postfix_expression
 	| postfix_expression ARRAY_OPEN expression ARRAY_CLOSE
 	| postfix_expression PARENS_OPEN PARENS_CLOSE { $$ = newNodeFunctionCall($1, NULL); }
 	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE { $$ = newNodeFunctionCall($1, $2); }
-	| postfix_expression OBJECT_ACCESSOR IDENTIFIER
+	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccesor($1, newNodeIdentifier($2))}
 	;
 
 array_values_list
@@ -162,22 +162,16 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $2, "="); } // TODO: Same as before. Here we have an issue. PRobably the operator itself should be another node.
+	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $3, $2); } // TODO: Same as before. Here we have an issue. PRobably the operator itself should be another node.
 	;
 
 // Assignment terminals
 assignment_operator
-	: REG_ASSIGN
-	| MUL_ASSIGN
-	| DIV_ASSIGN
-	| MOD_ASSIGN
-	| ADD_ASSIGN
-	| SUB_ASSIGN
-	| LEFT_ASSIGN
-	| RIGHT_ASSIGN
-	| AND_ASSIGN
-	| XOR_ASSIGN
-	| OR_ASSIGN
+	: REG_ASSIGN { $$ = "="; }
+	| MUL_ASSIGN { $$ = "*="; }
+	| DIV_ASSIGN { $$ = "/="; }
+	| ADD_ASSIGN { $$ = "+="; }
+	| SUB_ASSIGN { $$ = "-="; }
 	;
 
 expression
@@ -194,46 +188,37 @@ parameter_list
 	;
 
 statement
-	| compound_statement
-	| expression_statement
-	| selection_statement
-	| iteration_statement
-	| jump_statement
+	| compound_statement { $$ = $1; }
+	| selection_statement { $$ = $1; }
+	| iteration_statement { $$ = $1; }
+	| jump_statement { $$ = $1; }
 	;
 
 
 // List of statements between enclosers
 compound_statement
-	: BRACKETS_OPEN BRACKETS_CLOSE
-	| BRACKETS_OPEN statement_list BRACKETS_CLOSE
+	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = NULL; } // TODO: Check if it is the best way
+	| BRACKETS_OPEN statement_list BRACKETS_CLOSE { $$ = $1; }
 	;
 
 // List of statements
 statement_list
-	: statement
-	| statement_list statement
-	;
-
-expression_statement
-	: ENDMARKER
-	| expression ENDMARKER
+	: statement { $$ = newInstructionsList($1); }
+	| statement_list statement { $$ = addInstructions($1, $2); }
 	;
 
 selection_statement
-	: IF PARENS_OPEN expression PARENS_CLOSE compound_statement
-	| IF PARENS_OPEN expression PARENS_CLOSE compound_statement ELSE compound_statement
+	: IF PARENS_OPEN expression PARENS_CLOSE compound_statement { $$ = newNodeIf($1, $2, NULL); }
+	| IF PARENS_OPEN expression PARENS_CLOSE compound_statement ELSE compound_statement { $$ = newNodeIf($1, $2, $3); }
 	;
 
 iteration_statement
-	: WHILE PARENS_OPEN expression PARENS_CLOSE compound_statement
-	| DO compound_statement WHILE PARENS_OPEN expression PARENS_CLOSE ENDMARKER
-	| FOR PARENS_OPEN expression_statement expression_statement PARENS_CLOSE compound_statement
-	| FOR PARENS_OPEN expression_statement expression_statement expression PARENS_CLOSE compound_statement
+	: WHILE PARENS_OPEN expression PARENS_CLOSE compound_statement { $$ = nodeWhile($1, $2); }
+	| DO compound_statement WHILE PARENS_OPEN expression PARENS_CLOSE ENDMARKER { $$ = nodeWhile($2, $1); } // TODO: The last endmarker should be a different token i guess
 	;
 
 jump_statement
-	: RETURN ENDMARKER
-	| RETURN expression ENDMARKER
+	: RETURN expression { $$ = NodeReturn($2); }
 	;
 
 %%

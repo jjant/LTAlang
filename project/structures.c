@@ -13,10 +13,14 @@
 #define NODE_OPERATION "OPERATION"
 #define NODE_TERNARY_OPERATION "TERNARY OPERATION"
 #define NODE_PARAMETER "PARAMETER"
+#define NODE_OBJECT_ACCESSOR "OBJECT ACCESSOR"
+#define NODE_IF "IF"
+#define NODE_WHILE "WHILE"
+#define NODE_RETURN "RETURN"
 
 // NODELIST TYPES
 #define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
-
+#define NODE_INSTRUCTION "INSTRUCTION"
 
 // CONSTANT TYPES
 #define TYPE_STRING "STRING"
@@ -142,4 +146,49 @@ NodeList * addArrayElement(const NodeList * list, const Node * node) {
   while (cnode->next != NULL) cnode = cnode->next;
   cnode->next = newNodeArrayDeclaration(node)
   return list;
+}
+
+NodeObjectAccessor * newNodeObjectAccessor(const Node * left, const NodeIdentifier * right) {
+  NodeObjectAccessor * node = malloc(sizeof(NodeObjectAccessor));
+  node->type = NODE_OBJECT_ACCESSOR;
+  node->left = left;
+  node->right = right;
+  return node;
+}
+
+NodeIf * newNodeIf(const Node * condition, const Node * then, const Node * elseObj) {
+  NodeIf * node = malloc(sizeof(NodeIf));
+  node->type = NODE_IF;
+  node->condition = condition;
+  node->then = then;
+  node->else = elsObj;
+}
+
+NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
+  NodeWhile * node = malloc(sizeof(NodeWhile));
+  node->type = NODE_WHILE;
+  node->condition = condition;
+  node->block = block;
+}
+
+NodeList * newInstructionsList(const Node * node) {
+  NodeList * list = malloc(sizeof(NodeList));
+  NodeList->type = NODE_INSTRUCTION;
+  NodeList->node = node;
+  NodeList-> next = NULL;
+  return list;
+}
+
+NodeList * addInstructions(const NodeList * list, const Node * node) {
+  NodeList * cnode = list;
+  while (cnode->next != NULL) cnode = cnode->next;
+  cnode->next = node;
+  return list;
+}
+
+NodeReturn * newNodeReturn(const Node * expression) {
+  NodeReturn * node = malloc(sizeof(NodeReturn));
+  node->type = NODE_RETURN;
+  node->expression = expression;
+  return node;
 }
