@@ -1,49 +1,49 @@
 Node {
-  char * type;
+  String type;
 }
 
 ConstantNode {
-  char * type;
-  char * valueType;
-  char * value;
+  String type;
+  String valueType;
+  String value;
 }
 
 IdentifierNode {
-  char * type;
-  char * name;
-  Node * assignment;
+  String type;
+  String name;
+  Node value;
 }
 
 FunctionNode {
-  char * type;
-  Node * args;
+  String type;
+  Node[] args;
   Node ctx_body;
 }
 
 OperationNode {
-  char * type;
+  String type;
   Node left;
   Node right;
-  char * operator;
+  String operator;
 }
 
 MethodCallNode {
-  char * type;
-  Node * params;
+  String type;
+  Node[] params;
 }
 
 ArrayNode {
-    char * type;
-    Node * params;
+  String type;
+  Node[] values;
 }
 
 ObjectNode {
-  char * type;
-  Node * KeyValueNode;
+  String type;
+  Node[] KeyValueNode;
 }
 
 KeyValueNode {
-  char * type;
-  char * key;
+  String type;
+  String key;
   Node value;
 }

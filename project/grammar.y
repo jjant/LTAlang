@@ -1,4 +1,6 @@
-%{extern int yylineno;
+%{
+	#inlcude "structures.h"
+	extern int yylineno;
 
 	void yyerror(char *);
 %}
@@ -36,6 +38,8 @@
 // :
 %token COLONS
 
+%token EMPTY ASYNC
+
 // Operators
 %token PROD MOD COCIENT PLUS MINUS
 %token LESS GREATER
@@ -47,7 +51,7 @@
 %token OBJECT_ACCESSOR
 
 // Flow tokens
-%token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR RETURN
+%token IF ELSE WHILE DO FOR RETURN
 
 %start statement_list
 
@@ -55,7 +59,12 @@
 
 // Lamda functions are first class citizens
 lamda_declaration
-	: SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement
+	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement
+	;
+
+opt_async
+	: EMPTY
+	| ASYNC
 	;
 
 // Objects are key-value pairs
@@ -200,7 +209,6 @@ parameter_list
 	;
 
 statement
-	: labeled_statement
 	| compound_statement
 	| expression_statement
 	| selection_statement
@@ -208,10 +216,6 @@ statement
 	| jump_statement
 	;
 
-labeled_statement
-	: CASE constant_expression COLONS statement
-	| DEFAULT COLONS statement
-	;
 
 // List of statements between enclosers
 compound_statement
@@ -233,7 +237,6 @@ expression_statement
 selection_statement
 	: IF PARENS_OPEN expression PARENS_CLOSE compound_statement
 	| IF PARENS_OPEN expression PARENS_CLOSE compound_statement ELSE compound_statement
-	| SWITCH PARENS_OPEN expression PARENS_CLOSE compound_statement
 	;
 
 iteration_statement
