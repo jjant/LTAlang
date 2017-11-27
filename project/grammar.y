@@ -68,13 +68,13 @@ opt_async
 
 // Objects are key-value pairs
 object_declaration
-	: LESS GREATER
-	| LESS object_body GREATER
+	: LESS GREATER { $$ = newObjectDeclaration(NULL); }
+	| LESS object_body GREATER { $$ = newObjectDeclaration($1); }
 	;
 
 object_body
-	: object_property_declaration { $$ = newKeyValuePairList($1) }
-	| object_property_declaration LIST_DELIMITER object_body { $$ = addKeyValuePair($2, $1) }
+	: object_property_declaration { $$ = newKeyValueList($1); }
+	| object_property_declaration LIST_DELIMITER object_body { $$ = addKeyValue($2, $1); }
 	;
 
 object_property_declaration
@@ -93,17 +93,17 @@ primary_expression
 	| CONSTANT { $$ = newNodeConstant($1); }
 	| THIS { $$ = newNodeThis(); }
 	| STRING_LITERAL { $$ = newNodeConstant($1); }
-	| array_declaration
-	| object_declaration
-	| lamda_declaration
-	| PARENS_OPEN expression PARENS_CLOSE
+//	| array_declaration { $$ = $1; }
+	| object_declaration { $$ = $1; }
+//	| lamda_declaration { $$ = $1; }
+	| PARENS_OPEN expression PARENS_CLOSE { $$ = $1; }
 	;
 
 postfix_expression
-	: primary_expression
+	: primary_expression { $$ = $1; }
 	| postfix_expression ARRAY_OPEN expression ARRAY_CLOSE
-	| postfix_expression PARENS_OPEN PARENS_CLOSE
-	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE
+	| postfix_expression PARENS_OPEN PARENS_CLOSE { $$ = newNodeFunctionCall($1, NULL); }
+	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE { $$ = newNodeFunctionCall($1, $2); }
 	| postfix_expression OBJECT_ACCESSOR IDENTIFIER
 	;
 

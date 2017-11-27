@@ -8,6 +8,8 @@
 #define NODE_CONSTANT "CONSTANT"
 #define NODE_IDENTIFIER "IDENTIFIER"
 #define NODE_THIS "THIS"
+#define NODE_OBJECT_DECLARATION "OBJECT DECLARATION"
+#define NODE_FUNCTION_CALL "FUNCTION CALL"
 
 // NODELIST TYPES
 #define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
@@ -46,7 +48,7 @@ NodeKeyValue * newNodeKeyValue(const char * key, const Node * value) {
   return node;
 }
 
-NodeList * newKeyValuePairList(const NodeKeyValue * node) {
+NodeList * newKeyValueList(const NodeKeyValue * node) {
   NodeList * list = malloc(sizeof(NodeList));
   NodeList->type = NODE_KEY_VALUE_PAIR;
   NodeList->node = node;
@@ -55,9 +57,24 @@ NodeList * newKeyValuePairList(const NodeKeyValue * node) {
   return list;
 }
 
-NodeKeyValue * addKeyValuePair(const NodeList * list, const NodeKeyValue * node) {
+NodeList * addKeyValue(const NodeList * list, const NodeKeyValue * node) {
   NodeList * cnode = list;
   while (cnode->next != NULL) cnode = cnode->next;
   cnode->next = newKeyValuePairList(node)
   return list;
+}
+
+NodeObjectDeclaration * newNodeObjectDeclaration(const NodeList * body) {
+  NodeObjectDeclaration * node = malloc(sizeof(NodeObjectDeclaration));
+  node->type = NODE_OBJECT_DECLARATION;
+  node->body = body;
+  return node;
+}
+
+NodeFunctionCall * newNodeFunctionCall(const Node * caller, const NodeList * args) {
+  NodeFunctionCall * node = malloc(sizeof(NodeFunctionCall));
+  node->type = NODE_FUNCTION_CALL;
+  node->caller = caller;
+  node->args = args;
+  return node;
 }
