@@ -90,10 +90,10 @@ array_declaration
 // Terminals for an expression
 primary_expression
 	: IDENTIFIER { $$ = newNodeIdentifier($1); }
-	| CONSTANT { $$ = newNodeConstant($1); }
+	| CONSTANT { $$ = newNodeConstant($1, "NUMBER"); }
 	| THIS { $$ = newNodeThis(); }
-	| STRING_LITERAL { $$ = newNodeConstant($1); }
-//	| array_declaration { $$ = $1; }
+	| STRING_LITERAL { $$ = newNodeConstant($1, "STRING"); }
+	| array_declaration { $$ = $1; }
 	| object_declaration { $$ = $1; }
 //	| lamda_declaration { $$ = $1; }
 	| PARENS_OPEN expression PARENS_CLOSE { $$ = $1; }
@@ -108,8 +108,8 @@ postfix_expression
 	;
 
 array_values_list
-	: assignment_expression
-	| argument_expression_list LIST_DELIMITER assignment_expression
+	: assignment_expression { $$ = newArrayElementList(newNodeArrayDeclaration($1)); }
+	| array_values_list LIST_DELIMITER assignment_expression { $$ = addArrayElement($1, $2); }
 	;
 argument_expression_list
 	: assignment_expression
