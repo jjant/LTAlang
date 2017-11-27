@@ -1,2 +1,4 @@
 # Ignored compiled files
 /dist
+*.o
+*.out
