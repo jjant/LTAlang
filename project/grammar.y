@@ -55,8 +55,7 @@
 
 %start statement_list
 
-%%
-
+//%%
 // Lamda functions are first class citizens
 lamda_declaration
 	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement
@@ -74,12 +73,12 @@ object_declaration
 	;
 
 object_body
-	: object_property_declaration
-	| object_property_declaration LIST_DELIMITER object_body
+	: object_property_declaration { $$ = newKeyValuePairList($1) }
+	| object_property_declaration LIST_DELIMITER object_body { $$ = addKeyValuePair($2, $1) }
 	;
 
 object_property_declaration
-	: IDENTIFIER COLONS expression
+	: IDENTIFIER COLONS expression { $$ = newNodeKeyValue($1, $2); }
 	;
 
 // Array as JS
@@ -90,10 +89,10 @@ array_declaration
 
 // Terminals for an expression
 primary_expression
-	: IDENTIFIER
-	| CONSTANT
-	| THIS
-	| STRING_LITERAL
+	: IDENTIFIER { $$ = newNodeIdentifier($1); }
+	| CONSTANT { $$ = newNodeConstant($1); }
+	| THIS { $$ = newNodeThis(); }
+	| STRING_LITERAL { $$ = newNodeConstant($1); }
 	| array_declaration
 	| object_declaration
 	| lamda_declaration
@@ -106,8 +105,6 @@ postfix_expression
 	| postfix_expression PARENS_OPEN PARENS_CLOSE
 	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE
 	| postfix_expression OBJECT_ACCESSOR IDENTIFIER
-	| postfix_expression INC_OP
-	| postfix_expression DEC_OP
 	;
 
 array_values_list
@@ -121,14 +118,8 @@ argument_expression_list
 	;
 
 // Expressions with logic and arithmetic operators
-unary_expression
-	: postfix_expression
-	| INC_OP unary_expression
-	| DEC_OP unary_expression
-	;
-
 multiplicative_expression
-	: unary_expression
+	: postfix_expression
 	| multiplicative_expression PROD unary_expression
 	| multiplicative_expression COCIENT unary_expression
 	| multiplicative_expression MOD unary_expression

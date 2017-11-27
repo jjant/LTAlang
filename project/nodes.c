@@ -1,49 +1,83 @@
 Node {
-  String type;
+  char * type;
+}
+
+ProgramNode {
+  NodeList * instructions;
 }
 
 ConstantNode {
-  String type;
-  String valueType;
-  String value;
+  char * type;
+  char * valueType;
+  char * value;
 }
 
 IdentifierNode {
-  String type;
-  String name;
-  Node value;
+  char * type;
+  char * name;
 }
 
+// "|" eval(args) "|" "=>" eval(ctx_body)
 FunctionNode {
-  String type;
-  Node[] args;
+  char * type;
+  Node * args;
   Node ctx_body;
 }
 
+// "{"  eval(NodeList) "}"
+CodeBlockNode {
+  char * type;
+  Node[] NodeList;
+}
+
 OperationNode {
-  String type;
+  char * type;
   Node left;
   Node right;
-  String operator;
+  char * operator;
+}
+
+IfNode {
+  char * type;
+  Node condition;
+  Node * body;
+}
+
+ForNode {
+  char * type;
+  Node condition;
+  Node * body;
+}
+
+TernaryOperationNode {
+  char * type;
+  Node condition;
+  Node else;
+  Node ifHappened;
 }
 
 MethodCallNode {
-  String type;
-  Node[] params;
+  char * type;
+  Node * params;
 }
 
+// "[" eval(list) "]"
 ArrayNode {
-  String type;
-  Node[] values;
+    char * type;
+    // TODO:
+    // Lista * list;
 }
 
+
+//  "{" eval(keyValueNodeList) "}"
 ObjectNode {
-  String type;
-  Node[] KeyValueNode;
+  char * type;
+  KeyValueNode  ** keyValueNodeList;
 }
 
+// "\"" key "\"" ":" eval(value) ","
 KeyValueNode {
-  String type;
-  String key;
+  char * type;
+  char * key;
   Node value;
 }
