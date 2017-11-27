@@ -10,6 +10,9 @@
 #define NODE_THIS "THIS"
 #define NODE_OBJECT_DECLARATION "OBJECT DECLARATION"
 #define NODE_FUNCTION_CALL "FUNCTION CALL"
+#define NODE_OPERATION "OPERATION"
+#define NODE_TERNARY_OPERATION "TERNARY OPERATION"
+#define NODE_PARAMETER "PARAMETER"
 
 // NODELIST TYPES
 #define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
@@ -77,4 +80,44 @@ NodeFunctionCall * newNodeFunctionCall(const Node * caller, const NodeList * arg
   node->caller = caller;
   node->args = args;
   return node;
+}
+
+NodeOperation * newNodeOperation(const Node * first, const Node * second, const char * operator) {
+  NodeOperation * node = malloc(sizeof(NodeOperation));
+  node->type = NODE_OPERATION;
+  node->first = first;
+  node->second = second;
+  node->operator = operator;
+  return node;
+}
+
+NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * second, const Node * third) {
+  NodeTernaryOperation * node = malloc(sizeof(NodeTernaryOperation));
+  node->type = NODE_TERNARY_OPERATION;
+  node->first = first;
+  node->second = second;
+  node->third = second;
+  return node;
+}
+
+NodeParameter * newNodeParameter(const char * name) {
+  NodeParameter * node = malloc(sizeof(NodeParameter));
+  node->type = NODE_PARAMETER;
+  node->name = key;
+  return node;
+}
+
+NodeList * newParameterList(const NodeParameter * node) {
+  NodeList * list = malloc(sizeof(NodeList));
+  NodeList->type = NODE_PARAMETER;
+  NodeList->node = node;
+  NodeList-> next = NULL;
+  return list;
+}
+
+NodeList * addParameter(const NodeList * list, const NodeParameter * node) {
+  NodeList * cnode = list;
+  while (cnode->next != NULL) cnode = cnode->next;
+  cnode->next = newParameterList(node)
+  return list;
 }

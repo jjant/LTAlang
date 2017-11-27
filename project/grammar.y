@@ -119,56 +119,50 @@ argument_expression_list
 
 // Expressions with logic and arithmetic operators
 multiplicative_expression
-	: postfix_expression
-	| multiplicative_expression PROD unary_expression
-	| multiplicative_expression COCIENT unary_expression
-	| multiplicative_expression MOD unary_expression
+	: postfix_expression { $$ = $1; }
+	| multiplicative_expression PROD postfix_expression { $$ = newNodeOperation($1, $2, "*"); } // TODO: I probably should not use the literal character here.
+	| multiplicative_expression COCIENT postfix_expression { $$ = newNodeOperation($1, $2, "/"); }
+	| multiplicative_expression MOD postfix_expression { $$ = newNodeOperation($1, $2, "mod"); }
 	;
 
 additive_expression
-	: multiplicative_expression
-	| additive_expression PLUS multiplicative_expression
-	| additive_expression MINUS multiplicative_expression
-	;
-
-shift_expression
-	: additive_expression
-	| shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression
+	: multiplicative_expression { $$ = $1; }
+	| additive_expression PLUS multiplicative_expression { $$ = newNodeOperation($1, $2, "+"); }
+	| additive_expression MINUS multiplicative_expression { $$ = newNodeOperation($1, $2, "-"); }
 	;
 
 relational_expression
-	: shift_expression
-	| relational_expression LESS shift_expression
-	| relational_expression GREATER shift_expression
-	| relational_expression LE_OP shift_expression
-	| relational_expression GE_OP shift_expression
+	: additive_expression { $$ = $1; }
+	| relational_expression LESS additive_expression { $$ = newNodeOperation($1, $2, "<"); }
+	| relational_expression GREATER additive_expression { $$ = newNodeOperation($1, $2, ">"); }
+	| relational_expression LE_OP additive_expression { $$ = newNodeOperation($1, $2, "<="); }
+	| relational_expression GE_OP additive_expression { $$ = newNodeOperation($1, $2, ">="); }
 	;
 
 equality_expression
-	: relational_expression
-	| equality_expression EQ_OP relational_expression
-	| equality_expression NE_OP relational_expression
+	: relational_expression { $$ = $1; }
+	| equality_expression EQ_OP relational_expression { $$ = newNodeOperation($1, $2, "=="); }
+	| equality_expression NE_OP relational_expression { $$ = newNodeOperation($1, $2, "!="); }
 	;
 
 logical_and_expression
-	: equality_expression
-	| logical_and_expression AND_OP equality_expression
+	: equality_expression { $$ = $1; }
+	| logical_and_expression AND_OP equality_expression { $$ = newNodeOperation($1, $2, "&&"); }
 	;
 
 logical_or_expression
-	: logical_and_expression
-	| logical_or_expression OR_OP logical_and_expression
+	: logical_and_expression { $$ = $1; }
+	| logical_or_expression OR_OP logical_and_expression { $$ = newNodeOperation($1, $2, "||"); }
 	;
 
 conditional_expression
-	: logical_or_expression
-	| logical_or_expression THEN expression COLONS conditional_expression
+	: logical_or_expression { $$ = $1; }
+	| logical_or_expression THEN expression COLONS conditional_expression { $$ = newNodeTernaryOperation($1, $2, $3); }
 	;
 
 assignment_expression
-	: conditional_expression
-	| unary_expression assignment_operator assignment_expression
+	: conditional_expression { $$ = $1; }
+	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $2, "="); } // TODO: Same as before. Here we have an issue. PRobably the operator itself should be another node.
 	;
 
 // Assignment terminals
@@ -187,16 +181,16 @@ assignment_operator
 	;
 
 expression
-	: assignment_expression
+	: assignment_expression { $$ = $1; }
 	;
 
 constant_expression
-	: conditional_expression
+	: conditional_expression { $$ = $1; }
 	;
 
 parameter_list
-	: IDENTIFIER
-	| parameter_list LIST_DELIMITER IDENTIFIER
+	: IDENTIFIER { $$ = newParameterList(newNodeParameter($1)); }
+	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($2, $1); }
 	;
 
 statement
