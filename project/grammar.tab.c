@@ -170,7 +170,7 @@
 
 	extern int yylineno;
 
-	void yyerror(Node *, char *);
+	void yyerror(NodeList **, char *);
 
 
 /* Enabling traces.  */
@@ -856,14 +856,14 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Node * program)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, NodeList * program)
 #else
 static void
 yy_symbol_value_print (yyoutput, yytype, yyvaluep, program)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    Node * program;
+    NodeList * program;
 #endif
 {
   if (!yyvaluep)
@@ -890,14 +890,14 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep, program)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Node * program)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, NodeList * program)
 #else
 static void
 yy_symbol_print (yyoutput, yytype, yyvaluep, program)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
-    Node * program;
+    NodeList * program;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -945,13 +945,13 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule, Node * program)
+yy_reduce_print (YYSTYPE *yyvsp, int yyrule, NodeList * program)
 #else
 static void
 yy_reduce_print (yyvsp, yyrule, program)
     YYSTYPE *yyvsp;
     int yyrule;
-    Node * program;
+    NodeList * program;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -1224,14 +1224,14 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, Node * program)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, NodeList * program)
 #else
 static void
 yydestruct (yymsg, yytype, yyvaluep, program)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
-    Node * program;
+    NodeList * program;
 #endif
 {
   YYUSE (yyvaluep);
@@ -1260,7 +1260,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (Node * program);
+int yyparse (NodeList * program);
 #else
 int yyparse ();
 #endif
@@ -1297,11 +1297,11 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (Node * program)
+yyparse (NodeList * program)
 #else
 int
 yyparse (program)
-    Node * program;
+    NodeList * program;
 #endif
 #endif
 {
@@ -1886,12 +1886,12 @@ yyreduce:
 
   case 70:
 #line 236 "grammar.y"
-    { (yyval.list) = newInstructionsList((yyvsp[(1) - (1)].node)); ;}
+    { (yyval.list) = ((*program) = newInstructionsList((yyvsp[(1) - (1)].node))); ;}
     break;
 
   case 71:
 #line 237 "grammar.y"
-    { (yyval.list) = addInstructions((yyvsp[(1) - (2)].list), (yyvsp[(2) - (2)].node)); ;}
+    { (yyval.list) = ((*program )= addInstructions((yyvsp[(1) - (2)].list), (yyvsp[(2) - (2)].node))); ;}
     break;
 
   case 72:
@@ -2133,14 +2133,23 @@ yyreturn:
 #line 253 "grammar.y"
 
 
-void yyerror(Node * program, char *msg) {
+void yyerror(NodeList ** program, char *msg) {
   printf("%s on line %d\n\n", msg, yylineno);
   exit(1);
 }
 
 int main() {
   int i;
-	Node program;
-  return yyparse(&program);
+	NodeList * program;
+  int ret = yyparse(&program);
+
+	if (ret == 1) {
+		printf("%s", "There was an error parsing your program.");
+		return 1;
+	} else if (ret == 2) {
+		printf("%s", "There is not enough memory to parse your program");
+	}
+
+	return 0;
 }
 

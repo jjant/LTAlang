@@ -5,7 +5,7 @@
 
 	extern int yylineno;
 
-	void yyerror(Node *, char *);
+	void yyerror(NodeList **, char *);
 %}
 
 %union {
@@ -71,9 +71,9 @@
 %type <node> iteration_statement jump_statement assignable_expression
 
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
-%type <string> IDENTIFIER THIS STRING_LITERAL
+%type <string> IDENTIFIER THIS STRING_LITERAL NUMBER
 
-%type <num> opt_async EMPTY LAMDA_ASSIGN LAMDA_ASYNC NUMBER
+%type <num> opt_async EMPTY LAMDA_ASSIGN LAMDA_ASYNC
 
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
@@ -211,8 +211,8 @@ expression
 	;
 
 parameter_list
-	: IDENTIFIER { $$ = (*program = newParameterList(newNodeParameter($1))); }
-	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = (*program = addParameter($1, $3)); }
+	: IDENTIFIER { $$ = newParameterList(newNodeParameter($1)); }
+	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($1, $3); }
 	;
 
 statement
@@ -233,8 +233,8 @@ compound_statement
 
 // List of statements
 statement_list
-	: statement { $$ = program newInstructionsList($1); }
-	| statement_list statement { $$ = addInstructions($1, $2); }
+	: statement { $$ = (program = newInstructionsList($1)); }
+	| statement_list statement { $$ = (program = addInstructions($1, $2)); }
 	;
 
 selection_statement
@@ -252,14 +252,14 @@ jump_statement
 
 %%
 
-void yyerror(NodeList * program, char *msg) {
+void yyerror(NodeList ** program, char *msg) {
   printf("%s on line %d\n\n", msg, yylineno);
   exit(1);
 }
 
 int main() {
   int i;
-	NodeList program;
+	NodeList * program;
   int ret = yyparse(&program);
 
 	if (ret == 1) {

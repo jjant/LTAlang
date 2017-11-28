@@ -13,12 +13,11 @@ NodeString * newNodeString(const char * constant) {
   return node;
 }
 
-NodeNumber * newNodeNumber(const int constant) {
+NodeNumber * newNodeNumber(const char * constant) {
   NodeNumber * node = malloc(sizeof(NodeNumber));
   node->type = NODE_NUMBER;
-  //node->value = calloc(strlen(constant) + 1, sizeof(char));
-  //strcpy(node->value, constant);
-  node->value = constant;
+  node->value = calloc(strlen(constant) + 1, sizeof(char));
+  strcpy(node->value, constant);
   return node;
 }
 

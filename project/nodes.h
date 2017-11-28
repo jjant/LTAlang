@@ -40,7 +40,7 @@ typedef struct NodeString {
 
 typedef struct NodeNumber {
   NodeType type;
-  int value;
+  char * value;
 } NodeNumber;
 
 typedef struct NodeIdentifier {

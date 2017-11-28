@@ -51,7 +51,7 @@ exit        ("exit"|"quit")
 "|>"		{ return(LAMDA_ASYNC); }
 ">"			{ return(GREATER); }
 "?"			{ return(THEN); }
-{number}        { yylval.num = atoi(yytext); return NUMBER; }
+{number}        { yylval.string = yytext; return NUMBER; }
 {identifier}    { yylval.string = yytext; return IDENTIFIER; }
 {string}				{ yylval.string = yytext; return STRING_LITERAL; }
 {newline}       { yylineno++; return ENDMARKER; }
