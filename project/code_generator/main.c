@@ -4,6 +4,8 @@
 #include "main.h"
 #include "../structures.h"
 
+char * emptyString = "";
+
 static char * iterateOverObjectBody(NodeList * body);
 
 // TODO: ver el tema de los semicolons
@@ -205,8 +207,27 @@ char * handleNodeReturn(Node * node) {
 static char * iterateOverFunctionParams(NodeList * paramList);
 
 // TODO: esto debería volar cuando cambiemos nodelist y eso
-static char * iterateOverFunctionParams(NodeList * paramList) {
-  return "";
+static char * iterateOverFunctionParams(NodeList * node) {
+  if (node == NULL) return emptyString;
+
+  return emptyString;
+  // NodeList * current_list = (NodeList *)node;
+  //
+  // const size_t buffer_length = 1000; // idk lol
+  // char * buffer = malloc(buffer_length);
+  // buffer[0] = '\0';
+  //
+  // if(current_list == NULL) return buffer;
+  //
+  // do {
+  //   Node * actual_node = (Node *)current_list->node;
+  //   if (actual_node == NULL) break;
+  //
+  //   strcat(buffer, eval(actual_node));
+  //   strcat(buffer, ",");
+  // } while((current_list = current_list->next) != NULL);
+  //
+  // return buffer;
 }
 
 char * handleNodeLamdaDeclaration(Node * node) {
@@ -251,8 +272,23 @@ char * handleNodeListArguments(Node * node) {
 }
 
 // TODO: ???
-char * handleNodeInstruction(Node * node) {
-  return "";
+char * handleNodeInstructionList(Node * node) {
+  NodeList * current_list = (NodeList *)node;
+
+  const size_t buffer_length = 1000; // idk lol
+  char * buffer = malloc(buffer_length);
+  buffer[0] = '\0';
+
+  if(current_list == NULL) return buffer;
+
+  do {
+    Node * actual_node = (Node *)current_list->node;
+    if (actual_node == NULL) break;
+
+    strcat(buffer, eval(actual_node));
+  } while((current_list = current_list->next) != NULL);
+
+  return buffer;
 }
 
 // TODO: Check NodeArrayDeclaration struct. I don't think it is correct.
@@ -326,13 +362,11 @@ handler handlers[] = {
   handleNodeKeyValuePair,
   handleNodePlaceholder,
   handleNodeListArguments,
-  handleNodeInstruction, // TODO: ???
+  handleNodeInstructionList, // TODO: ???
   handleNodeArrayDeclaration,
   handleNodeArrayElement,
   handleNodeArrayDeclarationList
 };
-
-char * emptyString = "";
 
 char * eval(Node * node) {
   if (node == NULL || handlers[node->type] == NULL)

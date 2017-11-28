@@ -88,6 +88,7 @@
 // Lamda functions are first class citizens
 lamda_declaration
 	: SIMPLE_BAR parameter_list SIMPLE_BAR opt_async compound_statement { $$ = newNodeLamdaDeclaration($4, $2, $5); }
+	| SIMPLE_BAR SIMPLE_BAR opt_async compound_statement { $$ = newNodeLamdaDeclaration($3, NULL, $4); }
 	;
 
 opt_async
@@ -270,6 +271,7 @@ int main() {
 		printf("%s", "There is not enough memory to parse your program");
 	}
 
+	printf("llegue aca\n");
 	printf("\n\n%s\n", eval(program));
 
 	return 0;
