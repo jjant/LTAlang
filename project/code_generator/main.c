@@ -119,10 +119,26 @@ char * handleNodeTernaryOperation(Node * node) {
   return buffer;
 }
 
+// TODO:
+char * handleNodeBlock(Node * node) {
+  return "";
+}
+
 char * handleNodeParameter(Node * node) {
   char * name = ((NodeParameter *)node)->name;
 
   return name;
+}
+
+// TODO:
+char * handleNodeIgnore(Node * node) {
+  const char * delimiter = ";";
+
+  const size_t buffer_length = strlen(delimiter) + 1;
+  char * buffer = malloc(buffer_length);
+  strcpy(buffer, delimiter);
+
+  return buffer;
 }
 
 char * handleNodeObjectAccessor(Node * node) {
@@ -152,6 +168,11 @@ char * handleNodeIf(Node * node) {
   snprintf(buffer, buffer_length, "if(%s){%s}else{%s}", compiledCondition, compiledThen, compiledElseBlock);
 
   return buffer;
+}
+
+// TODO:
+char * handleNodeArrayWrapDeclaration(Node * node) {
+  return "";
 }
 
 char * handleNodeWhile(Node * node) {
@@ -219,6 +240,16 @@ char * handleNodeKeyValuePair(Node * node) {
   return buffer;
 }
 
+//TODO:
+char * handleNodePlaceholder(Node * node) {
+  return "";
+}
+
+//TODO:
+char * handleNodeListArguments(Node * node) {
+  return "";
+}
+
 // TODO: ???
 char * handleNodeInstruction(Node * node) {
   return "";
@@ -241,7 +272,12 @@ char * handleNodeArrayDeclaration(Node * node) {
   return buffer;
 }
 
-char * handleNodeListArrayElements(Node * node) {
+// TODO: check
+char * handleNodeArrayElement(Node * node) {
+  return eval(node);
+}
+
+char * handleNodeArrayDeclarationList(Node * node) {
   NodeList * current_list = (NodeList *)node;
 
 
@@ -278,16 +314,22 @@ handler handlers[] = {
   handleFunctionCall,
   handleNodeOperation,
   handleNodeTernaryOperation,
+  handleNodeBlock,
   handleNodeParameter,
+  handleNodeIgnore,
   handleNodeObjectAccessor,
   handleNodeIf,
+  handleNodeArrayWrapDeclaration,
   handleNodeWhile,
   handleNodeReturn,
   handleNodeLamdaDeclaration,
   handleNodeKeyValuePair,
+  handleNodePlaceholder,
+  handleNodeListArguments,
   handleNodeInstruction, // TODO: ???
   handleNodeArrayDeclaration,
-  handleNodeListArrayElements,
+  handleNodeArrayElement,
+  handleNodeArrayDeclarationList
 };
 
 char * emptyString = "";
@@ -341,12 +383,12 @@ int main() {
   nodeLamda->block = NULL;
 
   NodeList * nodeArrayList2 = malloc(sizeof(NodeList));
-  nodeArrayList2->type = NODE_LIST_ARRAY_ELEMENTS;
+  nodeArrayList2->type = NODE_ARRAY_DECLARATION_LIST;
   nodeArrayList2->node = (Node *)nodeNumber;
   nodeArrayList2->next = NULL;
 
   NodeList * nodeArrayList = malloc(sizeof(NodeList));
-  nodeArrayList->type = NODE_LIST_ARRAY_ELEMENTS;
+  nodeArrayList->type = NODE_ARRAY_DECLARATION_LIST;
   nodeArrayList->node = (Node *)nodeString;
   nodeArrayList->next = nodeArrayList2;
 

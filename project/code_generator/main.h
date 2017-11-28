@@ -21,6 +21,13 @@ char * handleNodeKeyValuePair(Node * node);
 char * handleNodeInstruction(Node * node);
 char * handleNodeArrayDeclaration(Node * node);
 char * handleNodeListArrayElements(Node * node);
+char * handleNodeBlock(Node * node);
+char * handleNodeIgnore(Node * node);
+char * handleNodeArrayWrapDeclaration(Node * node);
+char * handleNodePlaceholder(Node * node);
+char * handleNodeListArguments(Node * node);
+char * handleNodeArrayElement(Node * node);
+char * handleNodeArrayDeclarationList(Node * node);
 char * eval(Node * node);
 
 #endif
