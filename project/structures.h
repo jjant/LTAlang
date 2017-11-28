@@ -4,7 +4,7 @@
 #include "nodes.h"
 
 NodeString * newNodeString(const char * constant);
-NodeNumber * newNodeNumber(const char * constant);
+NodeNumber * newNodeNumber(const int constant);
 NodeIdentifier * newNodeIdentifier(const char * name);
 NodeThis * newNodeThis();
 NodeKeyValue * newNodeKeyValue(const char * key, const Node * value);

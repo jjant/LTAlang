@@ -40,94 +40,96 @@
       know about them.  */
    enum yytokentype {
      IDENTIFIER = 258,
-     CONSTANT = 259,
+     NUMBER = 259,
      STRING_LITERAL = 260,
-     LE_OP = 261,
-     GE_OP = 262,
-     EQ_OP = 263,
-     NE_OP = 264,
-     AND_OP = 265,
-     OR_OP = 266,
-     MUL_ASSIGN = 267,
-     DIV_ASSIGN = 268,
-     SUB_ASSIGN = 269,
-     REG_ASSIGN = 270,
-     ADD_ASSIGN = 271,
-     THIS = 272,
-     LAMDA_ASSIGN = 273,
-     PLACEHOLDER = 274,
-     PARENS_OPEN = 275,
-     PARENS_CLOSE = 276,
-     BRACKETS_OPEN = 277,
-     BRACKETS_CLOSE = 278,
-     ARRAY_OPEN = 279,
-     ARRAY_CLOSE = 280,
-     SIMPLE_BAR = 281,
-     LIST_DELIMITER = 282,
-     COLONS = 283,
-     EMPTY = 284,
-     ASYNC = 285,
-     PROD = 286,
-     MOD = 287,
-     COCIENT = 288,
-     PLUS = 289,
-     MINUS = 290,
-     LESS = 291,
-     GREATER = 292,
-     THEN = 293,
-     OBJECT_ACCESSOR = 294,
-     IF = 295,
-     ELSE = 296,
-     WHILE = 297,
-     DO = 298,
-     FOR = 299,
-     RETURN = 300
+     ENDMARKER = 261,
+     LE_OP = 262,
+     GE_OP = 263,
+     EQ_OP = 264,
+     NE_OP = 265,
+     AND_OP = 266,
+     OR_OP = 267,
+     MUL_ASSIGN = 268,
+     DIV_ASSIGN = 269,
+     SUB_ASSIGN = 270,
+     REG_ASSIGN = 271,
+     ADD_ASSIGN = 272,
+     THIS = 273,
+     LAMDA_ASSIGN = 274,
+     PLACEHOLDER = 275,
+     PARENS_OPEN = 276,
+     PARENS_CLOSE = 277,
+     BRACKETS_OPEN = 278,
+     BRACKETS_CLOSE = 279,
+     ARRAY_OPEN = 280,
+     ARRAY_CLOSE = 281,
+     SIMPLE_BAR = 282,
+     LIST_DELIMITER = 283,
+     COLONS = 284,
+     EMPTY = 285,
+     ASYNC = 286,
+     PROD = 287,
+     MOD = 288,
+     COCIENT = 289,
+     PLUS = 290,
+     MINUS = 291,
+     LESS = 292,
+     GREATER = 293,
+     THEN = 294,
+     OBJECT_ACCESSOR = 295,
+     IF = 296,
+     ELSE = 297,
+     WHILE = 298,
+     DO = 299,
+     FOR = 300,
+     RETURN = 301
    };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
-#define CONSTANT 259
+#define NUMBER 259
 #define STRING_LITERAL 260
-#define LE_OP 261
-#define GE_OP 262
-#define EQ_OP 263
-#define NE_OP 264
-#define AND_OP 265
-#define OR_OP 266
-#define MUL_ASSIGN 267
-#define DIV_ASSIGN 268
-#define SUB_ASSIGN 269
-#define REG_ASSIGN 270
-#define ADD_ASSIGN 271
-#define THIS 272
-#define LAMDA_ASSIGN 273
-#define PLACEHOLDER 274
-#define PARENS_OPEN 275
-#define PARENS_CLOSE 276
-#define BRACKETS_OPEN 277
-#define BRACKETS_CLOSE 278
-#define ARRAY_OPEN 279
-#define ARRAY_CLOSE 280
-#define SIMPLE_BAR 281
-#define LIST_DELIMITER 282
-#define COLONS 283
-#define EMPTY 284
-#define ASYNC 285
-#define PROD 286
-#define MOD 287
-#define COCIENT 288
-#define PLUS 289
-#define MINUS 290
-#define LESS 291
-#define GREATER 292
-#define THEN 293
-#define OBJECT_ACCESSOR 294
-#define IF 295
-#define ELSE 296
-#define WHILE 297
-#define DO 298
-#define FOR 299
-#define RETURN 300
+#define ENDMARKER 261
+#define LE_OP 262
+#define GE_OP 263
+#define EQ_OP 264
+#define NE_OP 265
+#define AND_OP 266
+#define OR_OP 267
+#define MUL_ASSIGN 268
+#define DIV_ASSIGN 269
+#define SUB_ASSIGN 270
+#define REG_ASSIGN 271
+#define ADD_ASSIGN 272
+#define THIS 273
+#define LAMDA_ASSIGN 274
+#define PLACEHOLDER 275
+#define PARENS_OPEN 276
+#define PARENS_CLOSE 277
+#define BRACKETS_OPEN 278
+#define BRACKETS_CLOSE 279
+#define ARRAY_OPEN 280
+#define ARRAY_CLOSE 281
+#define SIMPLE_BAR 282
+#define LIST_DELIMITER 283
+#define COLONS 284
+#define EMPTY 285
+#define ASYNC 286
+#define PROD 287
+#define MOD 288
+#define COCIENT 289
+#define PLUS 290
+#define MINUS 291
+#define LESS 292
+#define GREATER 293
+#define THEN 294
+#define OBJECT_ACCESSOR 295
+#define IF 296
+#define ELSE 297
+#define WHILE 298
+#define DO 299
+#define FOR 300
+#define RETURN 301
 
 
 
@@ -142,7 +144,7 @@ typedef union YYSTYPE
 	struct NodeList * list;
 }
 /* Line 1529 of yacc.c.  */
-#line 146 "grammar.tab.h"
+#line 148 "grammar.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

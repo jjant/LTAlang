@@ -15,7 +15,9 @@
 	struct NodeList * list;
 }
 // Variables and constants
-%token IDENTIFIER CONSTANT STRING_LITERAL
+%token IDENTIFIER NUMBER STRING_LITERAL
+
+%token ENDMARKER
 
 // Comparision and assignment operators
 %token LE_OP GE_OP EQ_OP NE_OP
@@ -71,7 +73,7 @@
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %type <string> IDENTIFIER THIS STRING_LITERAL
 
-%type <num> opt_async EMPTY ASYNC CONSTANT
+%type <num> opt_async EMPTY ASYNC NUMBER
 
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
@@ -115,7 +117,7 @@ array_declaration
 
 // Terminals for an expression
 primary_expression
-	: CONSTANT { $$ = newNodeNumber($1); }
+	: NUMBER { $$ = newNodeNumber($1); }
 	| THIS { $$ = newNodeThis(); }
 	| STRING_LITERAL { $$ = newNodeString($1); }
 	| array_declaration { $$ = newNodeArrayDeclaration($1); }
@@ -218,7 +220,7 @@ statement
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
-	| expression ';' { $$ = $1; }
+	| expression ENDMARKER { $$ = $1; }
 	;
 
 
@@ -256,6 +258,6 @@ void yyerror(Node * program, char *msg) {
 
 int main() {
   int i;
-	Node * program;
+	Node program;
   return yyparse(&program);
 }

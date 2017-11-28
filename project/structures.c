@@ -8,20 +8,24 @@
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
   node->type = NODE_STRING;
+  node->value = calloc(strlen(constant) + 1, sizeof(char));
   strcpy(node->value, constant);
   return node;
 }
 
-NodeNumber * newNodeNumber(const char * constant) {
+NodeNumber * newNodeNumber(const int constant) {
   NodeNumber * node = malloc(sizeof(NodeNumber));
   node->type = NODE_NUMBER;
-  strcpy(node->value, constant);
+  //node->value = calloc(strlen(constant) + 1, sizeof(char));
+  //strcpy(node->value, constant);
+  node->value = constant;
   return node;
 }
 
 NodeIdentifier * newNodeIdentifier(const char * name) {
   NodeIdentifier * node = malloc(sizeof(NodeIdentifier));
   node->type = NODE_IDENTIFIER;
+  node->name = calloc(strlen(name) + 1, sizeof(char));
   strcpy(node->name, name);
   return node;
 }
@@ -35,6 +39,7 @@ NodeThis * newNodeThis() {
 NodeKeyValue * newNodeKeyValue(const char * key, const Node * value) {
   NodeKeyValue * node = malloc(sizeof(NodeKeyValue));
   node->type = NODE_KEY_VALUE_PAIR;
+  node->key = calloc(strlen(key) + 1, sizeof(char));
   strcpy(node->key, key);
   node->value = (Node *)value;
   return node;
@@ -76,6 +81,7 @@ NodeOperation * newNodeOperation(const Node * first, const Node * second, const 
   node->type = NODE_OPERATION;
   node->first = (Node *)first;
   node->second = (Node *)second;
+  node->operation = calloc(strlen(operation) + 1, sizeof(char));
   strcpy(node->operation, operation);
   return node;
 }
@@ -92,6 +98,7 @@ NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * 
 NodeParameter * newNodeParameter(const char * name) {
   NodeParameter * node = malloc(sizeof(NodeParameter));
   node->type = NODE_PARAMETER;
+  node->name = calloc(strlen(name) + 1, sizeof(char));
   strcpy(node->name, name);
   return node;
 }
@@ -212,6 +219,10 @@ NodeList * addArgument(const NodeList * list, const Node * node) {
   return (NodeList *)list;
 }
 
+// TODO: Estas dos son nuevas.
+// La de abajo cambio de nombre. La que antes era newNodeArrayDeclaration
+// Ahora es newNodeArrayDeclarationElement. Lo hice porque sino en la grammar
+// Quedaban errores de tipos en los no-terminales.
 NodeBlock * addNodeBlock(const NodeList * instructions) {
   NodeBlock * node = malloc(sizeof(NodeBlock));
   node->type = NODE_BLOCK;
