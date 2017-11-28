@@ -1,3 +1,5 @@
+// Don't change the order of this, it will break EVERYTHING.
+// If you want to add more, add them at the end.
 typedef enum {
   NODE_STRING = 0,
   NODE_NUMBER,
@@ -22,7 +24,7 @@ typedef enum {
   NODE_INSTRUCTION,
   NODE_ARRAY_DECLARATION,
   NODE_ARRAY_ELEMENT,
-  NODE_ARRAY_DECLARATION_LIST
+  NODE_ARRAY_DECLARATION_LIST,
 } NodeType;
 
 typedef struct Node {
