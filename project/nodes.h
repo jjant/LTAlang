@@ -118,7 +118,7 @@ typedef struct NodeLamdaDeclaration {
   NodeType type;
   int async;
   NodeList * params;
-  Node * block;
+  NodeList * block;
 } NodeLamdaDeclaration;
 
 typedef struct NodePlaceholder {
