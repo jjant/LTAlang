@@ -20,6 +20,7 @@ char * handleNodeLamdaDeclaration(Node * node);
 char * handleNodeKeyValuePair(Node * node);
 char * handleNodeInstruction(Node * node);
 char * handleNodeArrayDeclaration(Node * node);
+char * handleNodeListArrayElements(Node * node);
 char * eval(Node * node);
 
 #endif

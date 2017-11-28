@@ -4,6 +4,8 @@
 #include "main.h"
 #include "../structures.h"
 
+static char * iterateOverObjectBody(NodeList * body);
+
 // TODO: ver el tema de los semicolons
 
 char * handleNodeString(Node * node) {
@@ -21,7 +23,7 @@ char * handleNodeNumber(Node * node) {
   char * raw_number = ((NodeNumber *)node)->value;
   //TODO: I guess this is safe...
   return raw_number;
-};
+}
 
 char * handleNodeIdentifier(Node * node) {
   char * identifier = ((NodeIdentifier *)node)->name;
@@ -57,7 +59,7 @@ static char * iterateOverObjectBody(NodeList * body) {
   } while((current_list = current_list->next) != NULL);
 
   return compiledObjectBody;
-};
+}
 
 char * handleNodeObjectDeclaration(Node * node) {
   NodeList * body = ((NodeObjectDeclaration *)node)->body;
@@ -100,7 +102,7 @@ char * handleNodeOperation(Node * node) {
   snprintf(buffer, buffer_length, "(%s%s%s)", compiledFirst, operation, compiledSecond);
 
   return buffer;
-};
+}
 
 char * handleNodeTernaryOperation(Node * node) {
   NodeTernaryOperation * node_posta = (NodeTernaryOperation *)node;
@@ -179,7 +181,10 @@ char * handleNodeReturn(Node * node) {
   return buffer;
 }
 
-char * iterateOverFunctionParams(NodeList * paramList) {
+static char * iterateOverFunctionParams(NodeList * paramList);
+
+// TODO: esto debería volar cuando cambiemos nodelist y eso
+static char * iterateOverFunctionParams(NodeList * paramList) {
   return "";
 }
 
@@ -224,7 +229,7 @@ char * handleNodeArrayDeclaration(Node * node) {
   NodeArrayDeclaration * node_posta = (NodeArrayDeclaration *)node;
 
   // TODO: change this to iterate over list
-  char * compiledElements = eval(node_posta->element);
+  char * compiledElements = eval((Node *)node_posta->elements);
 
   // 2 for wrapping key in quotes, 1 for ':', 2 for wrapping value in parenthesis.
   const size_t punctuation_length = strlen("[]");
@@ -232,6 +237,31 @@ char * handleNodeArrayDeclaration(Node * node) {
   char * buffer = malloc(buffer_length);
 
   snprintf(buffer, buffer_length, "[%s]", compiledElements);
+
+  return buffer;
+}
+
+char * handleNodeListArrayElements(Node * node) {
+  NodeList * current_list = (NodeList *)node;
+
+
+  const size_t buffer_length = 1000; // TODO: idk lol
+  char * buffer = malloc(buffer_length);
+  buffer[0] = '\0';
+
+  if(current_list == NULL || current_list->node == NULL)
+    return buffer;
+
+  do {
+    Node * current_node = (Node *)current_list->node;
+    if (node == NULL) break;
+
+    // TODO: check this awful thing.
+    strcat(buffer, "(");
+    strcat(buffer, eval(current_node));
+    strcat(buffer, ")");
+    strcat(buffer, ",");
+  } while((current_list = current_list->next) != NULL);
 
   return buffer;
 }
@@ -257,6 +287,7 @@ handler handlers[] = {
   handleNodeKeyValuePair,
   handleNodeInstruction, // TODO: ???
   handleNodeArrayDeclaration,
+  handleNodeListArrayElements,
 };
 
 char * emptyString = "";
@@ -309,9 +340,19 @@ int main() {
   nodeLamda->params = NULL;
   nodeLamda->block = NULL;
 
+  NodeList * nodeArrayList2 = malloc(sizeof(NodeList));
+  nodeArrayList2->type = NODE_LIST_ARRAY_ELEMENTS;
+  nodeArrayList2->node = (Node *)nodeNumber;
+  nodeArrayList2->next = NULL;
+
+  NodeList * nodeArrayList = malloc(sizeof(NodeList));
+  nodeArrayList->type = NODE_LIST_ARRAY_ELEMENTS;
+  nodeArrayList->node = (Node *)nodeString;
+  nodeArrayList->next = nodeArrayList2;
+
   NodeArrayDeclaration * nodeArray = malloc(sizeof(NodeArrayDeclaration));
   nodeArray->type = NODE_ARRAY_DECLARATION;
-  nodeArray->element = (Node *)nodeString;
+  nodeArray->elements = (NodeList *)nodeArrayList;
 
   char * compiled_code = eval((Node *)node);
 
