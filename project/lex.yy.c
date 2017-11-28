@@ -955,7 +955,7 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 54 "lexer.l"
-{ yylval.num = atoi(yytext); return NUMBER; }
+{ yylval.string = yytext; return NUMBER; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP

@@ -117,16 +117,9 @@ NodeList * addParameter(const NodeList * list, const Node * node) {
   return (NodeList *) list;
 }
 
-NodeArrayDeclarationElement * newNodeArrayDeclarationElement(const Node * element) {
-  NodeArrayDeclarationElement * node = malloc(sizeof(NodeArrayDeclarationElement));
-  node->type = NODE_PARAMETER;
-  node->element = (Node *) element;
-  return node;
-}
-
 NodeList * newArrayElementList(const Node * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  list->type = NODE_ARRAY_DECLARATION;
+  list->type = NODE_ARRAY_DECLARATION_LIST;
   list->node = (Node *)  node;
   list-> next = NULL;
   return list;
@@ -231,7 +224,7 @@ NodeBlock * addNodeBlock(const NodeList * instructions) {
 
 NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements) {
   NodeArrayDeclaration * node = malloc(sizeof(NodeArrayDeclaration));
-  node->type = NODE_ARRAY_WRAP_DECLARATION;
+  node->type = NODE_ARRAY_DECLARATION;
   node->elements = (NodeList *) elements;
   return node;
 }

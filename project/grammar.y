@@ -78,7 +78,7 @@
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
 
-%parse-param {NodeList * program}
+%parse-param {NodeList ** program}
 
 %start statement_list
 
@@ -102,7 +102,7 @@ object_declaration
 
 object_body
 	: object_property_declaration { $$ = newKeyValueList($1); }
-	| object_property_declaration LIST_DELIMITER object_body { $$ = addKeyValue($3, $1); }
+	| object_property_declaration LIST_DELIMITER ENDMARKER object_body { $$ = addKeyValue($4, $1); }
 	;
 
 object_property_declaration
@@ -141,7 +141,7 @@ postfix_expression
 
 array_values_list
 	: assignment_expression { $$ = newArrayElementList(newNodeArrayDeclaration($1)); }
-	| array_values_list LIST_DELIMITER assignment_expression { $$ = addArrayElement($1, $3); }
+	| array_values_list LIST_DELIMITER ENDMARKER assignment_expression { $$ = addArrayElement($1, $4); }
 	;
 argument_expression_list
 	: assignment_expression { $$ = newArgumentList($1); }
@@ -233,8 +233,8 @@ compound_statement
 
 // List of statements
 statement_list
-	: statement { $$ = (program = newInstructionsList($1)); }
-	| statement_list statement { $$ = (program = addInstructions($1, $2)); }
+	: statement { $$ = (*program = newInstructionsList($1)); }
+	| statement_list statement { $$ = (*program = addInstructions($1, $2)); }
 	;
 
 selection_statement
@@ -268,6 +268,8 @@ int main() {
 	} else if (ret == 2) {
 		printf("%s", "There is not enough memory to parse your program");
 	}
+
+	printf("type: %d\n", program->type);
 
 	return 0;
 }
