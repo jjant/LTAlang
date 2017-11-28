@@ -1,5 +1,8 @@
 %{
 	#include "structures.h"
+
+	#define NULL 0
+
 	extern int yylineno;
 
 	void yyerror(char *);

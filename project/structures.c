@@ -4,7 +4,6 @@
 
 #define TRUE 1
 #define FALSE 0
-#define NULL 0
 
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));

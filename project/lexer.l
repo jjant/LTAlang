@@ -6,16 +6,15 @@ FS			(f|F|l|L)
 IS			(u|U|l|L)*
 
 %{
-#include <stdio.h>
-#include "grammar.tab.h"
+	#include <stdio.h>
+	#include "grammar.tab.h"
 
-void count();
+	void count();
 %}
 
 %%
 "/*"			{ comment(); }
 
-"do"			{ count(); return(DO); }
 "else"			{ count(); return(ELSE); }
 "if"			{ count(); return(IF); }
 "_"			{ count(); return(PLACEHOLDER); }
@@ -37,20 +36,10 @@ L?'(\\.|[^\\'])+'	{ count(); return(CONSTANT); }
 
 L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 
-">>="			{ count(); return(RIGHT_ASSIGN); }
-"<<="			{ count(); return(LEFT_ASSIGN); }
 "+="			{ count(); return(ADD_ASSIGN); }
 "-="			{ count(); return(SUB_ASSIGN); }
 "*="			{ count(); return(MUL_ASSIGN); }
 "/="			{ count(); return(DIV_ASSIGN); }
-"%="			{ count(); return(MOD_ASSIGN); }
-"&="			{ count(); return(AND_ASSIGN); }
-"^="			{ count(); return(XOR_ASSIGN); }
-"|="			{ count(); return(OR_ASSIGN); }
-">>"			{ count(); return(RIGHT_OP); }
-"<<"			{ count(); return(LEFT_OP); }
-"++"			{ count(); return(INC_OP); }
-"--"			{ count(); return(DEC_OP); }
 "&&"			{ count(); return(AND_OP); }
 "||"			{ count(); return(OR_OP); }
 "<="			{ count(); return(LE_OP); }
@@ -59,7 +48,6 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 "=>"			{ count(); return(LAMDA_ASSIGN); }
 "|"			{ count(); return(SIMPLE_BAR); }
 "!="			{ count(); return(NE_OP); }
-";"			{ count(); return(ENDMARKER); }
 ("{")		{ count(); return(BRACKETS_OPEN); }
 ("}")		{ count(); return(BRACKETS_CLOSE); }
 ","			{ count(); return(LIST_DELIMITER); }
@@ -74,8 +62,6 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 "-"			{ count(); return(MINUS); }
 "+"			{ count(); return(PLUS); }
 "*"			{ count(); return(PROD); }
-"_"			{ count(); return(PLACEHOLDER); }
-"/"			{ count(); return(COCIENT); }
 "%"			{ count(); return(MOD); }
 "<"			{ count(); return(LESS); }
 ">"			{ count(); return(GREATER); }
