@@ -58,7 +58,7 @@
 //%%
 // Lamda functions are first class citizens
 lamda_declaration
-	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement
+	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement { $$ = newNodeLamdaDeclaration($1, $2, $3); }
 	;
 
 opt_async
@@ -83,16 +83,16 @@ object_property_declaration
 
 // Array as JS
 array_declaration
-	: ARRAY_OPEN ARRAY_CLOSE { $$ = NULL; }
+	: ARRAY_OPEN ARRAY_CLOSE { $$ = newArrayElementList(NULL); }
 	| ARRAY_OPEN array_values_list ARRAY_CLOSE { $$ = $1; }
 	;
 
 // Terminals for an expression
 primary_expression
 	: IDENTIFIER { $$ = newNodeIdentifier($1); }
-	| CONSTANT { $$ = newNodeConstant($1, "NUMBER"); }
+	| CONSTANT { $$ = newNodeNumber($1); }
 	| THIS { $$ = newNodeThis(); }
-	| STRING_LITERAL { $$ = newNodeConstant($1, "STRING"); }
+	| STRING_LITERAL { $$ = newNodeString($1); }
 	| array_declaration { $$ = $1; }
 	| object_declaration { $$ = $1; }
 	| lamda_declaration { $$ = $1; }
@@ -120,7 +120,7 @@ argument_expression_list
 // Expressions with logic and arithmetic operators
 multiplicative_expression
 	: postfix_expression { $$ = $1; }
-	| multiplicative_expression PROD postfix_expression { $$ = newNodeOperation($1, $2, "*"); } // TODO: I probably should not use the literal character here.
+	| multiplicative_expression PROD postfix_expression { $$ = newNodeOperation($1, $2, "*"); }
 	| multiplicative_expression COCIENT postfix_expression { $$ = newNodeOperation($1, $2, "/"); }
 	| multiplicative_expression MOD postfix_expression { $$ = newNodeOperation($1, $2, "mod"); }
 	;
@@ -162,7 +162,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $3, $2); } // TODO: Same as before. Here we have an issue. PRobably the operator itself should be another node.
+	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $3, $2); }
 	;
 
 // Assignment terminals
@@ -197,7 +197,7 @@ statement
 
 // List of statements between enclosers
 compound_statement
-	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = NULL; } // TODO: Check if it is the best way
+	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newInstructionsList(NULL); } // TODO: Check if it is the best way
 	| BRACKETS_OPEN statement_list BRACKETS_CLOSE { $$ = $1; }
 	;
 

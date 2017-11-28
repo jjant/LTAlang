@@ -5,7 +5,8 @@
 #define FALSE 0
 
 // NODE TYPES
-#define NODE_CONSTANT "CONSTANT"
+#define NODE_STRING "STRING"
+#define NODE_NUMBER "NUMBER"
 #define NODE_IDENTIFIER "IDENTIFIER"
 #define NODE_THIS "THIS"
 #define NODE_OBJECT_DECLARATION "OBJECT DECLARATION"
@@ -17,6 +18,7 @@
 #define NODE_IF "IF"
 #define NODE_WHILE "WHILE"
 #define NODE_RETURN "RETURN"
+#define NODE_LAMDA_DECLARATION "NODE_LAMDA_DECLARATION"
 
 // NODELIST TYPES
 #define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
@@ -26,10 +28,16 @@
 #define TYPE_STRING "STRING"
 #define TYPE_NUM "NUMBER"
 
-NodeConstant * newNodeConstant(const char * constant, const char * constant_type) {
-  NodeConstant * node = malloc(sizeof(NodeConstant));
-  node->type = NODE_CONSTANT;
-  node->constant_type = TYPE_STRING;
+NodeString * newNodeString(const char * constant) {
+  NodeString * node = malloc(sizeof(NodeString));
+  node->type = NODE_STRING;
+  node->value = constant;
+  return node;
+}
+
+NodeNumber * newNodeNumber(const char * constant) {
+  NodeNumber * node = malloc(sizeof(NodeNumber));
+  node->type = NODE_NUMBER;
   node->constant = constant;
   return node;
 }
@@ -190,5 +198,14 @@ NodeReturn * newNodeReturn(const Node * expression) {
   NodeReturn * node = malloc(sizeof(NodeReturn));
   node->type = NODE_RETURN;
   node->expression = expression;
+  return node;
+}
+
+NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList * parameters, const NodeList * block) {
+  NodeLamdaDeclaration * node = malloc(sizeof(NodeLamdaDeclaration));
+  node->type = NODE_LAMDA_DECLARATION;
+  node->async = async;
+  node->params = parameters;
+  node->block = block;
   return node;
 }
