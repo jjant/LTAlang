@@ -1,5 +1,6 @@
 %{
 	#include "structures.h"
+	#include "./code_generator/main.h"
 
 	#define NULL 0
 
@@ -269,7 +270,7 @@ int main() {
 		printf("%s", "There is not enough memory to parse your program");
 	}
 
-	printf("type: %d\n", program->type);
+	printf("\n\n%s\n", eval(program));
 
 	return 0;
 }

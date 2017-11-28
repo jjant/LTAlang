@@ -341,70 +341,70 @@ char * eval(Node * node) {
   return handlers[node->type](node);
 }
 
-int main() {
-  // char * source_code = "|x| => { return x + 1}";
-  // Node * ast = NULL; // TODO: = algo(source_code);
-
-  NodeObjectDeclaration * node = malloc(sizeof(NodeObjectDeclaration));
-  node->type = NODE_OBJECT_DECLARATION;
-  node->body = NULL;
-
-  NodeObjectAccessor * node2 = malloc(sizeof(NodeObjectAccessor));
-  NodeIdentifier * left = malloc(sizeof(NodeIdentifier));
-  left->name = malloc(100);
-  strcpy(left->name, "Juan");
-
-  node2->type = NODE_OBJECT_ACCESSOR;
-  node2->left = (Node *)left;
-  node2->right = (Node *)left;
-
-  NodeIf * nodeIf = malloc(sizeof(NodeIf));
-  nodeIf->type = NODE_IF;
-  nodeIf->condition = (Node *)node2;
-  nodeIf->then = (Node *)node2;
-  nodeIf->elseBlock = NULL;
-
-  NodeNumber * nodeNumber = malloc(sizeof(NodeNumber));
-  nodeNumber->type = NODE_NUMBER;
-  nodeNumber->value = "1249";
-
-  NodeString * nodeString = malloc(sizeof(NodeString));
-  nodeString->type = NODE_STRING;
-  nodeString->value = "holis";
-
-  NodeReturn * nodeReturn = malloc(sizeof(NodeReturn));
-  nodeReturn->type = NODE_RETURN;
-  nodeReturn->expression = (Node *)nodeNumber;
-
-  NodeLamdaDeclaration * nodeLamda = malloc(sizeof(NodeLamdaDeclaration));
-  nodeLamda->type = NODE_LAMDA_DECLARATION;
-  nodeLamda->async = 1;
-  nodeLamda->params = NULL;
-  nodeLamda->block = NULL;
-
-  NodeList * nodeArrayList2 = malloc(sizeof(NodeList));
-  nodeArrayList2->type = NODE_ARRAY_DECLARATION_LIST;
-  nodeArrayList2->node = (Node *)nodeNumber;
-  nodeArrayList2->next = NULL;
-
-  NodeList * nodeArrayList = malloc(sizeof(NodeList));
-  nodeArrayList->type = NODE_ARRAY_DECLARATION_LIST;
-  nodeArrayList->node = (Node *)nodeString;
-  nodeArrayList->next = nodeArrayList2;
-
-  NodeArrayDeclaration * nodeArray = malloc(sizeof(NodeArrayDeclaration));
-  nodeArray->type = NODE_ARRAY_DECLARATION;
-  nodeArray->elements = (NodeList *)nodeArrayList;
-
-  char * compiled_code = eval((Node *)node);
-
-  printf("%s\n", compiled_code);
-  printf("%s\n", eval((Node *)node2));
-  printf("%s\n", eval((Node *)nodeIf));
-  printf("%s\n", eval((Node *)nodeReturn));
-  printf("%s\n", eval((Node *)nodeNumber));
-  printf("%s\n", eval((Node *)nodeLamda));
-  printf("%s\n", eval((Node *)nodeArray));
-
-  return 0;
-}
+// int main() {
+//   // char * source_code = "|x| => { return x + 1}";
+//   // Node * ast = NULL; // TODO: = algo(source_code);
+//
+//   NodeObjectDeclaration * node = malloc(sizeof(NodeObjectDeclaration));
+//   node->type = NODE_OBJECT_DECLARATION;
+//   node->body = NULL;
+//
+//   NodeObjectAccessor * node2 = malloc(sizeof(NodeObjectAccessor));
+//   NodeIdentifier * left = malloc(sizeof(NodeIdentifier));
+//   left->name = malloc(100);
+//   strcpy(left->name, "Juan");
+//
+//   node2->type = NODE_OBJECT_ACCESSOR;
+//   node2->left = (Node *)left;
+//   node2->right = (Node *)left;
+//
+//   NodeIf * nodeIf = malloc(sizeof(NodeIf));
+//   nodeIf->type = NODE_IF;
+//   nodeIf->condition = (Node *)node2;
+//   nodeIf->then = (Node *)node2;
+//   nodeIf->elseBlock = NULL;
+//
+//   NodeNumber * nodeNumber = malloc(sizeof(NodeNumber));
+//   nodeNumber->type = NODE_NUMBER;
+//   nodeNumber->value = "1249";
+//
+//   NodeString * nodeString = malloc(sizeof(NodeString));
+//   nodeString->type = NODE_STRING;
+//   nodeString->value = "holis";
+//
+//   NodeReturn * nodeReturn = malloc(sizeof(NodeReturn));
+//   nodeReturn->type = NODE_RETURN;
+//   nodeReturn->expression = (Node *)nodeNumber;
+//
+//   NodeLamdaDeclaration * nodeLamda = malloc(sizeof(NodeLamdaDeclaration));
+//   nodeLamda->type = NODE_LAMDA_DECLARATION;
+//   nodeLamda->async = 1;
+//   nodeLamda->params = NULL;
+//   nodeLamda->block = NULL;
+//
+//   NodeList * nodeArrayList2 = malloc(sizeof(NodeList));
+//   nodeArrayList2->type = NODE_ARRAY_DECLARATION_LIST;
+//   nodeArrayList2->node = (Node *)nodeNumber;
+//   nodeArrayList2->next = NULL;
+//
+//   NodeList * nodeArrayList = malloc(sizeof(NodeList));
+//   nodeArrayList->type = NODE_ARRAY_DECLARATION_LIST;
+//   nodeArrayList->node = (Node *)nodeString;
+//   nodeArrayList->next = nodeArrayList2;
+//
+//   NodeArrayDeclaration * nodeArray = malloc(sizeof(NodeArrayDeclaration));
+//   nodeArray->type = NODE_ARRAY_DECLARATION;
+//   nodeArray->elements = (NodeList *)nodeArrayList;
+//
+//   char * compiled_code = eval((Node *)node);
+//
+//   printf("%s\n", compiled_code);
+//   printf("%s\n", eval((Node *)node2));
+//   printf("%s\n", eval((Node *)nodeIf));
+//   printf("%s\n", eval((Node *)nodeReturn));
+//   printf("%s\n", eval((Node *)nodeNumber));
+//   printf("%s\n", eval((Node *)nodeLamda));
+//   printf("%s\n", eval((Node *)nodeArray));
+//
+//   return 0;
+// }
