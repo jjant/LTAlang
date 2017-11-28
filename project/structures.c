@@ -1,27 +1,30 @@
+#include <stdlib.h>
 #include "structures.h"
 
-#define NULL 0
 #define TRUE 1
 #define FALSE 0
 
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
   node->type = NODE_STRING;
-  node->value = constant;
+  // TODO: cuidado con el string
+  node->value = (char *)constant;
   return node;
 }
 
 NodeNumber * newNodeNumber(const char * constant) {
   NodeNumber * node = malloc(sizeof(NodeNumber));
   node->type = NODE_NUMBER;
-  node->value = constant;
+  // TODO: cuidado con el string
+  node->value = (char *)constant;
   return node;
 }
 
 NodeIdentifier * newNodeIdentifier(const char * name) {
   NodeIdentifier * node = malloc(sizeof(NodeIdentifier));
   node->type = NODE_IDENTIFIER;
-  node->name = name;
+  // TODO: cuidado con el string
+  node->name = (char *)name;
   return node;
 }
 
@@ -34,79 +37,87 @@ NodeThis * newNodeThis() {
 NodeKeyValue * newNodeKeyValue(const char * key, const Node * value) {
   NodeKeyValue * node = malloc(sizeof(NodeKeyValue));
   node->type = NODE_IDENTIFIER;
-  node->key = key;
-  node->value = value;
+  // TODO: cuidado con el string
+  node->key = (char *)key;
+  node->value = (Node *)value;
   return node;
 }
 
 NodeList * newKeyValueList(const NodeKeyValue * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  NodeList->type = NODE_KEY_VALUE_PAIR;
-  NodeList->node = node;
-  NodeList-> next = NULL;
+  list->type = NODE_KEY_VALUE_PAIR;
+  list->node = (Node *)node;
+  list->next = NULL;
 
   return list;
 }
 
+// TODO: Fijate que esto esté bien
+NodeList * newKeyValuePairList(const NodeKeyValue * node);
+
 NodeList * addKeyValue(const NodeList * list, const NodeKeyValue * node) {
-  NodeList * cnode = list;
+  NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
-  cnode->next = newKeyValuePairList(node)
-  return list;
+  // TODO: esta func no existe.
+  cnode->next = newKeyValuePairList(node);
+
+  return (NodeList *)list;
 }
 
 NodeObjectDeclaration * newNodeObjectDeclaration(const NodeList * body) {
   NodeObjectDeclaration * node = malloc(sizeof(NodeObjectDeclaration));
   node->type = NODE_OBJECT_DECLARATION;
-  node->body = body;
+  node->body = (NodeList *)body;
   return node;
 }
 
 NodeFunctionCall * newNodeFunctionCall(const Node * caller, const NodeList * args) {
   NodeFunctionCall * node = malloc(sizeof(NodeFunctionCall));
   node->type = NODE_FUNCTION_CALL;
-  node->caller = caller;
-  node->args = args;
+  node->caller = (Node *)caller;
+  node->args = (NodeList *)args;
   return node;
 }
 
 NodeOperation * newNodeOperation(const Node * first, const Node * second, const char * operator) {
   NodeOperation * node = malloc(sizeof(NodeOperation));
   node->type = NODE_OPERATION;
-  node->first = first;
-  node->second = second;
-  node->operation = operator;
+  node->first = (Node *)first;
+  node->second = (Node *)second;
+  node->operation = (char *)operator;
   return node;
 }
 
 NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * second, const Node * third) {
   NodeTernaryOperation * node = malloc(sizeof(NodeTernaryOperation));
   node->type = NODE_TERNARY_OPERATION;
-  node->first = first;
-  node->second = second;
-  node->third = second;
+  node->first = (Node *)first;
+  node->second = (Node *)second;
+  node->third = (Node *)second;
   return node;
 }
 
 NodeParameter * newNodeParameter(const char * name) {
   NodeParameter * node = malloc(sizeof(NodeParameter));
   node->type = NODE_PARAMETER;
-  node->name = key;
+  // TODO: cuidado con el string
+  node->name = (char *)name;
   return node;
 }
 
 NodeList * newParameterList(const NodeParameter * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  NodeList->type = NODE_PARAMETER;
-  NodeList->node = node;
-  NodeList-> next = NULL;
+  list->type = NODE_PARAMETER;
+  list->node = (Node *)node;
+  list-> next = NULL;
   return list;
 }
 
 NodeList * addParameter(const NodeList * list, const Node * node) {
-  NodeList * cnode = list;
+  NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
-  cnode->next = newParameterList(node)
+  // TODO: fijate que onda los tipos de Node * node...
+  cnode->next = newParameterList(node);
   return list;
 }
 
@@ -119,16 +130,16 @@ NodeArrayDeclaration * newNodeArrayDeclaration(const Node * element) {
 
 NodeList * newArrayElementList(const NodeArrayDeclaration * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  NodeList->type = NODE_ARRAY_DECLARATION;
-  NodeList->node = node;
-  NodeList-> next = NULL;
+  list->type = NODE_ARRAY_DECLARATION;
+  list->node = node;
+  list-> next = NULL;
   return list;
 }
 
 NodeList * addArrayElement(const NodeList * list, const Node * node) {
   NodeList * cnode = list;
   while (cnode->next != NULL) cnode = cnode->next;
-  cnode->next = newNodeArrayDeclaration(node)
+  cnode->next = (Node *)newNodeArrayDeclaration(node);
   return list;
 }
 
@@ -145,7 +156,7 @@ NodeIf * newNodeIf(const Node * condition, const Node * then, const Node * elseO
   node->type = NODE_IF;
   node->condition = condition;
   node->then = then;
-  node->elseBlock = elsObj;
+  node->elseBlock = elseObj;
 }
 
 NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
@@ -157,23 +168,24 @@ NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
 
 NodeList * newInstructionsList(const Node * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  NodeList->type = NODE_INSTRUCTION;
-  NodeList->node = node;
-  NodeList-> next = NULL;
+  list->type = NODE_INSTRUCTION;
+  list->node = node;
+  list-> next = NULL;
   return list;
 }
 
 NodeList * addInstructions(const NodeList * list, const Node * node) {
-  NodeList * cnode = list;
+  NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
   cnode->next = node;
-  return list;
+
+  return (NodeList *)list;
 }
 
 NodeReturn * newNodeReturn(const Node * expression) {
   NodeReturn * node = malloc(sizeof(NodeReturn));
   node->type = NODE_RETURN;
-  node->expression = expression;
+  node->expression = (Node *)expression;
   return node;
 }
 
@@ -181,7 +193,8 @@ NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList *
   NodeLamdaDeclaration * node = malloc(sizeof(NodeLamdaDeclaration));
   node->type = NODE_LAMDA_DECLARATION;
   node->async = async;
-  node->params = parameters;
+  node->params = (NodeList *)parameters;
+  // TODO: Fijate que onda los tipos de esto
   node->block = block;
   return node;
 }

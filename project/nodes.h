@@ -1,117 +1,120 @@
-#define NODE_STRING "STRING"
-#define NODE_NUMBER "NUMBER"
-#define NODE_IDENTIFIER "IDENTIFIER"
-#define NODE_THIS "THIS"
-#define NODE_OBJECT_DECLARATION "OBJECT DECLARATION"
-#define NODE_FUNCTION_CALL "FUNCTION CALL"
-#define NODE_OPERATION "OPERATION"
-#define NODE_TERNARY_OPERATION "TERNARY OPERATION"
-#define NODE_PARAMETER "PARAMETER"
-#define NODE_OBJECT_ACCESSOR "OBJECT ACCESSOR"
-#define NODE_IF "IF"
-#define NODE_WHILE "WHILE"
-#define NODE_RETURN "RETURN"
-#define NODE_LAMDA_DECLARATION "NODE_LAMDA_DECLARATION"
-#define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
-#define NODE_INSTRUCTION "INSTRUCTION"
+typedef enum {
+  NODE_STRING = 0,
+  NODE_NUMBER,
+  NODE_IDENTIFIER,
+  NODE_THIS,
+  NODE_OBJECT_DECLARATION,
+  NODE_FUNCTION_CALL,
+  NODE_OPERATION,
+  NODE_TERNARY_OPERATION,
+  NODE_PARAMETER,
+  NODE_OBJECT_ACCESSOR,
+  NODE_IF,
+  NODE_WHILE,
+  NODE_RETURN,
+  NODE_LAMDA_DECLARATION,
+  NODE_KEY_VALUE_PAIR,
+  NODE_INSTRUCTION,
+  NODE_ARRAY_DECLARATION
+} NodeType;
 
-struct Node {
-  char * type;
-};
+typedef struct Node {
+  NodeType type;
+} Node;
 
-struct NodeList {
-  char * type;
+typedef struct NodeList {
+  NodeType type;
   Node * node;
-  NodeList * next;
-}
+  struct NodeList * next;
+} NodeList;
 
-struct NodeString {
-  char * type;
+typedef struct NodeString {
+  NodeType type;
   char * value;
-}
+} NodeString;
 
-struct NodeNumber {
-  char * type;
+typedef struct NodeNumber {
+  NodeType type;
   char * value;
-}
+} NodeNumber;
 
-struct NodeIdentifier {
-  char * type;
+typedef struct NodeIdentifier {
+  NodeType type;
   char * name;
-}
+} NodeIdentifier;
 
-struct NodeThis {
-  char * type;
-}
+typedef struct NodeThis {
+  NodeType type;
+} NodeThis;
 
-struct NodeKeyValue {
-  char * type;
-  Node * key;
+typedef struct NodeKeyValue {
+  NodeType type;
+  char * key;
   Node * value;
-}
+} NodeKeyValue;
 
-struct NodeObjectDeclaration {
-  char * type;
+typedef struct NodeObjectDeclaration {
+  NodeType type;
   NodeList * body;
-}
+} NodeObjectDeclaration;
 
-struct NodeFunctionCall {
-  char * type;
+typedef struct NodeFunctionCall {
+  NodeType type;
   Node * caller;
   NodeList * args;
-}
+} NodeFunctionCall;
 
-struct NodeOperation {
-  char * type;
+typedef struct NodeOperation {
+  NodeType type;
   Node * first;
   Node * second;
   char * operation;
-}
+} NodeOperation;
 
-struct NodeTernaryOperation {
-  char * type;
+typedef struct NodeTernaryOperation {
+  NodeType type;
   Node * first;
   Node * second;
   Node * third;
-}
+} NodeTernaryOperation;
 
-struct NodeParameter {
-  char * type;
+typedef struct NodeParameter {
+  NodeType type;
   char * name;
-}
+} NodeParameter;
 
-struct NodeArrayDeclaration {
-  char * type;
+typedef struct NodeArrayDeclaration {
+  NodeType type;
   Node * element;
-}
+} NodeArrayDeclaration;
 
-struct NodeObjectAccessor {
-  char * type;
+typedef struct NodeObjectAccessor {
+  NodeType type;
   Node * left;
   Node * right;
-}
+} NodeObjectAccessor;
 
-struct NodeIf {
-  char * type;
+typedef struct NodeIf {
+  NodeType type;
   Node * condition;
   Node * then;
   Node * elseBlock;
-}
+} NodeIf;
 
-struct NodeWhile {
-  char * type;
+typedef struct NodeWhile {
+  NodeType type;
   Node * condition;
   Node * block;
-}
+} NodeWhile;
 
-struct NodeReturn {
-  char * type;
+typedef struct NodeReturn {
+  NodeType type;
   Node * expression;
-}
+} NodeReturn;
 
-struct NodeLamdaDeclaration {
-  char * type;
+typedef struct NodeLamdaDeclaration {
+  NodeType type;
   int async;
   NodeList * params;
   Node * block;
-}
+} NodeLamdaDeclaration;

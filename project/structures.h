@@ -1,3 +1,6 @@
+#ifndef __STRUCTURES_H
+#define __STRUCTURES_H
+
 #include "nodes.h"
 
 NodeString * newNodeString(const char * constant);
@@ -24,3 +27,5 @@ NodeList * newInstructionsList(const Node * node);
 NodeList * addInstructions(const NodeList * list, const Node * node);
 NodeReturn * newNodeReturn(const Node * expression);
 NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList * parameters, const NodeList * block);
+
+#endif
