@@ -49,9 +49,10 @@ exit        ("exit"|"quit")
 "<"			{ return(LESS); }
 ">"			{ return(GREATER); }
 "?"			{ return(THEN); }
+":)"			{ return(ENDMARKER); }
 {number}        { yylval.num = atoi(yytext); return NUMBER; }
 {identifier}    { yylval.string = yytext; return IDENTIFIER; }
-{newline}       { yylineno++; return(ENDMARKER); }
+{newline}       { yylineno++; }
 .			{ /* ignore bad characters */ }
 
 %%
