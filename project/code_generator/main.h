@@ -1,9 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-typedef struct Node {
-  char * type;
-} Node;
+#include "../structures.h"
 
 char * eval(Node * node);
 char * handleNodeThis(Node * node);
