@@ -78,7 +78,7 @@
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
 
-%parse-param {Node * program}
+%parse-param {NodeList * program}
 
 %start statement_list
 
@@ -211,8 +211,8 @@ expression
 	;
 
 parameter_list
-	: IDENTIFIER { $$ = newParameterList(newNodeParameter($1)); }
-	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($1, $3); }
+	: IDENTIFIER { $$ = (*program = newParameterList(newNodeParameter($1))); }
+	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = (*program = addParameter($1, $3)); }
 	;
 
 statement
@@ -233,7 +233,7 @@ compound_statement
 
 // List of statements
 statement_list
-	: statement { $$ = newInstructionsList($1); }
+	: statement { $$ = program newInstructionsList($1); }
 	| statement_list statement { $$ = addInstructions($1, $2); }
 	;
 
@@ -252,13 +252,13 @@ jump_statement
 
 %%
 
-void yyerror(Node * program, char *msg) {
+void yyerror(NodeList * program, char *msg) {
   printf("%s on line %d\n\n", msg, yylineno);
   exit(1);
 }
 
 int main() {
   int i;
-	Node program;
+	NodeList program;
   return yyparse(&program);
 }
