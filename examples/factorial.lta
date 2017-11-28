@@ -1,4 +1,6 @@
-factorial = x => x > 0 ? x * this(x - 1) : 1
+factorial = |x| => {
+  return x > 0 ? x * this(x - 1) : 1
+}
 
 puts("6!: ", factorial(6))
 puts("0!: ", factorial(0))

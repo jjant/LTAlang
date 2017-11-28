@@ -13,12 +13,22 @@ static char * iterateOverObjectBody(NodeList * body);
 char * handleNodeString(Node * node) {
   char * raw_str = ((NodeString *)node)->value;
 
-  const size_t punctuation_length = strlen("\"\"");
+  const size_t punctuation_length = 0;
   const size_t buffer_length = strlen(raw_str) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
-  snprintf(buffer, buffer_length, "\"%s\"", raw_str);
+  snprintf(buffer, buffer_length, "%s", raw_str);
 
   return buffer;
+
+  // Old version lol
+  // char * raw_str = ((NodeString *)node)->value;
+  //
+  // const size_t punctuation_length = strlen("\"\"");
+  // const size_t buffer_length = strlen(raw_str) + punctuation_length + 1;
+  // char * buffer = malloc(buffer_length);
+  // snprintf(buffer, buffer_length, "\"%s\"", raw_str);
+  //
+  // return buffer;
 }
 
 char * handleNodeNumber(Node * node) {
@@ -34,11 +44,13 @@ char * handleNodeIdentifier(Node * node) {
 }
 
 char * handleNodeThis(Node * node) {
-  char * code = "this";
-  char * ret = malloc(strlen(code) + 1);
-  strcpy(ret, code);
+  char * code = "(arguments.callee)";
 
-  return ret;
+  const size_t buffer_length = strlen(code) + 1;
+  char * buffer = malloc(buffer_length);
+  strcpy(buffer, code);
+
+  return buffer;
 }
 
 // TODO: No idea if this is correct lol
@@ -67,10 +79,10 @@ char * handleNodeObjectDeclaration(Node * node) {
   NodeList * body = ((NodeObjectDeclaration *)node)->body;
   const char * keyValuePairsParsed = iterateOverObjectBody(body);
 
-  const size_t punctuation_length = 2 + 2; // 2 for wrapping in parens and 2 for "{" "}"
-  const size_t buffer_length = punctuation_length + 1;
+  const size_t punctuation_length = strlen("({})"); // 2 for wrapping in parens and 2 for "{" "}"
+  const size_t buffer_length = punctuation_length + strlen(keyValuePairsParsed) + 1;
   char * buffer = malloc(buffer_length);
-  snprintf(buffer, buffer_length, "(%c%s%c)", '{', keyValuePairsParsed, '}');
+  snprintf(buffer, buffer_length, "({%s})", keyValuePairsParsed);
 
   return buffer;
 }
@@ -207,6 +219,7 @@ char * handleNodeReturn(Node * node) {
 static char * iterateOverFunctionParams(NodeList * paramList);
 
 // TODO: esto debería volar cuando cambiemos nodelist y eso
+// TODO: ver trailing commas
 static char * iterateOverFunctionParams(NodeList * node) {
   if (node == NULL) return emptyString;
 
@@ -222,9 +235,8 @@ static char * iterateOverFunctionParams(NodeList * node) {
     Node * actual_node = (Node *)current_list->node;
     if (actual_node == NULL) break;
 
-    printf("param: %s\n", ((NodeParameter *)actual_node)->name);
     strcat(buffer, eval(actual_node));
-    // strcat(buffer, ",");
+    strcat(buffer, ",");
   } while((current_list = current_list->next) != NULL);
 
   return buffer;
@@ -252,7 +264,7 @@ char * handleNodeKeyValuePair(Node * node) {
   char * compiledValue = eval(node_posta->value);
 
   // 2 for wrapping key in quotes, 1 for ':', 2 for wrapping value in parenthesis.
-  const size_t punctuation_length = 2 + 1 + 2;
+  const size_t punctuation_length = strlen("\"\": ()");
   const size_t buffer_length = strlen(key) + strlen(compiledValue) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
 
@@ -313,6 +325,7 @@ char * handleNodeArrayElement(Node * node) {
   return eval(node);
 }
 
+// TODO: ver trailing commas
 char * handleNodeArrayDeclarationList(Node * node) {
   NodeList * current_list = (NodeList *)node;
 

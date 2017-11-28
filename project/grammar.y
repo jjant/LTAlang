@@ -105,6 +105,7 @@ object_declaration
 object_body
 	: object_property_declaration { $$ = newKeyValueList($1); }
 	| object_property_declaration LIST_DELIMITER ENDMARKER object_body { $$ = addKeyValue($4, $1); }
+	| object_property_declaration LIST_DELIMITER object_body { $$ = addKeyValue($3, $1); }
 	;
 
 object_property_declaration
@@ -142,9 +143,11 @@ postfix_expression
 	;
 
 array_values_list
-	: assignment_expression { $$ = newArrayElementList(newNodeArrayDeclaration($1)); }
+	: assignment_expression { $$ = newArrayElementList($1); }
 	| array_values_list LIST_DELIMITER ENDMARKER assignment_expression { $$ = addArrayElement($1, $4); }
+	| array_values_list LIST_DELIMITER assignment_expression { $$ = addArrayElement($1, $3); }
 	;
+	
 argument_expression_list
 	: assignment_expression { $$ = newArgumentList($1); }
 	| PLACEHOLDER { $$ = newArgumentList(newNodePlaceholder()); }
@@ -214,7 +217,7 @@ expression
 
 parameter_list
 	: IDENTIFIER { $$ = newParameterList(newNodeParameter($1)); }
-	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($1, $3); }
+	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($1, newNodeParameter($3)); }
 	;
 
 statement
