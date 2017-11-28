@@ -5,7 +5,7 @@
 
 	extern int yylineno;
 
-	void yyerror(char *);
+	void yyerror(Node *, char *);
 %}
 
 %union {
@@ -71,10 +71,12 @@
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %type <string> IDENTIFIER THIS STRING_LITERAL
 
-%type <int> opt_async EMPTY ASYNC CONSTANT
+%type <num> opt_async EMPTY ASYNC CONSTANT
 
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
+
+%parse-param {Node * program}
 
 %start statement_list
 
@@ -128,7 +130,7 @@ postfix_expression
 	| postfix_expression ARRAY_OPEN expression ARRAY_CLOSE
 	| postfix_expression PARENS_OPEN PARENS_CLOSE { $$ = newNodeFunctionCall($1, NULL); }
 	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE { $$ = newNodeFunctionCall($1, $3); }
-	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccesor($1, newNodeIdentifier($3))}
+	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccessor($1, newNodeIdentifier($3))}
 	;
 
 array_values_list
@@ -242,7 +244,7 @@ jump_statement
 
 %%
 
-void yyerror(char *msg) {
+void yyerror(Node * program, char *msg) {
   printf("%s on line %d\n\n", msg, yylineno);
   exit(1);
 }

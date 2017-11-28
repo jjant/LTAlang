@@ -548,10 +548,10 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "lexer.l"
 #line 9 "lexer.l"
-#include <stdio.h>
-#include "grammar.tab.h"
+	#include <stdio.h>
+	#include "grammar.tab.h"
 
-void count();
+	void count();
 #line 556 "lex.yy.c"
 
 #define INITIAL 0

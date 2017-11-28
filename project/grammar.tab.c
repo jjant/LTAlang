@@ -168,7 +168,7 @@
 
 	extern int yylineno;
 
-	void yyerror(char *);
+	void yyerror(Node *, char *);
 
 
 /* Enabling traces.  */
@@ -528,14 +528,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    85,    85,    89,    90,    95,    96,   100,   101,   105,
-     110,   111,   116,   117,   118,   119,   120,   121,   122,   123,
-     127,   128,   129,   130,   131,   135,   136,   139,   140,   141,
-     146,   147,   148,   149,   153,   154,   155,   159,   160,   161,
-     162,   163,   167,   168,   169,   173,   174,   178,   179,   183,
-     184,   188,   189,   194,   195,   196,   197,   198,   202,   206,
-     207,   211,   212,   213,   214,   220,   221,   226,   227,   231,
-     232,   236,   240
+       0,    87,    87,    91,    92,    97,    98,   102,   103,   107,
+     112,   113,   118,   119,   120,   121,   122,   123,   124,   125,
+     129,   130,   131,   132,   133,   137,   138,   141,   142,   143,
+     148,   149,   150,   151,   155,   156,   157,   161,   162,   163,
+     164,   165,   169,   170,   171,   175,   176,   180,   181,   185,
+     186,   190,   191,   196,   197,   198,   199,   200,   204,   208,
+     209,   213,   214,   215,   216,   222,   223,   228,   229,   233,
+     234,   238,   242
 };
 #endif
 
@@ -752,7 +752,7 @@ do								\
     }								\
   else								\
     {								\
-      yyerror (YY_("syntax error: cannot back up")); \
+      yyerror (program, YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
@@ -832,7 +832,7 @@ do {									  \
     {									  \
       YYFPRINTF (stderr, "%s ", Title);					  \
       yy_symbol_print (stderr,						  \
-		  Type, Value); \
+		  Type, Value, program); \
       YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
@@ -846,17 +846,19 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Node * program)
 #else
 static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep)
+yy_symbol_value_print (yyoutput, yytype, yyvaluep, program)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
+    Node * program;
 #endif
 {
   if (!yyvaluep)
     return;
+  YYUSE (program);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
@@ -878,13 +880,14 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, Node * program)
 #else
 static void
-yy_symbol_print (yyoutput, yytype, yyvaluep)
+yy_symbol_print (yyoutput, yytype, yyvaluep, program)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
+    Node * program;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -892,7 +895,7 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
   else
     YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, program);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -932,12 +935,13 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule)
+yy_reduce_print (YYSTYPE *yyvsp, int yyrule, Node * program)
 #else
 static void
-yy_reduce_print (yyvsp, yyrule)
+yy_reduce_print (yyvsp, yyrule, program)
     YYSTYPE *yyvsp;
     int yyrule;
+    Node * program;
 #endif
 {
   int yynrhs = yyr2[yyrule];
@@ -951,7 +955,7 @@ yy_reduce_print (yyvsp, yyrule)
       fprintf (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       );
+		       		       , program);
       fprintf (stderr, "\n");
     }
 }
@@ -959,7 +963,7 @@ yy_reduce_print (yyvsp, yyrule)
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
   if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule); \
+    yy_reduce_print (yyvsp, Rule, program); \
 } while (YYID (0))
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1210,16 +1214,18 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, Node * program)
 #else
 static void
-yydestruct (yymsg, yytype, yyvaluep)
+yydestruct (yymsg, yytype, yyvaluep, program)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
+    Node * program;
 #endif
 {
   YYUSE (yyvaluep);
+  YYUSE (program);
 
   if (!yymsg)
     yymsg = "Deleting";
@@ -1244,7 +1250,7 @@ int yyparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (void);
+int yyparse (Node * program);
 #else
 int yyparse ();
 #endif
@@ -1281,11 +1287,11 @@ yyparse (YYPARSE_PARAM)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 int
-yyparse (void)
+yyparse (Node * program)
 #else
 int
-yyparse ()
-
+yyparse (program)
+    Node * program;
 #endif
 #endif
 {
@@ -1534,358 +1540,358 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 85 "grammar.y"
-    { (yyval.node) = newNodeLamdaDeclaration((yyvsp[(1) - (6)].int), (yyvsp[(3) - (6)].list), (yyvsp[(6) - (6)].list)); ;}
+#line 87 "grammar.y"
+    { (yyval.node) = newNodeLamdaDeclaration((yyvsp[(1) - (6)].num), (yyvsp[(3) - (6)].list), (yyvsp[(6) - (6)].list)); ;}
     break;
 
   case 3:
-#line 89 "grammar.y"
-    { (yyval.int) = 0 ;}
+#line 91 "grammar.y"
+    { (yyval.num) = 0 ;}
     break;
 
   case 4:
-#line 90 "grammar.y"
-    { (yyval.int) = 1 ;}
+#line 92 "grammar.y"
+    { (yyval.num) = 1 ;}
     break;
 
   case 5:
-#line 95 "grammar.y"
+#line 97 "grammar.y"
     { (yyval.node) = newNodeObjectDeclaration(NULL); ;}
     break;
 
   case 6:
-#line 96 "grammar.y"
+#line 98 "grammar.y"
     { (yyval.node) = newNodeObjectDeclaration((yyvsp[(2) - (3)].list)); ;}
     break;
 
   case 7:
-#line 100 "grammar.y"
+#line 102 "grammar.y"
     { (yyval.list) = newKeyValueList((yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 8:
-#line 101 "grammar.y"
+#line 103 "grammar.y"
     { (yyval.list) = addKeyValue((yyvsp[(3) - (3)].list), (yyvsp[(1) - (3)].node)); ;}
     break;
 
   case 9:
-#line 105 "grammar.y"
+#line 107 "grammar.y"
     { (yyval.node) = newNodeKeyValue((yyvsp[(1) - (3)].string), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 10:
-#line 110 "grammar.y"
+#line 112 "grammar.y"
     { (yyval.list) = newArrayElementList(NULL); ;}
     break;
 
   case 11:
-#line 111 "grammar.y"
+#line 113 "grammar.y"
     { (yyval.list) = (yyvsp[(2) - (3)].list); ;}
     break;
 
   case 12:
-#line 116 "grammar.y"
+#line 118 "grammar.y"
     { (yyval.node) = newNodeIdentifier((yyvsp[(1) - (1)].string)); ;}
     break;
 
   case 13:
-#line 117 "grammar.y"
-    { (yyval.node) = newNodeNumber((yyvsp[(1) - (1)].int)); ;}
+#line 119 "grammar.y"
+    { (yyval.node) = newNodeNumber((yyvsp[(1) - (1)].num)); ;}
     break;
 
   case 14:
-#line 118 "grammar.y"
+#line 120 "grammar.y"
     { (yyval.node) = newNodeThis(); ;}
     break;
 
   case 15:
-#line 119 "grammar.y"
+#line 121 "grammar.y"
     { (yyval.node) = newNodeString((yyvsp[(1) - (1)].string)); ;}
     break;
 
   case 16:
-#line 120 "grammar.y"
+#line 122 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].list); ;}
     break;
 
   case 17:
-#line 121 "grammar.y"
+#line 123 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 18:
-#line 122 "grammar.y"
+#line 124 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 19:
-#line 123 "grammar.y"
+#line 125 "grammar.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
     break;
 
   case 20:
-#line 127 "grammar.y"
+#line 129 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 22:
-#line 129 "grammar.y"
+#line 131 "grammar.y"
     { (yyval.node) = newNodeFunctionCall((yyvsp[(1) - (3)].node), NULL); ;}
     break;
 
   case 23:
-#line 130 "grammar.y"
+#line 132 "grammar.y"
     { (yyval.node) = newNodeFunctionCall((yyvsp[(1) - (4)].node), (yyvsp[(3) - (4)].list)); ;}
     break;
 
   case 24:
-#line 131 "grammar.y"
-    { (yyval.node) = newNodeObjectAccesor((yyvsp[(1) - (3)].node), newNodeIdentifier((yyvsp[(3) - (3)].string)));}
+#line 133 "grammar.y"
+    { (yyval.node) = newNodeObjectAccessor((yyvsp[(1) - (3)].node), newNodeIdentifier((yyvsp[(3) - (3)].string)));}
     break;
 
   case 25:
-#line 135 "grammar.y"
+#line 137 "grammar.y"
     { (yyval.list) = newArrayElementList(newNodeArrayDeclaration((yyvsp[(1) - (1)].node))); ;}
     break;
 
   case 26:
-#line 136 "grammar.y"
+#line 138 "grammar.y"
     { (yyval.list) = addArrayElement((yyvsp[(1) - (3)].list), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 27:
-#line 139 "grammar.y"
+#line 141 "grammar.y"
     { (yyval.list) = newArgumentList((yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 28:
-#line 140 "grammar.y"
+#line 142 "grammar.y"
     { (yyval.list) = newArgumentList(newNodePlaceholder()); ;}
     break;
 
   case 29:
-#line 141 "grammar.y"
+#line 143 "grammar.y"
     { (yyval.list) = addArgument((yyvsp[(1) - (3)].list), (yyvsp[(3) - (3)].node)); ;}
     break;
 
   case 30:
-#line 146 "grammar.y"
+#line 148 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 31:
-#line 147 "grammar.y"
+#line 149 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "*"); ;}
     break;
 
   case 32:
-#line 148 "grammar.y"
+#line 150 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "/"); ;}
     break;
 
   case 33:
-#line 149 "grammar.y"
+#line 151 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "mod"); ;}
     break;
 
   case 34:
-#line 153 "grammar.y"
+#line 155 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 35:
-#line 154 "grammar.y"
+#line 156 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "+"); ;}
     break;
 
   case 36:
-#line 155 "grammar.y"
+#line 157 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "-"); ;}
     break;
 
   case 37:
-#line 159 "grammar.y"
+#line 161 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 38:
-#line 160 "grammar.y"
+#line 162 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "<"); ;}
     break;
 
   case 39:
-#line 161 "grammar.y"
+#line 163 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), ">"); ;}
     break;
 
   case 40:
-#line 162 "grammar.y"
+#line 164 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "<="); ;}
     break;
 
   case 41:
-#line 163 "grammar.y"
+#line 165 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), ">="); ;}
     break;
 
   case 42:
-#line 167 "grammar.y"
+#line 169 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 43:
-#line 168 "grammar.y"
+#line 170 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "=="); ;}
     break;
 
   case 44:
-#line 169 "grammar.y"
+#line 171 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "!="); ;}
     break;
 
   case 45:
-#line 173 "grammar.y"
+#line 175 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 46:
-#line 174 "grammar.y"
+#line 176 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "&&"); ;}
     break;
 
   case 47:
-#line 178 "grammar.y"
+#line 180 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 48:
-#line 179 "grammar.y"
+#line 181 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "||"); ;}
     break;
 
   case 49:
-#line 183 "grammar.y"
+#line 185 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 50:
-#line 184 "grammar.y"
+#line 186 "grammar.y"
     { (yyval.node) = newNodeTernaryOperation((yyvsp[(1) - (5)].node), (yyvsp[(3) - (5)].node), (yyvsp[(5) - (5)].node)); ;}
     break;
 
   case 51:
-#line 188 "grammar.y"
+#line 190 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 52:
-#line 189 "grammar.y"
+#line 191 "grammar.y"
     { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), (yyvsp[(2) - (3)].string)); ;}
     break;
 
   case 53:
-#line 194 "grammar.y"
+#line 196 "grammar.y"
     { (yyval.string) = "="; ;}
     break;
 
   case 54:
-#line 195 "grammar.y"
+#line 197 "grammar.y"
     { (yyval.string) = "*="; ;}
     break;
 
   case 55:
-#line 196 "grammar.y"
+#line 198 "grammar.y"
     { (yyval.string) = "/="; ;}
     break;
 
   case 56:
-#line 197 "grammar.y"
+#line 199 "grammar.y"
     { (yyval.string) = "+="; ;}
     break;
 
   case 57:
-#line 198 "grammar.y"
+#line 200 "grammar.y"
     { (yyval.string) = "-="; ;}
     break;
 
   case 58:
-#line 202 "grammar.y"
+#line 204 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 59:
-#line 206 "grammar.y"
+#line 208 "grammar.y"
     { (yyval.list) = newParameterList(newNodeParameter((yyvsp[(1) - (1)].string))); ;}
     break;
 
   case 60:
-#line 207 "grammar.y"
+#line 209 "grammar.y"
     { (yyval.list) = addParameter((yyvsp[(1) - (3)].list), (yyvsp[(3) - (3)].string)); ;}
     break;
 
   case 61:
-#line 211 "grammar.y"
+#line 213 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].list); ;}
     break;
 
   case 62:
-#line 212 "grammar.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
-    break;
-
-  case 63:
-#line 213 "grammar.y"
-    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
-    break;
-
-  case 64:
 #line 214 "grammar.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
+  case 63:
+#line 215 "grammar.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    break;
+
+  case 64:
+#line 216 "grammar.y"
+    { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
+    break;
+
   case 65:
-#line 220 "grammar.y"
+#line 222 "grammar.y"
     { (yyval.list) = newInstructionsList(NULL); ;}
     break;
 
   case 66:
-#line 221 "grammar.y"
+#line 223 "grammar.y"
     { (yyval.list) = (yyvsp[(2) - (3)].list); ;}
     break;
 
   case 67:
-#line 226 "grammar.y"
+#line 228 "grammar.y"
     { (yyval.list) = newInstructionsList((yyvsp[(1) - (1)].node)); ;}
     break;
 
   case 68:
-#line 227 "grammar.y"
+#line 229 "grammar.y"
     { (yyval.list) = addInstructions((yyvsp[(1) - (2)].list), (yyvsp[(2) - (2)].node)); ;}
     break;
 
   case 69:
-#line 231 "grammar.y"
+#line 233 "grammar.y"
     { (yyval.node) = newNodeIf((yyvsp[(3) - (5)].node), (yyvsp[(5) - (5)].list), NULL); ;}
     break;
 
   case 70:
-#line 232 "grammar.y"
+#line 234 "grammar.y"
     { (yyval.node) = newNodeIf((yyvsp[(3) - (7)].node), (yyvsp[(5) - (7)].list), (yyvsp[(7) - (7)].list)); ;}
     break;
 
   case 71:
-#line 236 "grammar.y"
+#line 238 "grammar.y"
     { (yyval.node) = newNodeWhile((yyvsp[(3) - (5)].node), (yyvsp[(5) - (5)].list)); ;}
     break;
 
   case 72:
-#line 240 "grammar.y"
+#line 242 "grammar.y"
     { (yyval.node) = newNodeReturn((yyvsp[(3) - (4)].node)); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1889 "grammar.tab.c"
+#line 1895 "grammar.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1921,7 +1927,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (YY_("syntax error"));
+      yyerror (program, YY_("syntax error"));
 #else
       {
 	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
@@ -1945,11 +1951,11 @@ yyerrlab:
 	if (0 < yysize && yysize <= yymsg_alloc)
 	  {
 	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (yymsg);
+	    yyerror (program, yymsg);
 	  }
 	else
 	  {
-	    yyerror (YY_("syntax error"));
+	    yyerror (program, YY_("syntax error"));
 	    if (yysize != 0)
 	      goto yyexhaustedlab;
 	  }
@@ -1973,7 +1979,7 @@ yyerrlab:
       else
 	{
 	  yydestruct ("Error: discarding",
-		      yytoken, &yylval);
+		      yytoken, &yylval, program);
 	  yychar = YYEMPTY;
 	}
     }
@@ -2029,7 +2035,7 @@ yyerrlab1:
 
 
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp);
+		  yystos[yystate], yyvsp, program);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -2067,7 +2073,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (YY_("memory exhausted"));
+  yyerror (program, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -2075,7 +2081,7 @@ yyexhaustedlab:
 yyreturn:
   if (yychar != YYEOF && yychar != YYEMPTY)
      yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval);
+		 yytoken, &yylval, program);
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
@@ -2083,7 +2089,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp);
+		  yystos[*yyssp], yyvsp, program);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -2099,10 +2105,10 @@ yyreturn:
 }
 
 
-#line 243 "grammar.y"
+#line 245 "grammar.y"
 
 
-void yyerror(char *msg) {
+void yyerror(Node * program, char *msg) {
   printf("%s on line %d\n\n", msg, yylineno);
   exit(1);
 }
