@@ -66,8 +66,9 @@
 %type <node> iteration_statement jump_statement
 
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
+%type <string> IDENTIFIER THIS STRING_LITERAL
 
-%type <int> opt_async EMPTY, ASYNC
+%type <int> opt_async EMPTY ASYNC CONSTANT
 
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
@@ -78,7 +79,7 @@
 
 // Lamda functions are first class citizens
 lamda_declaration
-	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement { $$ = newNodeLamdaDeclaration($1, $4, $6); }
+	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement { $$ = newNodeLamdaDeclaration($1, $3, $6); }
 	;
 
 opt_async
@@ -116,7 +117,7 @@ primary_expression
 	| array_declaration { $$ = $1; } // TODO: Wrap in Node container
 	| object_declaration { $$ = $1; }
 	| lamda_declaration { $$ = $1; }
-	| PARENS_OPEN expression PARENS_CLOSE { $$ = $1; }
+	| PARENS_OPEN expression PARENS_CLOSE { $$ = $2; }
 	;
 
 postfix_expression

@@ -42,120 +42,108 @@
      IDENTIFIER = 258,
      CONSTANT = 259,
      STRING_LITERAL = 260,
-     INC_OP = 261,
-     DEC_OP = 262,
-     LEFT_OP = 263,
-     RIGHT_OP = 264,
-     LE_OP = 265,
-     GE_OP = 266,
-     EQ_OP = 267,
-     NE_OP = 268,
-     AND_OP = 269,
-     OR_OP = 270,
-     MUL_ASSIGN = 271,
-     DIV_ASSIGN = 272,
-     MOD_ASSIGN = 273,
-     ADD_ASSIGN = 274,
-     SUB_ASSIGN = 275,
-     LEFT_ASSIGN = 276,
-     RIGHT_ASSIGN = 277,
-     AND_ASSIGN = 278,
-     REG_ASSIGN = 279,
-     XOR_ASSIGN = 280,
-     OR_ASSIGN = 281,
-     THIS = 282,
-     ENDMARKER = 283,
-     LAMDA_ASSIGN = 284,
-     PLACEHOLDER = 285,
-     PARENS_OPEN = 286,
-     PARENS_CLOSE = 287,
-     BRACKETS_OPEN = 288,
-     BRACKETS_CLOSE = 289,
-     ARRAY_OPEN = 290,
-     ARRAY_CLOSE = 291,
-     SIMPLE_BAR = 292,
-     LIST_DELIMITER = 293,
-     COLONS = 294,
-     EMPTY = 295,
-     ASYNC = 296,
-     PROD = 297,
-     MOD = 298,
-     COCIENT = 299,
-     PLUS = 300,
-     MINUS = 301,
-     LESS = 302,
-     GREATER = 303,
-     THEN = 304,
-     OBJECT_ACCESSOR = 305,
-     IF = 306,
-     ELSE = 307,
-     WHILE = 308,
-     DO = 309,
-     FOR = 310,
-     RETURN = 311
+     LE_OP = 261,
+     GE_OP = 262,
+     EQ_OP = 263,
+     NE_OP = 264,
+     AND_OP = 265,
+     OR_OP = 266,
+     MUL_ASSIGN = 267,
+     DIV_ASSIGN = 268,
+     SUB_ASSIGN = 269,
+     REG_ASSIGN = 270,
+     ADD_ASSIGN = 271,
+     THIS = 272,
+     LAMDA_ASSIGN = 273,
+     PLACEHOLDER = 274,
+     PARENS_OPEN = 275,
+     PARENS_CLOSE = 276,
+     BRACKETS_OPEN = 277,
+     BRACKETS_CLOSE = 278,
+     ARRAY_OPEN = 279,
+     ARRAY_CLOSE = 280,
+     SIMPLE_BAR = 281,
+     LIST_DELIMITER = 282,
+     COLONS = 283,
+     EMPTY = 284,
+     ASYNC = 285,
+     PROD = 286,
+     MOD = 287,
+     COCIENT = 288,
+     PLUS = 289,
+     MINUS = 290,
+     LESS = 291,
+     GREATER = 292,
+     THEN = 293,
+     OBJECT_ACCESSOR = 294,
+     IF = 295,
+     ELSE = 296,
+     WHILE = 297,
+     DO = 298,
+     FOR = 299,
+     RETURN = 300
    };
 #endif
 /* Tokens.  */
 #define IDENTIFIER 258
 #define CONSTANT 259
 #define STRING_LITERAL 260
-#define INC_OP 261
-#define DEC_OP 262
-#define LEFT_OP 263
-#define RIGHT_OP 264
-#define LE_OP 265
-#define GE_OP 266
-#define EQ_OP 267
-#define NE_OP 268
-#define AND_OP 269
-#define OR_OP 270
-#define MUL_ASSIGN 271
-#define DIV_ASSIGN 272
-#define MOD_ASSIGN 273
-#define ADD_ASSIGN 274
-#define SUB_ASSIGN 275
-#define LEFT_ASSIGN 276
-#define RIGHT_ASSIGN 277
-#define AND_ASSIGN 278
-#define REG_ASSIGN 279
-#define XOR_ASSIGN 280
-#define OR_ASSIGN 281
-#define THIS 282
-#define ENDMARKER 283
-#define LAMDA_ASSIGN 284
-#define PLACEHOLDER 285
-#define PARENS_OPEN 286
-#define PARENS_CLOSE 287
-#define BRACKETS_OPEN 288
-#define BRACKETS_CLOSE 289
-#define ARRAY_OPEN 290
-#define ARRAY_CLOSE 291
-#define SIMPLE_BAR 292
-#define LIST_DELIMITER 293
-#define COLONS 294
-#define EMPTY 295
-#define ASYNC 296
-#define PROD 297
-#define MOD 298
-#define COCIENT 299
-#define PLUS 300
-#define MINUS 301
-#define LESS 302
-#define GREATER 303
-#define THEN 304
-#define OBJECT_ACCESSOR 305
-#define IF 306
-#define ELSE 307
-#define WHILE 308
-#define DO 309
-#define FOR 310
-#define RETURN 311
+#define LE_OP 261
+#define GE_OP 262
+#define EQ_OP 263
+#define NE_OP 264
+#define AND_OP 265
+#define OR_OP 266
+#define MUL_ASSIGN 267
+#define DIV_ASSIGN 268
+#define SUB_ASSIGN 269
+#define REG_ASSIGN 270
+#define ADD_ASSIGN 271
+#define THIS 272
+#define LAMDA_ASSIGN 273
+#define PLACEHOLDER 274
+#define PARENS_OPEN 275
+#define PARENS_CLOSE 276
+#define BRACKETS_OPEN 277
+#define BRACKETS_CLOSE 278
+#define ARRAY_OPEN 279
+#define ARRAY_CLOSE 280
+#define SIMPLE_BAR 281
+#define LIST_DELIMITER 282
+#define COLONS 283
+#define EMPTY 284
+#define ASYNC 285
+#define PROD 286
+#define MOD 287
+#define COCIENT 288
+#define PLUS 289
+#define MINUS 290
+#define LESS 291
+#define GREATER 292
+#define THEN 293
+#define OBJECT_ACCESSOR 294
+#define IF 295
+#define ELSE 296
+#define WHILE 297
+#define DO 298
+#define FOR 299
+#define RETURN 300
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+#line 8 "grammar.y"
+{
+  int num;
+  char * string;
+  struct Node * node;
+	struct NodeList * list;
+}
+/* Line 1529 of yacc.c.  */
+#line 146 "grammar.tab.h"
+	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
