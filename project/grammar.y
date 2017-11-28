@@ -9,6 +9,7 @@
   int num;
   char * string;
   struct Node * node;
+	struct NodeList * list;
 }
 // Variables and constants
 %token IDENTIFIER CONSTANT STRING_LITERAL
@@ -57,11 +58,23 @@
 // Flow tokens
 %token IF ELSE WHILE DO FOR RETURN
 
-%type <node> expression term function_expression opt_params parameter
+%type <node> lamda_declaration object_declaration object_property_declaration
+%type <node> primary_expression postfix_expression multiplicative_expression
+%type <node> additive_expression relational_expression equality_expression
+%type <node> logical_and_expression logical_or_expression conditional_expression
+%type <node> assignment_expression expression statement selection_statement
+%type <node> iteration_statement jump_statement
+
+%type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
+
+%type <int> opt_async EMPTY, ASYNC
+
+%type <list> object_body array_declaration array_values_list argument_expression_list
+%type <list> parameter_list compound_statement statement_list
 
 %start statement_list
 
-//%%
+%%
 
 // Lamda functions are first class citizens
 lamda_declaration
@@ -69,14 +82,14 @@ lamda_declaration
 	;
 
 opt_async
-	: EMPTY
-	| ASYNC
+	: EMPTY { $$ = 0 }
+	| ASYNC { $$ = 1 }
 	;
 
 // Objects are key-value pairs
 object_declaration
-	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newObjectDeclaration(NULL); }
-	| BRACKETS_OPEN object_body BRACKETS_CLOSE { $$ = newObjectDeclaration($2); }
+	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newNodeObjectDeclaration(NULL); }
+	| BRACKETS_OPEN object_body BRACKETS_CLOSE { $$ = newNodeObjectDeclaration($2); }
 	;
 
 object_body
@@ -100,7 +113,7 @@ primary_expression
 	| CONSTANT { $$ = newNodeNumber($1); }
 	| THIS { $$ = newNodeThis(); }
 	| STRING_LITERAL { $$ = newNodeString($1); }
-	| array_declaration { $$ = $1; }
+	| array_declaration { $$ = $1; } // TODO: Wrap in Node container
 	| object_declaration { $$ = $1; }
 	| lamda_declaration { $$ = $1; }
 	| PARENS_OPEN expression PARENS_CLOSE { $$ = $1; }
@@ -191,7 +204,7 @@ parameter_list
 	;
 
 statement
-	: compound_statement { $$ = $1; }
+	: compound_statement { $$ = $1; } // TODO: Wrap in node container
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
