@@ -7,6 +7,7 @@
 %option noyywrap
 
 digit       [0-9]
+string			\".*\"
 number      [0-9]+(\.[0-9]+)?
 identifier  [a-z]+
 newline     \n
@@ -47,12 +48,13 @@ exit        ("exit"|"quit")
 "*"			{ return(PROD); }
 "%"			{ return(MOD); }
 "<"			{ return(LESS); }
+"|>"		{ return(LAMDA_ASYNC); }
 ">"			{ return(GREATER); }
 "?"			{ return(THEN); }
-":)"			{ return(ENDMARKER); }
 {number}        { yylval.num = atoi(yytext); return NUMBER; }
 {identifier}    { yylval.string = yytext; return IDENTIFIER; }
-{newline}       { yylineno++; }
+{string}				{ yylval.string = yytext; return STRING_LITERAL; }
+{newline}       { yylineno++; return ENDMARKER; }
 .			{ /* ignore bad characters */ }
 
 %%

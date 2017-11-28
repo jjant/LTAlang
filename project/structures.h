@@ -19,6 +19,7 @@ NodeList * newParameterList(const Node * node);
 NodeList * addParameter(const NodeList * list, const Node * node);
 NodeArrayDeclarationElement * newNodeArrayDeclarationElement(const Node * element);
 NodeList * newArrayElementList(const Node * node);
+Node * addNodeIgnore();
 NodeList * addArrayElement(const NodeList * list, const Node * node);
 NodeObjectAccessor * newNodeObjectAccessor(const Node * left, const NodeIdentifier * right);
 NodeIf * newNodeIf(const Node * condition, const Node * then, const Node * elseObj);

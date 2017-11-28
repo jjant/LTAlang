@@ -236,3 +236,9 @@ NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements) {
   node->elements = (NodeList *) elements;
   return node;
 }
+
+Node * addNodeIgnore() {
+  Node * node = malloc(sizeof(Node));
+  node->type = NODE_IGNORE;
+  return node;
+}

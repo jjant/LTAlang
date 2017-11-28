@@ -48,7 +48,7 @@
 // :
 %token COLONS
 
-%token EMPTY ASYNC
+%token EMPTY LAMDA_ASYNC
 
 // Operators
 %token PROD MOD COCIENT PLUS MINUS
@@ -73,7 +73,7 @@
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %type <string> IDENTIFIER THIS STRING_LITERAL
 
-%type <num> opt_async EMPTY ASYNC NUMBER
+%type <num> opt_async EMPTY LAMDA_ASSIGN LAMDA_ASYNC NUMBER
 
 %type <list> object_body array_declaration array_values_list argument_expression_list
 %type <list> parameter_list compound_statement statement_list
@@ -86,12 +86,12 @@
 
 // Lamda functions are first class citizens
 lamda_declaration
-	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement { $$ = newNodeLamdaDeclaration($1, $3, $6); }
+	: SIMPLE_BAR parameter_list SIMPLE_BAR opt_async compound_statement { $$ = newNodeLamdaDeclaration($4, $2, $5); }
 	;
 
 opt_async
-	: EMPTY { $$ = 0 }
-	| ASYNC { $$ = 1 }
+	: LAMDA_ASSIGN { $$ = 0 }
+	| LAMDA_ASYNC { $$ = 1 }
 	;
 
 // Objects are key-value pairs
@@ -221,6 +221,7 @@ statement
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
 	| expression ENDMARKER { $$ = $1; }
+	| ENDMARKER { $$ = addNodeIgnore(); }
 	;
 
 

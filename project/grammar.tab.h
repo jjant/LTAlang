@@ -67,7 +67,7 @@
      LIST_DELIMITER = 283,
      COLONS = 284,
      EMPTY = 285,
-     ASYNC = 286,
+     LAMDA_ASYNC = 286,
      PROD = 287,
      MOD = 288,
      COCIENT = 289,
@@ -114,7 +114,7 @@
 #define LIST_DELIMITER 283
 #define COLONS 284
 #define EMPTY 285
-#define ASYNC 286
+#define LAMDA_ASYNC 286
 #define PROD 287
 #define MOD 288
 #define COCIENT 289
