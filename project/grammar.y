@@ -11,7 +11,7 @@
 
 %union {
   int num;
-  char * string;
+  char string[1000];
   struct Node * node;
 	struct NodeList * list;
 }
@@ -69,10 +69,10 @@
 %type <node> additive_expression relational_expression equality_expression
 %type <node> logical_and_expression logical_or_expression conditional_expression
 %type <node> assignment_expression expression statement selection_statement
-%type <node> iteration_statement jump_statement assignable_expression
+%type <node> iteration_statement jump_statement assignable_expression THIS
 
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
-%type <string> IDENTIFIER THIS STRING_LITERAL NUMBER
+%type <string> IDENTIFIER STRING_LITERAL NUMBER
 
 %type <num> opt_async EMPTY LAMDA_ASSIGN LAMDA_ASYNC
 
@@ -201,11 +201,11 @@ assignment_expression
 
 // Assignment terminals
 assignment_operator
-	: REG_ASSIGN { $$ = "="; }
-	| MUL_ASSIGN { $$ = "*="; }
-	| DIV_ASSIGN { $$ = "/="; }
-	| ADD_ASSIGN { $$ = "+="; }
-	| SUB_ASSIGN { $$ = "-="; }
+	: REG_ASSIGN { strcpy($$, "="); }
+	| MUL_ASSIGN { strcpy($$, "*="); }
+	| DIV_ASSIGN { strcpy($$, "/="); }
+	| ADD_ASSIGN { strcpy($$, "+="); }
+	| SUB_ASSIGN { strcpy($$, "-="); }
 	;
 
 expression

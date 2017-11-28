@@ -197,7 +197,7 @@ typedef union YYSTYPE
 #line 12 "grammar.y"
 {
   int num;
-  char * string;
+  char string[1000];
   struct Node * node;
 	struct NodeList * list;
 }
@@ -1820,27 +1820,27 @@ yyreduce:
 
   case 55:
 #line 204 "grammar.y"
-    { (yyval.string) = "="; ;}
+    { strcpy((yyval.string), "="); ;}
     break;
 
   case 56:
 #line 205 "grammar.y"
-    { (yyval.string) = "*="; ;}
+    { strcpy((yyval.string), "*="); ;}
     break;
 
   case 57:
 #line 206 "grammar.y"
-    { (yyval.string) = "/="; ;}
+    { strcpy((yyval.string), "/="); ;}
     break;
 
   case 58:
 #line 207 "grammar.y"
-    { (yyval.string) = "+="; ;}
+    { strcpy((yyval.string), "+="); ;}
     break;
 
   case 59:
 #line 208 "grammar.y"
-    { (yyval.string) = "-="; ;}
+    { strcpy((yyval.string), "-="); ;}
     break;
 
   case 60:

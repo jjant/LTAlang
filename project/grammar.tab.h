@@ -139,7 +139,7 @@ typedef union YYSTYPE
 #line 12 "grammar.y"
 {
   int num;
-  char * string;
+  char string[1000];
   struct Node * node;
 	struct NodeList * list;
 }

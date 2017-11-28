@@ -210,24 +210,24 @@ static char * iterateOverFunctionParams(NodeList * paramList);
 static char * iterateOverFunctionParams(NodeList * node) {
   if (node == NULL) return emptyString;
 
-  return emptyString;
-  // NodeList * current_list = (NodeList *)node;
-  //
-  // const size_t buffer_length = 1000; // idk lol
-  // char * buffer = malloc(buffer_length);
-  // buffer[0] = '\0';
-  //
-  // if(current_list == NULL) return buffer;
-  //
-  // do {
-  //   Node * actual_node = (Node *)current_list->node;
-  //   if (actual_node == NULL) break;
-  //
-  //   strcat(buffer, eval(actual_node));
-  //   strcat(buffer, ",");
-  // } while((current_list = current_list->next) != NULL);
-  //
-  // return buffer;
+  NodeList * current_list = (NodeList *)node;
+
+  const size_t buffer_length = 1000; // idk lol
+  char * buffer = malloc(buffer_length);
+  buffer[0] = '\0';
+
+  if(current_list == NULL) return buffer;
+
+  do {
+    Node * actual_node = (Node *)current_list->node;
+    if (actual_node == NULL) break;
+
+    printf("param: %s\n", ((NodeParameter *)actual_node)->name);
+    strcat(buffer, eval(actual_node));
+    // strcat(buffer, ",");
+  } while((current_list = current_list->next) != NULL);
+
+  return buffer;
 }
 
 char * handleNodeLamdaDeclaration(Node * node) {

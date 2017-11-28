@@ -955,17 +955,17 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 54 "lexer.l"
-{ yylval.string = yytext; return NUMBER; }
+{ strcpy(yylval.string, yytext); return NUMBER; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 55 "lexer.l"
-{ yylval.string = yytext; return IDENTIFIER; }
+{ strcpy(yylval.string, yytext); return IDENTIFIER; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 56 "lexer.l"
-{ yylval.string = yytext; return STRING_LITERAL; }
+{ strcpy(yylval.string, yytext); return STRING_LITERAL; }
 	YY_BREAK
 case 41:
 /* rule 41 can match eol */
