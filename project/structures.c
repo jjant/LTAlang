@@ -7,24 +7,21 @@
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
   node->type = NODE_STRING;
-  // TODO: cuidado con el string
-  node->value = (char *)constant;
+  strcpy(node.value, constant);
   return node;
 }
 
 NodeNumber * newNodeNumber(const char * constant) {
   NodeNumber * node = malloc(sizeof(NodeNumber));
   node->type = NODE_NUMBER;
-  // TODO: cuidado con el string
-  node->value = (char *)constant;
+  strcpy(node.value, constant);
   return node;
 }
 
 NodeIdentifier * newNodeIdentifier(const char * name) {
   NodeIdentifier * node = malloc(sizeof(NodeIdentifier));
   node->type = NODE_IDENTIFIER;
-  // TODO: cuidado con el string
-  node->name = (char *)name;
+  strcpy(node.name, name);
   return node;
 }
 
@@ -36,9 +33,8 @@ NodeThis * newNodeThis() {
 
 NodeKeyValue * newNodeKeyValue(const char * key, const Node * value) {
   NodeKeyValue * node = malloc(sizeof(NodeKeyValue));
-  node->type = NODE_IDENTIFIER;
-  // TODO: cuidado con el string
-  node->key = (char *)key;
+  node->type = NODE_KEY_VALUE_PAIR;
+  strcpy(node.key, key);
   node->value = (Node *)value;
   return node;
 }
@@ -48,18 +44,13 @@ NodeList * newKeyValueList(const NodeKeyValue * node) {
   list->type = NODE_KEY_VALUE_PAIR;
   list->node = (Node *)node;
   list->next = NULL;
-
   return list;
 }
-
-// TODO: Fijate que esto esté bien
-NodeList * newKeyValuePairList(const NodeKeyValue * node);
 
 NodeList * addKeyValue(const NodeList * list, const NodeKeyValue * node) {
   NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
-  // TODO: esta func no existe.
-  cnode->next = newKeyValuePairList(node);
+  cnode->next = newKeyValueList(node);
 
   return (NodeList *)list;
 }
@@ -84,7 +75,7 @@ NodeOperation * newNodeOperation(const Node * first, const Node * second, const 
   node->type = NODE_OPERATION;
   node->first = (Node *)first;
   node->second = (Node *)second;
-  node->operation = (char *)operator;
+  strcpy(node.operation, operator)
   return node;
 }
 
@@ -100,8 +91,7 @@ NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * 
 NodeParameter * newNodeParameter(const char * name) {
   NodeParameter * node = malloc(sizeof(NodeParameter));
   node->type = NODE_PARAMETER;
-  // TODO: cuidado con el string
-  node->name = (char *)name;
+  strcpy(node.name, name);
   return node;
 }
 
@@ -116,7 +106,6 @@ NodeList * newParameterList(const NodeParameter * node) {
 NodeList * addParameter(const NodeList * list, const Node * node) {
   NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
-  // TODO: fijate que onda los tipos de Node * node...
   cnode->next = newParameterList(node);
   return list;
 }
@@ -170,7 +159,7 @@ NodeList * newInstructionsList(const Node * node) {
   NodeList * list = malloc(sizeof(NodeList));
   list->type = NODE_INSTRUCTION;
   list->node = node;
-  list-> next = NULL;
+  list->next = NULL;
   return list;
 }
 
@@ -194,7 +183,6 @@ NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList *
   node->type = NODE_LAMDA_DECLARATION;
   node->async = async;
   node->params = (NodeList *)parameters;
-  // TODO: Fijate que onda los tipos de esto
   node->block = block;
   return node;
 }
