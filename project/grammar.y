@@ -159,7 +159,7 @@ multiplicative_expression
 	: postfix_expression { $$ = $1; }
 	| multiplicative_expression PROD postfix_expression { $$ = newNodeOperation($1, $3, "*"); }
 	| multiplicative_expression COCIENT postfix_expression { $$ = newNodeOperation($1, $3, "/"); }
-	| multiplicative_expression MOD postfix_expression { $$ = newNodeOperation($1, $3, "mod"); }
+	| multiplicative_expression MOD postfix_expression { $$ = newNodeOperation($1, $3, "%"); }
 	;
 
 additive_expression
@@ -225,7 +225,7 @@ statement
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
-	| expression ENDMARKER { $$ = $1; }
+	| expression ENDMARKER { $$ = newNodeEndmarked($1); }
 	| ENDMARKER { $$ = addNodeIgnore(); }
 	;
 
@@ -274,8 +274,7 @@ int main() {
 		printf("%s", "There is not enough memory to parse your program");
 	}
 
-	printf("llegue aca\n");
-	printf("\n\n%s\n", eval(program));
+	printf("%s\n", generate_code(program));
 
 	return 0;
 }

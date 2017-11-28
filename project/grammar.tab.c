@@ -1735,7 +1735,7 @@ yyreduce:
 
   case 37:
 #line 162 "grammar.y"
-    { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "mod"); ;}
+    { (yyval.node) = newNodeOperation((yyvsp[(1) - (3)].node), (yyvsp[(3) - (3)].node), "%"); ;}
     break;
 
   case 38:
@@ -1895,7 +1895,7 @@ yyreduce:
 
   case 69:
 #line 228 "grammar.y"
-    { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
+    { (yyval.node) = newNodeEndmarked((yyvsp[(1) - (2)].node)); ;}
     break;
 
   case 70:
@@ -2179,8 +2179,7 @@ int main() {
 		printf("%s", "There is not enough memory to parse your program");
 	}
 
-	printf("llegue aca\n");
-	printf("\n\n%s\n", eval(program));
+	printf("%s\n", generate_code(program));
 
 	return 0;
 }

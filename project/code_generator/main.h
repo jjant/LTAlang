@@ -28,6 +28,6 @@ char * handleNodePlaceholder(Node * node);
 char * handleNodeListArguments(Node * node);
 char * handleNodeArrayElement(Node * node);
 char * handleNodeArrayDeclarationList(Node * node);
-char * eval(Node * node);
+char * generate_code(Node * node);
 
 #endif

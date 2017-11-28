@@ -30,6 +30,7 @@ NodeList * newInstructionsList(const Node * node);
 NodeList * addInstructions(const NodeList * list, const Node * node);
 NodeReturn * newNodeReturn(const Node * expression);
 NodeBlock * addNodeBlock(const NodeList * instructions);
+NodeEndmarked * newNodeEndmarked(Node * child);
 NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList * parameters, const NodeList * block);
 NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements);
 

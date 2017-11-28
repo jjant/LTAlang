@@ -4,6 +4,9 @@
 #include "main.h"
 #include "../structures.h"
 
+// TODO: checkear readline
+char * stdlib = "puts = console.log; read = readline;\n\n";
+
 char * emptyString = "";
 char *(strings)[] = {
   "NODE_STRING",
@@ -33,6 +36,7 @@ char *(strings)[] = {
 };
 
 static char * iterateOverObjectBody(NodeList * body);
+static char * eval(Node * node);
 
 // TODO: ver el tema de los semicolons
 
@@ -280,10 +284,10 @@ char * handleNodeLamdaDeclaration(Node * node) {
   char * compiledParams = iterateOverFunctionParams(node_posta->params);
   char * compiledBody = eval((Node *)node_posta->block); // TODO compiled body...
 
-  const size_t punctuation_length = strlen("(()=>{})");
+  const size_t punctuation_length = strlen("( function(){})");
   const size_t buffer_length = strlen(asyncPrefix) + strlen(compiledParams) + strlen(compiledBody) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
-  snprintf(buffer, buffer_length, "(%s(%s)=>{%s})", asyncPrefix, compiledParams, compiledBody);
+  snprintf(buffer, buffer_length, "(%s function(%s){%s})", asyncPrefix, compiledParams, compiledBody);
 
   return buffer;
 }
@@ -382,6 +386,19 @@ char * handleNodeArrayDeclarationList(Node * node) {
   return buffer;
 }
 
+char * handleNodeEndmarked(Node * node) {
+  NodeEndmarked * node_posta = (NodeEndmarked *)node;
+
+  char * compiledChild = eval(node_posta->child);
+
+  const size_t punctuation_length = strlen(";");
+  const size_t buffer_length = strlen(compiledChild) + punctuation_length + 1; // TODO: idk lol
+  char * buffer = malloc(buffer_length);
+  snprintf(buffer, buffer_length, "%s;", compiledChild);
+
+  return buffer;
+}
+
 typedef char * (* handler)(Node *);
 
 // TODO: add this.
@@ -409,82 +426,27 @@ handler handlers[] = {
   handleNodeInstructionList, // TODO: ???
   handleNodeArrayDeclaration,
   handleNodeArrayElement,
-  handleNodeArrayDeclarationList
+  handleNodeArrayDeclarationList,
+  handleNodeEndmarked,
 };
 
-char * eval(Node * node) {
-  printf("pointer: %p\n", node);
-  printf("type: %s\n", strings[node->type]);
+static char * eval(Node * node) {
   if (node == NULL || handlers[node->type] == NULL)
     return emptyString;
 
   return handlers[node->type](node);
 }
 
-// int main() {
-//   // char * source_code = "|x| => { return x + 1}";
-//   // Node * ast = NULL; // TODO: = algo(source_code);
-//
-//   NodeObjectDeclaration * node = malloc(sizeof(NodeObjectDeclaration));
-//   node->type = NODE_OBJECT_DECLARATION;
-//   node->body = NULL;
-//
-//   NodeObjectAccessor * node2 = malloc(sizeof(NodeObjectAccessor));
-//   NodeIdentifier * left = malloc(sizeof(NodeIdentifier));
-//   left->name = malloc(100);
-//   strcpy(left->name, "Juan");
-//
-//   node2->type = NODE_OBJECT_ACCESSOR;
-//   node2->left = (Node *)left;
-//   node2->right = (Node *)left;
-//
-//   NodeIf * nodeIf = malloc(sizeof(NodeIf));
-//   nodeIf->type = NODE_IF;
-//   nodeIf->condition = (Node *)node2;
-//   nodeIf->then = (Node *)node2;
-//   nodeIf->elseBlock = NULL;
-//
-//   NodeNumber * nodeNumber = malloc(sizeof(NodeNumber));
-//   nodeNumber->type = NODE_NUMBER;
-//   nodeNumber->value = "1249";
-//
-//   NodeString * nodeString = malloc(sizeof(NodeString));
-//   nodeString->type = NODE_STRING;
-//   nodeString->value = "holis";
-//
-//   NodeReturn * nodeReturn = malloc(sizeof(NodeReturn));
-//   nodeReturn->type = NODE_RETURN;
-//   nodeReturn->expression = (Node *)nodeNumber;
-//
-//   NodeLamdaDeclaration * nodeLamda = malloc(sizeof(NodeLamdaDeclaration));
-//   nodeLamda->type = NODE_LAMDA_DECLARATION;
-//   nodeLamda->async = 1;
-//   nodeLamda->params = NULL;
-//   nodeLamda->block = NULL;
-//
-//   NodeList * nodeArrayList2 = malloc(sizeof(NodeList));
-//   nodeArrayList2->type = NODE_ARRAY_DECLARATION_LIST;
-//   nodeArrayList2->node = (Node *)nodeNumber;
-//   nodeArrayList2->next = NULL;
-//
-//   NodeList * nodeArrayList = malloc(sizeof(NodeList));
-//   nodeArrayList->type = NODE_ARRAY_DECLARATION_LIST;
-//   nodeArrayList->node = (Node *)nodeString;
-//   nodeArrayList->next = nodeArrayList2;
-//
-//   NodeArrayDeclaration * nodeArray = malloc(sizeof(NodeArrayDeclaration));
-//   nodeArray->type = NODE_ARRAY_DECLARATION;
-//   nodeArray->elements = (NodeList *)nodeArrayList;
-//
-//   char * compiled_code = eval((Node *)node);
-//
-//   printf("%s\n", compiled_code);
-//   printf("%s\n", eval((Node *)node2));
-//   printf("%s\n", eval((Node *)nodeIf));
-//   printf("%s\n", eval((Node *)nodeReturn));
-//   printf("%s\n", eval((Node *)nodeNumber));
-//   printf("%s\n", eval((Node *)nodeLamda));
-//   printf("%s\n", eval((Node *)nodeArray));
-//
-//   return 0;
-// }
+static char * append_stdlib(char * code) {
+  const size_t buffer_length = strlen(stdlib) + strlen(code) + 1;
+  char * buffer = malloc(buffer_length);
+  snprintf(buffer, buffer_length, "%s%s", stdlib, code);
+
+  return buffer;
+}
+
+char * generate_code(Node * node) {
+  char * code = append_stdlib(eval(node));
+
+  return code;
+}

@@ -69,7 +69,6 @@ NodeObjectDeclaration * newNodeObjectDeclaration(const NodeList * body) {
 
 NodeFunctionCall * newNodeFunctionCall(const Node * caller, const NodeList * args) {
   NodeFunctionCall * node = malloc(sizeof(NodeFunctionCall));
-  printf("Pointer in function call: %p\n", args);
   node->type = NODE_FUNCTION_CALL;
   node->caller = (Node *)caller;
   node->args = (NodeList *)args;
@@ -198,7 +197,6 @@ NodePlaceholder * newNodePlaceholder() {
 
 NodeList * newArgumentList(const Node * node) {
   NodeList * list = malloc(sizeof(NodeList));
-  printf("lista_pointer: %p\n", list);
   list->type = LIST_ARGUMENTS;
   list->node = (Node *) node;
   list->next = NULL;
@@ -234,5 +232,12 @@ NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements) {
 Node * addNodeIgnore() {
   Node * node = malloc(sizeof(Node));
   node->type = NODE_IGNORE;
+  return node;
+}
+
+NodeEndmarked * newNodeEndmarked(Node * child) {
+  NodeEndmarked * node = malloc(sizeof(NodeEndmarked));
+  node->type = NODE_ENDMARKED;
+  node->child = child;
   return node;
 }
