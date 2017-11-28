@@ -214,7 +214,6 @@ selection_statement
 
 iteration_statement
 	: WHILE PARENS_OPEN expression PARENS_CLOSE compound_statement { $$ = nodeWhile($1, $2); }
-	| DO compound_statement WHILE PARENS_OPEN expression PARENS_CLOSE ENDMARKER { $$ = nodeWhile($2, $1); } // TODO: The last endmarker should be a different token i guess
 	;
 
 jump_statement

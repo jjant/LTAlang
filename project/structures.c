@@ -4,30 +4,6 @@
 #define TRUE 1
 #define FALSE 0
 
-// NODE TYPES
-#define NODE_STRING "STRING"
-#define NODE_NUMBER "NUMBER"
-#define NODE_IDENTIFIER "IDENTIFIER"
-#define NODE_THIS "THIS"
-#define NODE_OBJECT_DECLARATION "OBJECT DECLARATION"
-#define NODE_FUNCTION_CALL "FUNCTION CALL"
-#define NODE_OPERATION "OPERATION"
-#define NODE_TERNARY_OPERATION "TERNARY OPERATION"
-#define NODE_PARAMETER "PARAMETER"
-#define NODE_OBJECT_ACCESSOR "OBJECT ACCESSOR"
-#define NODE_IF "IF"
-#define NODE_WHILE "WHILE"
-#define NODE_RETURN "RETURN"
-#define NODE_LAMDA_DECLARATION "NODE_LAMDA_DECLARATION"
-
-// NODELIST TYPES
-#define NODE_KEY_VALUE_PAIR "KEY-VALUE PAIR"
-#define NODE_INSTRUCTION "INSTRUCTION"
-
-// CONSTANT TYPES
-#define TYPE_STRING "STRING"
-#define TYPE_NUM "NUMBER"
-
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
   node->type = NODE_STRING;
@@ -38,7 +14,7 @@ NodeString * newNodeString(const char * constant) {
 NodeNumber * newNodeNumber(const char * constant) {
   NodeNumber * node = malloc(sizeof(NodeNumber));
   node->type = NODE_NUMBER;
-  node->constant = constant;
+  node->value = constant;
   return node;
 }
 
@@ -99,7 +75,7 @@ NodeOperation * newNodeOperation(const Node * first, const Node * second, const 
   node->type = NODE_OPERATION;
   node->first = first;
   node->second = second;
-  node->operator = operator;
+  node->operation = operator;
   return node;
 }
 
@@ -169,7 +145,7 @@ NodeIf * newNodeIf(const Node * condition, const Node * then, const Node * elseO
   node->type = NODE_IF;
   node->condition = condition;
   node->then = then;
-  node->else = elsObj;
+  node->elseBlock = elsObj;
 }
 
 NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
