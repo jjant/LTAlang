@@ -3,6 +3,7 @@
 
 #define TRUE 1
 #define FALSE 0
+#define NULL 0
 
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
@@ -166,7 +167,7 @@ NodeList * newInstructionsList(const Node * node) {
 NodeList * addInstructions(const NodeList * list, const Node * node) {
   NodeList * cnode = (NodeList *)list;
   while (cnode->next != NULL) cnode = cnode->next;
-  cnode->next = node;
+  cnode->next = newInstructionsList(node);
 
   return (NodeList *)list;
 }
@@ -185,4 +186,26 @@ NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList *
   node->params = (NodeList *)parameters;
   node->block = block;
   return node;
+}
+
+NodePlaceholder * newNodePlaceholder() {
+  NodePlaceholder * node = malloc(sizeof(NodePlaceholder));
+  node->type = NODE_PLACEHOLDER;
+  return node;
+}
+
+NodeList * newArgumentList(const Node * node) {
+  NodeList * list = malloc(sizeof(NodeList));
+  list->type = LIST_ARGUMENTS;
+  list->node = (Node *) node;
+  list->next = NULL;
+  return list;
+}
+
+NodeList * addArgument(const NodeList * list, const Node * node) {
+  NodeList * cnode = (NodeList *)list;
+  while (cnode->next != NULL) cnode = cnode->next;
+  cnode->next = newArgumentList(node);
+
+  return (NodeList *)list;
 }

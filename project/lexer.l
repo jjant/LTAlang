@@ -15,15 +15,11 @@ void count();
 %%
 "/*"			{ comment(); }
 
-"case"			{ count(); return(CASE); }
-"default"		{ count(); return(DEFAULT); }
 "do"			{ count(); return(DO); }
 "else"			{ count(); return(ELSE); }
-"for"			{ count(); return(FOR); }
 "if"			{ count(); return(IF); }
 "_"			{ count(); return(PLACEHOLDER); }
 "return"		{ count(); return(RETURN); }
-"switch"		{ count(); return(SWITCH); }
 "while"			{ count(); return(WHILE); }
 "this"			{ count(); return(THIS); }
 
@@ -78,6 +74,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 "-"			{ count(); return(MINUS); }
 "+"			{ count(); return(PLUS); }
 "*"			{ count(); return(PROD); }
+"_"			{ count(); return(PLACEHOLDER); }
 "/"			{ count(); return(COCIENT); }
 "%"			{ count(); return(MOD); }
 "<"			{ count(); return(LESS); }

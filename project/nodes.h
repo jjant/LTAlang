@@ -14,6 +14,8 @@ typedef enum {
   NODE_RETURN,
   NODE_LAMDA_DECLARATION,
   NODE_KEY_VALUE_PAIR,
+  NODE_PLACEHOLDER,
+  LIST_ARGUMENTS,
   NODE_INSTRUCTION,
   NODE_ARRAY_DECLARATION
 } NodeType;
@@ -118,3 +120,7 @@ typedef struct NodeLamdaDeclaration {
   NodeList * params;
   Node * block;
 } NodeLamdaDeclaration;
+
+typedef struct NodePlaceholder {
+  NodeType type;
+} NodePlaceholder;
