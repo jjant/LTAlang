@@ -5,6 +5,32 @@
 #include "../structures.h"
 
 char * emptyString = "";
+char *(strings)[] = {
+  "NODE_STRING",
+  "NODE_NUMBER",
+  "NODE_IDENTIFIER",
+  "NODE_THIS",
+  "NODE_OBJECT_DECLARATION",
+  "NODE_FUNCTION_CALL",
+  "NODE_OPERATION",
+  "NODE_TERNARY_OPERATION",
+  "NODE_BLOCK",
+  "NODE_PARAMETER",
+  "NODE_IGNORE",
+  "NODE_OBJECT_ACCESSOR",
+  "NODE_IF",
+  "NODE_ARRAY_WRAP_DECLARATION",
+  "NODE_WHILE",
+  "NODE_RETURN",
+  "NODE_LAMDA_DECLARATION",
+  "NODE_KEY_VALUE_PAIR",
+  "NODE_PLACEHOLDER",
+  "LIST_ARGUMENTS",
+  "NODE_INSTRUCTION",
+  "NODE_ARRAY_DECLARATION",
+  "NODE_ARRAY_ELEMENT",
+  "NODE_ARRAY_DECLARATION_LIST",
+};
 
 static char * iterateOverObjectBody(NodeList * body);
 
@@ -92,13 +118,19 @@ char * handleFunctionCall(Node * node) {
   NodeFunctionCall * node_posta = (NodeFunctionCall *)node;
 
   char * callerCode = eval(node_posta->caller);
+  // printf("%d\n", *((uint32_t *)node_posta->args));
+  // printf("%p\n", node_posta->args);
+
+  // char * callerCode = emptyString;
+  // char * argsCode   = emptyString;
+  // node_posta->args;
   char * argsCode   = eval((Node *)node_posta->args);
 
-  const size_t punctuation_length = 4;
+  const size_t punctuation_length = strlen("()()");
   size_t buffer_length = strlen(callerCode) + strlen(argsCode) +  punctuation_length + 1;
   char * buffer = malloc(buffer_length);
 
-  snprintf(buffer, buffer_length, "%s%s%s%s%s%s", "(", callerCode, ")", "(", argsCode, ")");
+  snprintf(buffer, buffer_length, "(%s)(%s)",  callerCode, argsCode);
 
   return buffer;
 }
@@ -110,8 +142,8 @@ char * handleNodeOperation(Node * node) {
   char * compiledSecond = eval(node_posta->second);
   char * operation = node_posta->operation;
 
-  const size_t punctuation_length = 2; // for wrapping in parenthesis
-  const size_t buffer_length = strlen(compiledFirst) + strlen(compiledSecond) + punctuation_length + 1;
+  const size_t punctuation_length = strlen("()"); // for wrapping in parenthesis
+  const size_t buffer_length = strlen(compiledFirst) + strlen(operation) + strlen(compiledSecond) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
   snprintf(buffer, buffer_length, "(%s%s%s)", compiledFirst, operation, compiledSecond);
 
@@ -135,7 +167,7 @@ char * handleNodeTernaryOperation(Node * node) {
 
 // TODO:
 char * handleNodeBlock(Node * node) {
-  return "";
+  return eval(node);
 }
 
 char * handleNodeParameter(Node * node) {
@@ -144,7 +176,6 @@ char * handleNodeParameter(Node * node) {
   return name;
 }
 
-// TODO:
 char * handleNodeIgnore(Node * node) {
   const char * delimiter = ";";
 
@@ -184,9 +215,9 @@ char * handleNodeIf(Node * node) {
   return buffer;
 }
 
-// TODO:
+// TODO: no tocar
 char * handleNodeArrayWrapDeclaration(Node * node) {
-  return "";
+  return emptyString;
 }
 
 char * handleNodeWhile(Node * node) {
@@ -247,7 +278,7 @@ char * handleNodeLamdaDeclaration(Node * node) {
 
   char * asyncPrefix = node_posta->async ? "async" : "";
   char * compiledParams = iterateOverFunctionParams(node_posta->params);
-  char * compiledBody = ""; // TODO compiled body...
+  char * compiledBody = eval((Node *)node_posta->block); // TODO compiled body...
 
   const size_t punctuation_length = strlen("(()=>{})");
   const size_t buffer_length = strlen(asyncPrefix) + strlen(compiledParams) + strlen(compiledBody) + punctuation_length + 1;
@@ -275,12 +306,12 @@ char * handleNodeKeyValuePair(Node * node) {
 
 //TODO:
 char * handleNodePlaceholder(Node * node) {
-  return "";
+  return emptyString;
 }
 
 //TODO:
 char * handleNodeListArguments(Node * node) {
-  return "";
+  return handleNodeArrayDeclarationList(node);
 }
 
 // TODO: ???
@@ -382,6 +413,8 @@ handler handlers[] = {
 };
 
 char * eval(Node * node) {
+  printf("pointer: %p\n", node);
+  printf("type: %s\n", strings[node->type]);
   if (node == NULL || handlers[node->type] == NULL)
     return emptyString;
 

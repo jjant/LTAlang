@@ -69,6 +69,7 @@ NodeObjectDeclaration * newNodeObjectDeclaration(const NodeList * body) {
 
 NodeFunctionCall * newNodeFunctionCall(const Node * caller, const NodeList * args) {
   NodeFunctionCall * node = malloc(sizeof(NodeFunctionCall));
+  printf("Pointer in function call: %p\n", args);
   node->type = NODE_FUNCTION_CALL;
   node->caller = (Node *)caller;
   node->args = (NodeList *)args;
@@ -90,7 +91,7 @@ NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * 
   node->type = NODE_TERNARY_OPERATION;
   node->first = (Node *)first;
   node->second = (Node *)second;
-  node->third = (Node *)second;
+  node->third = (Node *)third;
   return node;
 }
 
@@ -197,6 +198,7 @@ NodePlaceholder * newNodePlaceholder() {
 
 NodeList * newArgumentList(const Node * node) {
   NodeList * list = malloc(sizeof(NodeList));
+  printf("lista_pointer: %p\n", list);
   list->type = LIST_ARGUMENTS;
   list->node = (Node *) node;
   list->next = NULL;
