@@ -260,5 +260,14 @@ void yyerror(NodeList * program, char *msg) {
 int main() {
   int i;
 	NodeList program;
-  return yyparse(&program);
+  int ret = yyparse(&program);
+
+	if (ret == 1) {
+		printf("%s", "There was an error parsing your program.");
+		return 1;
+	} else if (ret == 2) {
+		printf("%s", "There is not enough memory to parse your program");
+	}
+
+	return 0;
 }
