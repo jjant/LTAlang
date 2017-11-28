@@ -148,6 +148,7 @@ NodeIf * newNodeIf(const Node * condition, const Node * then, const Node * elseO
   node->condition = (Node *) condition;
   node->then = (Node *)  then;
   node->elseBlock = (Node *)  elseObj;
+  return node;
 }
 
 NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
@@ -155,6 +156,7 @@ NodeWhile * newNodeWhile(const Node * condition, const Node * block) {
   node->type = NODE_WHILE;
   node->condition = (Node *)  condition;
   node->block = (Node *)  block;
+  return node;
 }
 
 NodeList * newInstructionsList(const Node * node) {
