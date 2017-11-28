@@ -210,7 +210,7 @@ parameter_list
 	;
 
 statement
-	: compound_statement { $$ = $1; } // TODO: Wrap in node container
+	: compound_statement { $$ = addNodeBlock($1); }
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }

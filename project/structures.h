@@ -17,7 +17,7 @@ NodeTernaryOperation * newNodeTernaryOperation(const Node * first, const Node * 
 NodeParameter * newNodeParameter(const char * name);
 NodeList * newParameterList(const Node * node);
 NodeList * addParameter(const NodeList * list, const Node * node);
-NodeArrayDeclaration * newNodeArrayDeclaration(const Node * element);
+NodeArrayDeclarationElement * newNodeArrayDeclarationElement(const Node * element);
 NodeList * newArrayElementList(const Node * node);
 NodeList * addArrayElement(const NodeList * list, const Node * node);
 NodeObjectAccessor * newNodeObjectAccessor(const Node * left, const NodeIdentifier * right);
@@ -26,6 +26,8 @@ NodeWhile * newNodeWhile(const Node * condition, const Node * block);
 NodeList * newInstructionsList(const Node * node);
 NodeList * addInstructions(const NodeList * list, const Node * node);
 NodeReturn * newNodeReturn(const Node * expression);
+NodeBlock * addNodeBlock(const NodeList * instructions);
 NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList * parameters, const NodeList * block);
+NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements);
 
 #endif

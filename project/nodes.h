@@ -7,9 +7,11 @@ typedef enum {
   NODE_FUNCTION_CALL,
   NODE_OPERATION,
   NODE_TERNARY_OPERATION,
+  NODE_BLOCK,
   NODE_PARAMETER,
   NODE_OBJECT_ACCESSOR,
   NODE_IF,
+  NODE_ARRAY_WRAP_DECLARATION,
   NODE_WHILE,
   NODE_RETURN,
   NODE_LAMDA_DECLARATION,
@@ -85,10 +87,10 @@ typedef struct NodeParameter {
   char * name;
 } NodeParameter;
 
-typedef struct NodeArrayDeclaration {
+typedef struct NodeArrayDeclarationElement {
   NodeType type;
   Node * element;
-} NodeArrayDeclaration;
+} NodeArrayDeclarationElement;
 
 typedef struct NodeObjectAccessor {
   NodeType type;
@@ -124,3 +126,13 @@ typedef struct NodeLamdaDeclaration {
 typedef struct NodePlaceholder {
   NodeType type;
 } NodePlaceholder;
+
+typedef struct NodeBlock {
+  NodeType type;
+  NodeList * instructions;
+} NodeBlock;
+
+typedef struct NodeArrayDeclaration {
+  NodeType type;
+  NodeList * elements;
+} NodeArrayDeclaration;
