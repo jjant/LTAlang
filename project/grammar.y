@@ -94,8 +94,8 @@ opt_async
 
 // Objects are key-value pairs
 object_declaration
-	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newNodeObjectDeclaration(NULL); }
-	| BRACKETS_OPEN object_body BRACKETS_CLOSE { $$ = newNodeObjectDeclaration($2); }
+	: SIMPLE_BAR SIMPLE_BAR { $$ = newNodeObjectDeclaration(NULL); }
+	| SIMPLE_BAR object_body SIMPLE_BAR { $$ = newNodeObjectDeclaration($2); }
 	;
 
 object_body
@@ -214,6 +214,7 @@ statement
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
+	| expression ';' { $$ = $1; }
 	;
 
 
