@@ -66,7 +66,7 @@
 %type <node> additive_expression relational_expression equality_expression
 %type <node> logical_and_expression logical_or_expression conditional_expression
 %type <node> assignment_expression expression statement selection_statement
-%type <node> iteration_statement jump_statement
+%type <node> iteration_statement jump_statement assignable_expression
 
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %type <string> IDENTIFIER THIS STRING_LITERAL
@@ -115,14 +115,18 @@ array_declaration
 
 // Terminals for an expression
 primary_expression
-	: IDENTIFIER { $$ = newNodeIdentifier($1); }
-	| CONSTANT { $$ = newNodeNumber($1); }
+	: CONSTANT { $$ = newNodeNumber($1); }
 	| THIS { $$ = newNodeThis(); }
 	| STRING_LITERAL { $$ = newNodeString($1); }
-	| array_declaration { $$ = $1; } // TODO: Wrap in Node container
+	| array_declaration { $$ = newNodeArrayDeclaration($1); }
 	| object_declaration { $$ = $1; }
 	| lamda_declaration { $$ = $1; }
 	| PARENS_OPEN expression PARENS_CLOSE { $$ = $2; }
+	;
+
+assignable_expression
+	: IDENTIFIER { $$ = newNodeIdentifier($1); }
+	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccessor($1, newNodeIdentifier($3))}
 	;
 
 postfix_expression
@@ -130,7 +134,7 @@ postfix_expression
 	| postfix_expression ARRAY_OPEN expression ARRAY_CLOSE
 	| postfix_expression PARENS_OPEN PARENS_CLOSE { $$ = newNodeFunctionCall($1, NULL); }
 	| postfix_expression PARENS_OPEN argument_expression_list PARENS_CLOSE { $$ = newNodeFunctionCall($1, $3); }
-	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccessor($1, newNodeIdentifier($3))}
+	| assignable_expression { $$ = $1; }
 	;
 
 array_values_list
@@ -188,7 +192,7 @@ conditional_expression
 
 assignment_expression
 	: conditional_expression { $$ = $1; }
-	| postfix_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $3, $2); }
+	| assignable_expression assignment_operator assignment_expression { $$ = newNodeOperation($1, $3, $2); }
 	;
 
 // Assignment terminals
