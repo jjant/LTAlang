@@ -1,5 +1,5 @@
 %{
-	#inlcude "structures.h"
+	#include "structures.h"
 	extern int yylineno;
 
 	void yyerror(char *);
@@ -55,7 +55,8 @@
 
 %start statement_list
 
-//%%
+%%
+
 // Lamda functions are first class citizens
 lamda_declaration
 	: opt_async SIMPLE_BAR parameter_list SIMPLE_BAR LAMDA_ASSIGN compound_statement { $$ = newNodeLamdaDeclaration($1, $2, $3); }
@@ -68,8 +69,8 @@ opt_async
 
 // Objects are key-value pairs
 object_declaration
-	: LESS GREATER { $$ = newObjectDeclaration(NULL); }
-	| LESS object_body GREATER { $$ = newObjectDeclaration($1); }
+	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newObjectDeclaration(NULL); }
+	| BRACKETS_OPEN object_body BRACKETS_CLOSE { $$ = newObjectDeclaration($1); }
 	;
 
 object_body
@@ -178,17 +179,13 @@ expression
 	: assignment_expression { $$ = $1; }
 	;
 
-constant_expression
-	: conditional_expression { $$ = $1; }
-	;
-
 parameter_list
 	: IDENTIFIER { $$ = newParameterList(newNodeParameter($1)); }
 	| parameter_list LIST_DELIMITER IDENTIFIER { $$ = addParameter($2, $1); }
 	;
 
 statement
-	| compound_statement { $$ = $1; }
+	: compound_statement { $$ = $1; }
 	| selection_statement { $$ = $1; }
 	| iteration_statement { $$ = $1; }
 	| jump_statement { $$ = $1; }
@@ -197,7 +194,7 @@ statement
 
 // List of statements between enclosers
 compound_statement
-	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newInstructionsList(NULL); } // TODO: Check if it is the best way
+	: BRACKETS_OPEN BRACKETS_CLOSE { $$ = newInstructionsList(NULL); }
 	| BRACKETS_OPEN statement_list BRACKETS_CLOSE { $$ = $1; }
 	;
 
@@ -217,7 +214,7 @@ iteration_statement
 	;
 
 jump_statement
-	: RETURN expression { $$ = NodeReturn($2); }
+	: RETURN PARENS_OPEN expression PARENS_CLOSE { $$ = NodeReturn($2); }
 	;
 
 %%

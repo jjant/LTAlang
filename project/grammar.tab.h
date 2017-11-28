@@ -71,13 +71,13 @@
      PARENS_CLOSE = 287,
      BRACKETS_OPEN = 288,
      BRACKETS_CLOSE = 289,
-     LESS_OPEN = 290,
-     LESS_CLOSE = 291,
-     ARRAY_OPEN = 292,
-     ARRAY_CLOSE = 293,
-     SIMPLE_BAR = 294,
-     LIST_DELIMITER = 295,
-     COLONS = 296,
+     ARRAY_OPEN = 290,
+     ARRAY_CLOSE = 291,
+     SIMPLE_BAR = 292,
+     LIST_DELIMITER = 293,
+     COLONS = 294,
+     EMPTY = 295,
+     ASYNC = 296,
      PROD = 297,
      MOD = 298,
      COCIENT = 299,
@@ -87,15 +87,12 @@
      GREATER = 303,
      THEN = 304,
      OBJECT_ACCESSOR = 305,
-     CASE = 306,
-     DEFAULT = 307,
-     IF = 308,
-     ELSE = 309,
-     SWITCH = 310,
-     WHILE = 311,
-     DO = 312,
-     FOR = 313,
-     RETURN = 314
+     IF = 306,
+     ELSE = 307,
+     WHILE = 308,
+     DO = 309,
+     FOR = 310,
+     RETURN = 311
    };
 #endif
 /* Tokens.  */
@@ -131,13 +128,13 @@
 #define PARENS_CLOSE 287
 #define BRACKETS_OPEN 288
 #define BRACKETS_CLOSE 289
-#define LESS_OPEN 290
-#define LESS_CLOSE 291
-#define ARRAY_OPEN 292
-#define ARRAY_CLOSE 293
-#define SIMPLE_BAR 294
-#define LIST_DELIMITER 295
-#define COLONS 296
+#define ARRAY_OPEN 290
+#define ARRAY_CLOSE 291
+#define SIMPLE_BAR 292
+#define LIST_DELIMITER 293
+#define COLONS 294
+#define EMPTY 295
+#define ASYNC 296
 #define PROD 297
 #define MOD 298
 #define COCIENT 299
@@ -147,15 +144,12 @@
 #define GREATER 303
 #define THEN 304
 #define OBJECT_ACCESSOR 305
-#define CASE 306
-#define DEFAULT 307
-#define IF 308
-#define ELSE 309
-#define SWITCH 310
-#define WHILE 311
-#define DO 312
-#define FOR 313
-#define RETURN 314
+#define IF 306
+#define ELSE 307
+#define WHILE 308
+#define DO 309
+#define FOR 310
+#define RETURN 311
 
 
 

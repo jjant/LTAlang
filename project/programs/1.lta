@@ -1,6 +1,6 @@
 (: Objects and functions accessing implemented in LTA language :)
 
-a = < a:2, b:3>
+a = {a:2, b:3}
 
 b = |a| => {
   return a.2
