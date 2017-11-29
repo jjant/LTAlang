@@ -11,6 +11,7 @@ string			\".*\"
 number      [0-9]+(\.[0-9]+)?
 identifier  [a-z]+
 newline     \n
+valid_comment [(][:][^:]*[:]+([^:(][^:]*[:]+)*[(]
 exit        ("exit"|"quit")
 
 %%
@@ -48,6 +49,7 @@ exit        ("exit"|"quit")
 "*"			{ return(PROD); }
 "%"			{ return(MOD); }
 "<"			{ return(LESS); }
+"(:".*  { /* IGNORE COMMENT */ }
 "|>"		{ return(LAMDA_ASYNC); }
 ">"			{ return(GREATER); }
 "?"			{ return(THEN); }

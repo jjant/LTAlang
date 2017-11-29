@@ -4,4 +4,4 @@ all:
 run:
 	make all
 	clear
-	echo "| a: \"hola\" |" | ./runner.out
+	echo "| a: \"hola\" | (: Greetings :D" | ./runner.out
