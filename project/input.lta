@@ -1,10 +1,13 @@
-(: Objects are so damn versatile
+(: Fibonacci with `this` reference implemented in LTA language
 
-a = | a: 1.43,
-      b: " Hi :)",
-      c: |x| => {
-        puts(x.upper())
-      },
-      d: 4 |
+fibonacci = |n| => {
+  if (n == 0 || n == 1) {
+    return(n)
+  (: Note how the else have to be inline with the closing curly brace
+  } else { return(this(n - 1) + this(n - 2)) }
+}
 
-puts(a.c(a.a + a.d + a.b)) (: 5.43 HI :)
+puts(fibonacci(3)) (: 2
+puts(fibonacci(4)) (: 3
+puts(fibonacci(5)) (: 5
+puts(fibonacci(6)) (: 8

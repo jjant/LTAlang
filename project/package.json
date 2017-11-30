@@ -9,6 +9,7 @@
   "author": "Ramiro Olivera Fedi and Julian Antonielli",
   "license": "MIT",
   "dependencies": {
-    "prepack": "0.2.12"
+    "prepack": "0.2.12",
+    "prompt-sync": "4.1.5"
   }
 }
