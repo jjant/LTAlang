@@ -157,7 +157,7 @@ argument_expression_list
 	| argument_expression_list LIST_DELIMITER assignment_expression { $$ = addArgument($1, $3); }
 	;
 
-// Expressions with logic and arithmetic operators TODO: Add !
+// Expressions with logic and arithmetic operators
 negation_expression
 	: postfix_expression { $$ = $1; }
 	| NEGATE postfix_expression { $$ = newNodeNegation($2); }

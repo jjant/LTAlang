@@ -40,8 +40,6 @@ char *(strings)[] = {
 static char * iterateOverObjectBody(NodeList * body);
 static char * eval(Node * node);
 
-// TODO: ver el tema de los semicolons
-
 char * handleNodeString(Node * node) {
   char * raw_str = ((NodeString *)node)->value;
 
@@ -51,21 +49,10 @@ char * handleNodeString(Node * node) {
   snprintf(buffer, buffer_length, "%s", raw_str);
 
   return buffer;
-
-  // TODO: Old version lol
-  // char * raw_str = ((NodeString *)node)->value;
-  //
-  // const size_t punctuation_length = strlen("\"\"");
-  // const size_t buffer_length = strlen(raw_str) + punctuation_length + 1;
-  // char * buffer = malloc(buffer_length);
-  // snprintf(buffer, buffer_length, "\"%s\"", raw_str);
-  //
-  // return buffer;
 }
 
 char * handleNodeNumber(Node * node) {
   char * raw_number = ((NodeNumber *)node)->value;
-  //TODO: I guess this is safe...
   return raw_number;
 }
 
@@ -77,7 +64,6 @@ char * handleNodeIdentifier(Node * node) {
   strcpy(newIdentifier, identifier);
   strcat(newIdentifier, "___");
 
-  //TODO: I guess this is safe...
   return newIdentifier;
 }
 
@@ -91,13 +77,11 @@ char * handleNodeThis(Node * node) {
   return buffer;
 }
 
-// TODO: No idea if this is correct lol
-// TODO: Do something about the size thing
 static char * iterateOverObjectBody(NodeList * body) {
   NodeList * current_list = body;
 
-  const size_t maxObjectSize = 1000; // idk lol
-  char * compiledObjectBody = malloc(maxObjectSize);
+  size_t punctuation_length = strlen(",");
+  char * compiledObjectBody = malloc(1); // Just the null terminator
   compiledObjectBody[0] = '\0';
 
   if(body == NULL) return compiledObjectBody;
@@ -105,8 +89,10 @@ static char * iterateOverObjectBody(NodeList * body) {
   do {
     Node * keyValue = (Node *)current_list->node;
     if (keyValue == NULL) break;
+    char * result = eval(keyValue);
+    compiledObjectBody = realloc(compiledObjectBody, strlen(compiledObjectBody) + strlen(result) + punctuation_length + 1);
 
-    strcat(compiledObjectBody, eval(keyValue));
+    strcat(compiledObjectBody, result);
     strcat(compiledObjectBody, ",");
   } while((current_list = current_list->next) != NULL);
 
@@ -185,7 +171,6 @@ char * handleNodeTernaryOperation(Node * node) {
   return buffer;
 }
 
-// TODO:
 char * handleNodeBlock(Node * node) {
   return eval(node);
 }
@@ -241,7 +226,8 @@ char * handleNodeIf(Node * node) {
   return buffer;
 }
 
-// TODO: no tocar
+// This function is necessary since it work as a placeholder for an extensible
+// functionality
 char * handleNodeArrayWrapDeclaration(Node * node) {
   return emptyString;
 }
@@ -265,26 +251,24 @@ char * handleNodeReturn(Node * node) {
 
   char * compiledExpression = eval(node_posta->expression);
 
-  const size_t punctuation_length = strlen("return || 0;");
+  const size_t punctuation_length = strlen("return ;");
   const size_t buffer_length = strlen(compiledExpression) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
-  snprintf(buffer, buffer_length, "return %s || 0;", compiledExpression);
+  snprintf(buffer, buffer_length, "return %s;", compiledExpression);
 
   return buffer;
 }
 
 static char * iterateOverFunctionParams(NodeList * paramList);
 
-// TODO: esto debería volar cuando cambiemos nodelist y eso
-// TODO: ver trailing commas
 static char * iterateOverFunctionParams(NodeList * node) {
   if (node == NULL) return emptyString;
 
   NodeList * current_list = (NodeList *)node;
 
-  const size_t buffer_length = 1000; // idk lol
-  char * buffer = malloc(buffer_length);
+  char * buffer = malloc(1); // Just the null terminator
   buffer[0] = '\0';
+  size_t punctuation_length = strlen(",");
 
   if(current_list == NULL) return buffer;
 
@@ -292,7 +276,9 @@ static char * iterateOverFunctionParams(NodeList * node) {
     Node * actual_node = (Node *)current_list->node;
     if (actual_node == NULL) break;
 
-    strcat(buffer, eval(actual_node));
+    char * result = eval(actual_node);
+    buffer = realloc(buffer, strlen(result) + strlen(buffer) + punctuation_length + 1);
+    strcat(buffer, result);
     strcat(buffer, ",");
   } while((current_list = current_list->next) != NULL);
 
@@ -305,7 +291,7 @@ char * handleNodeLamdaDeclaration(Node * node) {
   // TODO: Maybe replace with setTimeout
   char * asyncPrefix = node_posta->async ? "async" : "";
   char * compiledParams = iterateOverFunctionParams(node_posta->params);
-  char * compiledBody = eval((Node *)node_posta->block); // TODO compiled body...
+  char * compiledBody = eval((Node *)node_posta->block);
 
   const size_t punctuation_length = strlen("( function(){\nreturn 0;})");
   const size_t buffer_length = strlen(asyncPrefix) + strlen(compiledParams) + strlen(compiledBody) + punctuation_length + 1;
@@ -331,23 +317,22 @@ char * handleNodeKeyValuePair(Node * node) {
   return buffer;
 }
 
-//TODO:
+// This function is necessary since it work as a placeholder for an extensible
+// functionality
 char * handleNodePlaceholder(Node * node) {
   return emptyString;
 }
 
-//TODO:
 char * handleNodeListArguments(Node * node) {
   return handleNodeArrayDeclarationList(node);
 }
 
-// TODO: ???
 char * handleNodeInstructionList(Node * node) {
   NodeList * current_list = (NodeList *)node;
 
-  const size_t buffer_length = 1000; // idk lol
-  char * buffer = malloc(buffer_length);
+  char * buffer = malloc(1); // Just the null terminator
   buffer[0] = '\0';
+  size_t punctuation_length = 0;
 
   if(current_list == NULL) return buffer;
 
@@ -355,17 +340,17 @@ char * handleNodeInstructionList(Node * node) {
     Node * actual_node = (Node *)current_list->node;
     if (actual_node == NULL) break;
 
-    strcat(buffer, eval(actual_node));
+    char * result = eval(actual_node);
+    buffer = realloc(buffer, strlen(result) + strlen(buffer) + punctuation_length + 1);
+    strcat(buffer, result);
   } while((current_list = current_list->next) != NULL);
 
   return buffer;
 }
 
-// TODO: Check NodeArrayDeclaration struct. I don't think it is correct.
 char * handleNodeArrayDeclaration(Node * node) {
   NodeArrayDeclaration * node_posta = (NodeArrayDeclaration *)node;
 
-  // TODO: change this to iterate over list
   char * compiledElements = eval((Node *)node_posta->elements);
 
   // 2 for wrapping key in quotes, 1 for ':', 2 for wrapping value in parenthesis.
@@ -378,19 +363,16 @@ char * handleNodeArrayDeclaration(Node * node) {
   return buffer;
 }
 
-// TODO: check
 char * handleNodeArrayElement(Node * node) {
   return eval(node);
 }
 
-// TODO: ver trailing commas
 char * handleNodeArrayDeclarationList(Node * node) {
   NodeList * current_list = (NodeList *)node;
 
-
-  const size_t buffer_length = 1000; // TODO: idk lol
-  char * buffer = malloc(buffer_length);
+  char * buffer = malloc(1); // Just the null terminator
   buffer[0] = '\0';
+  size_t punctuation_length = strlen("(),");
 
   if(current_list == NULL || current_list->node == NULL)
     return buffer;
@@ -398,8 +380,10 @@ char * handleNodeArrayDeclarationList(Node * node) {
   do {
     Node * current_node = (Node *)current_list->node;
     if (node == NULL) break;
+    char * result = eval(current_node);
+    buffer = realloc(buffer, strlen(result) + strlen(buffer) + punctuation_length + 1);
     strcat(buffer, "(");
-    strcat(buffer, eval(current_node));
+    strcat(buffer, result);
     strcat(buffer, "),");
   } while((current_list = current_list->next) != NULL);
 
@@ -412,7 +396,7 @@ char * handleNodeEndmarked(Node * node) {
   char * compiledChild = eval(node_posta->child);
 
   const size_t punctuation_length = strlen(";");
-  const size_t buffer_length = strlen(compiledChild) + punctuation_length + 1; // TODO: idk lol
+  const size_t buffer_length = strlen(compiledChild) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
   snprintf(buffer, buffer_length, "%s;", compiledChild);
 
@@ -433,7 +417,6 @@ char * handleNodeNegation(Node * node) {
 
 typedef char * (* handler)(Node *);
 
-// TODO: add this.
 handler handlers[] = {
   handleNodeString,
   handleNodeNumber,
@@ -455,7 +438,7 @@ handler handlers[] = {
   handleNodeKeyValuePair,
   handleNodePlaceholder,
   handleNodeListArguments,
-  handleNodeInstructionList, // TODO: ???
+  handleNodeInstructionList,
   handleNodeArrayDeclaration,
   handleNodeArrayElement,
   handleNodeArrayDeclarationList,

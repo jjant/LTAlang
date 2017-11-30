@@ -43,7 +43,7 @@ exit        ("exit"|"quit")
 ("[")		{ return(ARRAY_OPEN); }
 ("]")		{ return(ARRAY_CLOSE); }
 "."			{ return(OBJECT_ACCESSOR); }
-"!"			{ return(NEGATE); /* TODO: Check whatsup with this */}
+"!"			{ return(NEGATE); }
 "-"			{ return(MINUS); }
 "+"			{ return(PLUS); }
 "*"			{ return(PROD); }

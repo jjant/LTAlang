@@ -211,10 +211,6 @@ NodeList * addArgument(const NodeList * list, const Node * node) {
   return (NodeList *)list;
 }
 
-// TODO: Estas dos son nuevas.
-// La de abajo cambio de nombre. La que antes era newNodeArrayDeclaration
-// Ahora es newNodeArrayDeclarationElement. Lo hice porque sino en la grammar
-// Quedaban errores de tipos en los no-terminales.
 NodeBlock * addNodeBlock(const NodeList * instructions) {
   NodeBlock * node = malloc(sizeof(NodeBlock));
   node->type = NODE_BLOCK;
