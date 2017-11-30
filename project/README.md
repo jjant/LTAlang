@@ -9,12 +9,20 @@ git clone https://github.com/jjant/LTAlang.git && cd LTAlang
 make all
 ./compiler input.lta
 ```
+or
+```bash
+cat input.lta | ./compiler
+```
 
 ## Optimizations
 To compile the code with optimizations run the following line to build your code
 
 ```bash
 ./compiler input.lta --optimize
+```
+or
+```bash
+cat input.lta | ./compiler --optimize
 ```
 
 ## Project organization

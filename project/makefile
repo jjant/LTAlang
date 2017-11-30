@@ -1,16 +1,19 @@
 all:
-	bison -d grammar/grammar.y &&	lex grammar/lexer.l &&	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o compiler.out
+	bison -d grammar/grammar.y &&	lex grammar/lexer.l &&	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -w -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o dependency_compiler.out && npm install
 
 grammar:
 	bison -d grammar.y &&	lex lexer.l
 
+dependencies:
+	npm install
+
 build:
-	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o compiler.out
+	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -w -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o dependency_compiler.out
 
 clean:
-	rm -f grammar.tab.o lex.yy.o main.o structures.o compiler.out grammar.tab.c grammar.tab.h lex.yy.c
+	rm -rf grammar.tab.o lex.yy.o main.o structures.o dependency_compiler.out grammar.tab.c grammar.tab.h lex.yy.c node_modules unoptimized.js output.js
 
 run:
 	make all
 	clear
-	cat input.lta | ./compiler.out
+	cat input.lta | ./dependency_compiler.out

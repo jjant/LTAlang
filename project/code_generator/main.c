@@ -5,7 +5,8 @@
 #include "structures.h"
 
 // TODO: checkear readline
-char * stdlib = "puts___ = console.log; read___ = readline;\nfalse___=false; true___=true;\nMath___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach\n\n";
+// TODO: Check Math proxy.
+char * stdlib = "var inputGlobal = {}; try{inputGlobal=readline}catch(e){inputGlobal=window.prompt};puts___ = console.log; read___ = inputGlobal;\nfalse___=false; true___=true;\n//Math___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach\n\n";
 
 char * emptyString = "";
 char *(strings)[] = {

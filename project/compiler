@@ -1,0 +1,25 @@
+if [ $# -eq 0 ]
+then
+  cat "-" | ./dependency_compiler.out
+fi
+
+if [ $# -eq 1 ] && [ "$1" != "--optimize" ]
+then
+  cat $1 | ./dependency_compiler.out
+fi
+
+if [ $# -eq 1 ] && [ "$1" == "--optimize" ]
+then
+  rm -f tmp.js
+  cat "-" | ./dependency_compiler.out >> tmp.js
+  node_modules/prepack/bin/prepack.js tmp.js
+  rm -f tmp.js
+fi
+
+if [ $# -eq 2 ]
+then
+  rm -f tmp.js
+  cat $1 | ./dependency_compiler.out >> tmp.js
+  node_modules/prepack/bin/prepack.js tmp.js
+  rm -f tmp.js
+fi

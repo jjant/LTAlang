@@ -1,0 +1,14 @@
+{
+  "name": "ltalang",
+  "version": "1.0.0",
+  "description": "LTA Language compiler dependencies",
+  "main": "code_generator/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ramiro Olivera Fedi and Julian Antonielli",
+  "license": "MIT",
+  "dependencies": {
+    "prepack": "0.2.12"
+  }
+}

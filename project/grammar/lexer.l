@@ -8,7 +8,7 @@
 
 digit       [0-9]
 string			\".*\"
-number      [0-9]+(\.[0-9]+)?
+number      -?[0-9]+(\.[0-9]+)?
 identifier  [a-zA-Z]+
 newline     \n
 exit        ("exit"|"quit")
@@ -43,7 +43,7 @@ exit        ("exit"|"quit")
 ("[")		{ return(ARRAY_OPEN); }
 ("]")		{ return(ARRAY_CLOSE); }
 "."			{ return(OBJECT_ACCESSOR); }
-"!"			{ return('!'); }
+"!"			{ return('!'); /* TODO: Check whatsup with this */}
 "-"			{ return(MINUS); }
 "+"			{ return(PLUS); }
 "*"			{ return(PROD); }
