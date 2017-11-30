@@ -95,8 +95,8 @@ lamda_declaration
 	;
 
 opt_async
-	: LAMDA_ASSIGN { $$ = 0 }
-	| LAMDA_ASYNC { $$ = 1 }
+	: LAMDA_ASSIGN { $$ = 0; }
+	| LAMDA_ASYNC { $$ = 1; }
 	;
 
 // Objects are key-value pairs
@@ -134,7 +134,7 @@ primary_expression
 
 assignable_expression
 	: IDENTIFIER { $$ = newNodeIdentifier($1); }
-	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccessor($1, newNodeIdentifier($3))}
+	| postfix_expression OBJECT_ACCESSOR IDENTIFIER { $$ = newNodeObjectAccessor($1, newNodeIdentifier($3)); }
 	;
 
 postfix_expression

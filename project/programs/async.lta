@@ -14,5 +14,6 @@ async = |x| |> {
 }
 
 (: TODO: Check the best way to test the asynchronicity
+puts("HOLA 1 :)")
 async("SYNC")
-puts("HOLA :)")
+puts("HOLA 2 :)")
