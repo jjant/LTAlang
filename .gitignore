@@ -12,5 +12,4 @@ compiler.out
 grammar.tab.c
 grammar.tab.h
 lex.yy.c
-node_modules
 out.js

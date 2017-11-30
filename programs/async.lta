@@ -1,0 +1,19 @@
+(: Native asynchronic procedures
+
+(: This is a synchronic function
+sync = ~ => {
+  read("Input: ")
+}
+
+(: This is an asynchronic function
+async = ~ |> {
+  read("Input: ")
+}
+
+(: With the async version you see the message BEFORE the input is requested
+async("SYNC")
+puts("Hi :)")
+
+(: With the sync version you see the message AFTER the input is requested
+sync("SYNC")
+puts("Hi :)")

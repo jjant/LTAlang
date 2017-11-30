@@ -1,16 +1,19 @@
-CFLAGS=-pedantic -std=c99 -Wall -Wextra -Wfloat-equal -Wshadow -Wpointer-arith -Wstrict-prototypes -Wcast-align -Wstrict-overflow=5 -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wunreachable-code -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Werror -pedantic-errors -Wmissing-prototypes
-CC=gcc
+all:
+	bison -d grammar/grammar.y &&	lex grammar/lexer.l &&	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -w -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o dependency_compiler.out
 
-compile:
-	yacc -d ./compilers/grammar.y -o ./dist/compiled_grammar.c
-	lex -o ./dist/compiled_lexer.c ./compilers/lexer.l
-	cc ./dist/compiled_lexer.c ./dist/compiled_grammar.c -o ./dist/compiler
+grammar:
+	bison -d grammar/grammar.y &&	lex grammar/lexer.l
+
+dependencies:
+	npm install
+
+build:
+	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -w -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o dependency_compiler.out
 
 clean:
-	rm -rf dist/*
+	rm -rf grammar.tab.o lex.yy.o main.o structures.o dependency_compiler.out grammar.tab.c grammar.tab.h lex.yy.c unoptimized.js output.js
 
 run:
-	./dist/compiler
-
-watch:
-	while true; do make compile; sleep 3; done
+	make all
+	clear
+	cat input.lta | ./compiler
