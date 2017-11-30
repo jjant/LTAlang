@@ -2,7 +2,7 @@ all:
 	bison -d grammar/grammar.y &&	lex grammar/lexer.l &&	gcc -c grammar.tab.c code_generator/structures.c code_generator/main.c lex.yy.c -w -s &&	gcc grammar.tab.o lex.yy.o structures.o main.o -o dependency_compiler.out && npm install
 
 grammar:
-	bison -d grammar.y &&	lex lexer.l
+	bison -d grammar/grammar.y &&	lex grammar/lexer.l
 
 dependencies:
 	npm install
