@@ -1,4 +1,4 @@
-(: Objects are so damn versatile
+(: Objects are so damn versatile. Each key can hold constants, variables, objects, ...
 
 a = | a: 1.43,
       b: " Hi :)",

@@ -1,0 +1,9 @@
+(: Ask the user for input by using native API `read`
+(: Show the user information by using native API `puts`
+
+(: This is how we say a function will not receive any parameters
+a = ~ => {
+  puts("Hi " + read("Say your name: "))
+}
+
+a() (: Hi <Name>

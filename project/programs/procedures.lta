@@ -1,7 +1,0 @@
-(: Functions as procedures
-
-a = ~ => {
-  puts("Hi " + read("Say your name: "))
-}
-
-a() (: Hi <Name>

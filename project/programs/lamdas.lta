@@ -4,6 +4,8 @@ applyToString = |a, b| => {
   return(puts(b(a)))
 }
 
+(: Check out how we just create a function right on a function call. Good-bye function pointers,
+(: hello LTA.
 applyToString("Hi frIenD", |str| => {
   return(str.lower());
 })

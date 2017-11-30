@@ -6,6 +6,7 @@
 
 // TODO: checkear readline
 // TODO: Check Math proxy.
+// TODO: Add Number___=Number
 // This is a JS snippet to allow the program to work both in NodeJS and in the latest browsers.
 // It defines the input/output operations
 // It also sets some variables and some utility funcions, like `true`, `false`, String, and Math objects

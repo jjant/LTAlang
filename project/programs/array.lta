@@ -1,4 +1,5 @@
-(: Using arrays and its `map` function
+(: Using arrays and its native `map` function
+(: `map`, `reduce` and `each` are the available functions for the Array type
 
 times = |n| => {
   a = [1,2,3,4,5]

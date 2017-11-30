@@ -4,6 +4,7 @@ fibonacci = |n| => {
   if (n == 0 || n == 1) {
     return(n)
   (: Note how the else have to be inline with the closing curly brace
+  (: The `this` keyword makes reference to the calling function.
   } else { return(this(n - 1) + this(n - 2)) }
 }
 

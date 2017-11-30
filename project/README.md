@@ -7,12 +7,22 @@ To build and run
 ```bash
 git clone https://github.com/jjant/LTAlang.git && cd LTAlang
 make all
-./compiler input.lta
+chmod 777 ./compiler #This is necessary to execute the compiler
+./compiler input.lta > out.js
 ```
 or
 ```bash
-cat input.lta | ./compiler
+cat input.lta | ./compiler > out.js
 ```
+Finally, to run the compiled code you could use both `node` environment by running
+
+```bash
+node out.js
+```
+or try it in the javascript console of a modern browser.
+
+## Requirements
+The project was tested in pampero@itba environment with `node v8.2.1` and `npm v5.3.0`. The compiled code runs with both `node` and the console for the latest browsers (such as `chrome v62`).
 
 ## Optimizations
 To compile the code with optimizations run the following line to build your code
@@ -25,19 +35,23 @@ or
 cat input.lta | ./compiler --optimize
 ```
 
+## Code examples
+Check the  `programs/` folder to see some of valid LTA languages organized by features.
+
 ## Project organization
 The project is divided in several folders and files:
 
-* Folder `code_generator`: Contains the C code for the compiler and the AST generator. The file  `main.c` traverses the tree generating the Ecmascript code; The file `structures.c` generates the AST from the LTA language token list. The file `nodes.h` defines the node used in the tree.
-* Folder `grammar`: Contains the code for YACC and LEXX. Here we defined the grammar and the tokenization.
+* Folder `code_generator`: Contains the C code for the compiler and the AST generator. The file  `main.c` traverses the tree generating the Ecmascript code; The file `structures.c` generates the AST from the language token list. The file `nodes.h` defines the node used in the tree.
+* Folder `grammar`: Contains the code for YACC and LEXX. Here we defined the grammar and tokenize the input.
 * Folder `programs`: Contains a series of valid LTA program samples.
-* `compiler.sh`: Runs the compiler when the compiler is available
+* `./compiler`: Runs the compiler when already built and have permissions to execute it.
 
 ## Features
 These are some of the features that we included in the LTA language
 
 * C-like operators
 * Weak typing (but with primitive types `Number`, `String`, `Boolean`, `Array` and `Function`)
+* Constants (eg: `1.232`, `-4`, `true`, `"Even strings!"`)
 * Cycles with `loop`
 * Conditionals with `if`
 * Lamdas (anonymous functions) with `|x| => { ... }`
@@ -47,15 +61,17 @@ These are some of the features that we included in the LTA language
 * Single line comments with `(:`
 * Mathematic utils library with `Math` native hash.
 * Self-reference in functions with `this`
-* Newlines as endmarkers (no uglies `;`s)
+* Newlines as endmarkers (no ugly `;`s)
 
 ## Caveats
 This is a list of considerations to take into account when using or programming in LTA:
 
-* The resulting code is valid ES2017 code. It should be tested on modern browsers, the latest versions of nodejs or by transpiling it to a older version.
-* The optimizations are achieved through the use of dependencies such as `prepack`.
+* The resulting code is valid ES2017 code. It should be tested on modern browsers, the latest versions of nodejs or by transpiling it to older Ecmascript versions.
+* The optimizations are achieved through the use of `prepack`. A Javascript to Javascript compiler which optimizes function calls and improves code benchmarks.
 
+## Dependencies
+We used [`prepack`](https://prepack.io/) to optimize javascript code and [`prompt-sync`](https://github.com/0x00A/prompt-sync) to enable stdin input from nodejs.
 
 ## Authors
-Julian Antonielli (@jant) jantonielli@itba.edu.ar
-Ramiro Olivera Fedi (@ramadis) rolivera@itba.edu.ar
+* Julian Antonielli (@jant) jantonielli@itba.edu.ar
+* Ramiro Olivera Fedi (@ramadis) rolivera@itba.edu.ar

@@ -9,9 +9,13 @@ prime = |n| => {
     return (n==2)
   }
 
+  (: Math is a native API to access some awesome Math functionality such as `sqrt`, `sin`, `cos`...
+  (: It has the same API that Javascript's Math object.
   m = Math.sqrt(n);
 
   i = 3;
+
+  (: `while` is outdated. Say hello to `loop`
   loop(i<=m) {
     if (n % i == 0) {
       return(false)

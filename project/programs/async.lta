@@ -1,5 +1,6 @@
 (: Native asynchronic procedures
 
+(: This is a synchronic function
 sync = |x| => {
   i = 0
   loop(i < 1000000) {
@@ -7,6 +8,7 @@ sync = |x| => {
   }
 }
 
+(: This is an asynchronic function
 async = |x| |> {
   sync(x)
 }
