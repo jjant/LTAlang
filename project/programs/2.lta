@@ -1,20 +1,29 @@
 (: Primality test implemented in LTA language
 
 prime = |n| => {
- if (n%1 || n<2) return false
- if (n%2==0) return (n==2);
-
- m = Math.sqrt(n);
-
- for (i=3; i<=m; i+=2) {
-  if (n%i==0) {
-    return false
+  if (n % 1 || n < 2) {
+    return (false)
   }
- }
 
- return true
+  if (n % 2 == 0) {
+    return (n==2)
+  }
+
+  m = Math.sqrt(n);
+
+  i = 3;
+  while(i<=m) {
+    if (n % i == 0) {
+      return(false)
+    }
+    i += 2
+  }
+
+  return(true)
 }
 
-prime(2) (: TRUE
-prime(3) (: TRUE
-prime(4) (: FALSE
+puts(prime(2)) (: TRUE
+puts(prime(3)) (: TRUE
+puts(prime(7)) (: TRUE
+puts(prime(141)) (: FALSE
+puts(prime(4)) (: FALSE

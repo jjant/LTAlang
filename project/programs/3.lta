@@ -1,15 +1,12 @@
-(: Fibonacci with memoization and `this` reference implemented in LTA language :)
+(: Fibonacci with `this` reference implemented in LTA language
 
-fibonacci = |num, memo| => {
-  memo = memo || {};
-
-  if (memo[num]) { return memo[num] }
-  if (num <= 1) { return 1 }
-
-  return memo[num] = this(num - 1, memo) + this(num - 2, memo)
-
+fibonacci = |n| => {
+  if (n == 0 || n == 1) { return(n)
+  (: Note how the else have to be inline with the closing curly brace
+  } else { return(this(n - 1) + this(n - 2)) }
 }
 
-fibonacci(3) (: 2 :)
-fibonacci(4) (: 3 :)
-fibonacci(5) (: 5 :)
+puts(fibonacci(3)) (: 2
+puts(fibonacci(4)) (: 3
+puts(fibonacci(5)) (: 5
+puts(fibonacci(6)) (: 8

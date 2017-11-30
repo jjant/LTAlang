@@ -9,9 +9,8 @@
 digit       [0-9]
 string			\".*\"
 number      [0-9]+(\.[0-9]+)?
-identifier  [a-z]+
+identifier  [a-zA-Z]+
 newline     \n
-valid_comment [(][:][^:]*[:]+([^:(][^:]*[:]+)*[(]
 exit        ("exit"|"quit")
 
 %%
@@ -38,6 +37,7 @@ exit        ("exit"|"quit")
 ","			{ return(LIST_DELIMITER); }
 ":"			{ return(COLONS); }
 "="			{ return(REG_ASSIGN); }
+"~"			{ return(EMP_OBJ); }
 "("			{ return(PARENS_OPEN); }
 ")"			{ return(PARENS_CLOSE); }
 ("[")		{ return(ARRAY_OPEN); }

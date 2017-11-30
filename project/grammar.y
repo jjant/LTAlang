@@ -49,7 +49,7 @@
 // :
 %token COLONS
 
-%token EMPTY LAMDA_ASYNC
+%token EMPTY LAMDA_ASYNC EMP_OBJ
 
 // Operators
 %token PROD MOD COCIENT PLUS MINUS
@@ -98,7 +98,7 @@ opt_async
 
 // Objects are key-value pairs
 object_declaration
-	: SIMPLE_BAR SIMPLE_BAR { $$ = newNodeObjectDeclaration(NULL); }
+	: EMP_OBJ { $$ = newNodeObjectDeclaration(NULL); }
 	| SIMPLE_BAR object_body SIMPLE_BAR { $$ = newNodeObjectDeclaration($2); }
 	;
 

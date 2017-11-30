@@ -1,9 +1,10 @@
 (: Objects and functions accessing implemented in LTA language :)
 
-a = {a:2, b:3}
+a = | a:2,
+      b:3 |
 
 b = |a| => {
-  return a.2
+  return(this(|b: a.b|))
 }
 
-b(a) + a.b
+b(a) + a.b (:)

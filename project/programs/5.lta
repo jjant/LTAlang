@@ -1,9 +1,9 @@
 (: Functions as first-class citizens implemented in LTA language :)
-
-fnToString = |str, fn| => {
-  return fn(str);
+(: TODO: Check que onda fns sin params
+applyToString = |a, b| => {
+  return(puts(b(a)))
 }
 
-fnToString("Hi frIenD", |str| => {
-  return str;
-}) (: HI FRIEND :)
+applyToString("Hi frIenD", |str| => {
+  return(str.lower());
+})

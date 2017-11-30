@@ -68,21 +68,22 @@
      COLONS = 284,
      EMPTY = 285,
      LAMDA_ASYNC = 286,
-     PROD = 287,
-     MOD = 288,
-     COCIENT = 289,
-     PLUS = 290,
-     MINUS = 291,
-     LESS = 292,
-     GREATER = 293,
-     THEN = 294,
-     OBJECT_ACCESSOR = 295,
-     IF = 296,
-     ELSE = 297,
-     WHILE = 298,
-     DO = 299,
-     FOR = 300,
-     RETURN = 301
+     EMP_OBJ = 287,
+     PROD = 288,
+     MOD = 289,
+     COCIENT = 290,
+     PLUS = 291,
+     MINUS = 292,
+     LESS = 293,
+     GREATER = 294,
+     THEN = 295,
+     OBJECT_ACCESSOR = 296,
+     IF = 297,
+     ELSE = 298,
+     WHILE = 299,
+     DO = 300,
+     FOR = 301,
+     RETURN = 302
    };
 #endif
 /* Tokens.  */
@@ -115,21 +116,22 @@
 #define COLONS 284
 #define EMPTY 285
 #define LAMDA_ASYNC 286
-#define PROD 287
-#define MOD 288
-#define COCIENT 289
-#define PLUS 290
-#define MINUS 291
-#define LESS 292
-#define GREATER 293
-#define THEN 294
-#define OBJECT_ACCESSOR 295
-#define IF 296
-#define ELSE 297
-#define WHILE 298
-#define DO 299
-#define FOR 300
-#define RETURN 301
+#define EMP_OBJ 287
+#define PROD 288
+#define MOD 289
+#define COCIENT 290
+#define PLUS 291
+#define MINUS 292
+#define LESS 293
+#define GREATER 294
+#define THEN 295
+#define OBJECT_ACCESSOR 296
+#define IF 297
+#define ELSE 298
+#define WHILE 299
+#define DO 300
+#define FOR 301
+#define RETURN 302
 
 
 
@@ -144,7 +146,7 @@ typedef union YYSTYPE
 	struct NodeList * list;
 }
 /* Line 1529 of yacc.c.  */
-#line 148 "grammar.tab.h"
+#line 150 "grammar.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
