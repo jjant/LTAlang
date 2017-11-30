@@ -7,7 +7,7 @@
 %option noyywrap
 
 digit       [0-9]
-string			\".*\"
+string			\"[^\"]*\"
 number      -?[0-9]+(\.[0-9]+)?
 identifier  [a-zA-Z]+
 newline     \n

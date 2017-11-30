@@ -16,4 +16,4 @@ clean:
 run:
 	make all
 	clear
-	cat input.lta | ./dependency_compiler.out
+	cat input.lta | ./compiler

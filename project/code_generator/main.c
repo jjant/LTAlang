@@ -6,7 +6,7 @@
 
 // TODO: checkear readline
 // TODO: Check Math proxy.
-char * stdlib = "var inputGlobal = {}; try{inputGlobal=require('prompt-sync')();}catch(e){try{inputGlobal=window.prompt;}catch(x){};};puts___ = console.log; read___ = inputGlobal;\nfalse___=false; true___=true;\n//Math___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach\n\n";
+char * stdlib = "var inputGlobal = {}; try{inputGlobal=require('prompt-sync')();}catch(e){try{inputGlobal=window.prompt;}catch(x){};};puts___ = console.log; read___ = inputGlobal;\nfalse___=false; true___=true;\n//Math___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach;\nArray.prototype.each___=Array.prototype.forEach;\nArray.prototype.map___=Array.prototype.map;\nArray.prototype.reduce___=Array.prototype.reduce;\n\n";
 
 char * emptyString = "";
 char *(strings)[] = {
@@ -394,13 +394,12 @@ char * handleNodeArrayDeclarationList(Node * node) {
   if(current_list == NULL || current_list->node == NULL)
     return buffer;
 
-  char * bufPoint = buffer;
   do {
     Node * current_node = (Node *)current_list->node;
     if (node == NULL) break;
-
-    snprintf(bufPoint, buffer_length, "(%s),", eval(current_node));
-    bufPoint = bufPoint + strlen(buffer);
+    strcat(buffer, "(");
+    strcat(buffer, eval(current_node));
+    strcat(buffer, "),");
   } while((current_list = current_list->next) != NULL);
 
   return buffer;

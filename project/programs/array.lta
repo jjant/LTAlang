@@ -1,0 +1,10 @@
+(: Using arrays and its `map` function
+
+times = |n| => {
+  a = [1,2,3,4,5]
+  return(a.map(|el| => {
+    return(el * n)
+  }))
+}
+
+puts(times(2)) (: [2, 4, 6, 8, 10]

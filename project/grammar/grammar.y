@@ -88,7 +88,7 @@
 // Lamda functions are first class citizens
 lamda_declaration
 	: SIMPLE_BAR parameter_list SIMPLE_BAR opt_async compound_statement { $$ = newNodeLamdaDeclaration($4, $2, $5); }
-	| SIMPLE_BAR SIMPLE_BAR opt_async compound_statement { $$ = newNodeLamdaDeclaration($3, NULL, $4); }
+	| EMP_OBJ opt_async compound_statement { $$ = newNodeLamdaDeclaration($2, NULL, $3); }
 	;
 
 opt_async
