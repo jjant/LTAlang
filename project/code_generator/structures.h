@@ -33,5 +33,6 @@ NodeBlock * addNodeBlock(const NodeList * instructions);
 NodeEndmarked * newNodeEndmarked(Node * child);
 NodeLamdaDeclaration * newNodeLamdaDeclaration(const int async, const NodeList * parameters, const NodeList * block);
 NodeArrayDeclaration * newNodeArrayDeclaration(const NodeList * elements);
+NodeNegation * newNodeNegation(Node * node);
 
 #endif

@@ -26,6 +26,7 @@ typedef enum {
   NODE_ARRAY_ELEMENT,
   NODE_ARRAY_DECLARATION_LIST,
   NODE_ENDMARKED,
+  NODE_NEGATION,
 } NodeType;
 
 typedef struct Node {
@@ -147,3 +148,8 @@ typedef struct NodeEndmarked {
   NodeType type;
   Node * child;
 } NodeEndmarked;
+
+typedef struct NodeNegation {
+  NodeType type;
+  Node * expression;
+} NodeNegation;

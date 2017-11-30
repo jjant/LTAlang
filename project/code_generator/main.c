@@ -34,6 +34,7 @@ char *(strings)[] = {
   "NODE_ARRAY_DECLARATION",
   "NODE_ARRAY_ELEMENT",
   "NODE_ARRAY_DECLARATION_LIST",
+  "NODE_NEGATION",
 };
 
 static char * iterateOverObjectBody(NodeList * body);
@@ -418,6 +419,18 @@ char * handleNodeEndmarked(Node * node) {
   return buffer;
 }
 
+char * handleNodeNegation(Node * node) {
+  NodeNegation * node_posta = (NodeNegation *)node;
+  char * compiledChild = eval(node_posta->expression);
+
+  const size_t punctuation_length = strlen("(!)");
+  const size_t buffer_length = strlen(compiledChild) + punctuation_length + 1;
+  char * buffer = calloc(buffer_length, sizeof(char));
+  snprintf(buffer, buffer_length, "(!%s)", compiledChild);
+
+  return buffer;
+}
+
 typedef char * (* handler)(Node *);
 
 // TODO: add this.
@@ -447,6 +460,7 @@ handler handlers[] = {
   handleNodeArrayElement,
   handleNodeArrayDeclarationList,
   handleNodeEndmarked,
+  handleNodeNegation,
 };
 
 static char * eval(Node * node) {

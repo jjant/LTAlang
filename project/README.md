@@ -37,7 +37,7 @@ The project is divided in several folders and files:
 These are some of the features that we included in the LTA language
 
 * C-like operators
-* Weak typing (but with primitive types `Number`, `String`, `Array` and `Function`)
+* Weak typing (but with primitive types `Number`, `String`, `Boolean`, `Array` and `Function`)
 * Cycles with `loop`
 * Conditionals with `if`
 * Lamdas (anonymous functions) with `|x| => { ... }`

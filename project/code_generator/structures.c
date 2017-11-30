@@ -241,3 +241,10 @@ NodeEndmarked * newNodeEndmarked(Node * child) {
   node->child = child;
   return node;
 }
+
+NodeNegation * newNodeNegation(Node * expression) {
+  NodeNegation * node = malloc(sizeof(NodeNegation));
+  node->type = NODE_NEGATION;
+  node->expression = expression;
+  return node;
+}

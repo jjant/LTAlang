@@ -55,6 +55,8 @@
 %token PROD MOD COCIENT PLUS MINUS
 %token LESS GREATER
 
+%token NEGATE
+
 // Ternary Operator
 %token THEN
 
@@ -70,6 +72,7 @@
 %type <node> logical_and_expression logical_or_expression conditional_expression
 %type <node> assignment_expression expression statement selection_statement
 %type <node> iteration_statement jump_statement assignable_expression THIS
+%type <node> negation_expression
 
 %type <string> assignment_operator REG_ASSIGN MUL_ASSIGN DIV_ASSIGN ADD_ASSIGN SUB_ASSIGN
 %type <string> IDENTIFIER STRING_LITERAL NUMBER
@@ -155,11 +158,16 @@ argument_expression_list
 	;
 
 // Expressions with logic and arithmetic operators TODO: Add !
-multiplicative_expression
+negation_expression
 	: postfix_expression { $$ = $1; }
-	| multiplicative_expression PROD postfix_expression { $$ = newNodeOperation($1, $3, "*"); }
-	| multiplicative_expression COCIENT postfix_expression { $$ = newNodeOperation($1, $3, "/"); }
-	| multiplicative_expression MOD postfix_expression { $$ = newNodeOperation($1, $3, "%"); }
+	| NEGATE postfix_expression { $$ = newNodeNegation($2); }
+	;
+
+multiplicative_expression
+	: negation_expression { $$ = $1; }
+	| multiplicative_expression PROD negation_expression { $$ = newNodeOperation($1, $3, "*"); }
+	| multiplicative_expression COCIENT negation_expression { $$ = newNodeOperation($1, $3, "/"); }
+	| multiplicative_expression MOD negation_expression { $$ = newNodeOperation($1, $3, "%"); }
 	;
 
 additive_expression
