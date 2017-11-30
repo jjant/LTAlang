@@ -2,6 +2,9 @@
 
 LTA language is a programming language with great features compiling to Ecmascript 2017
 
+## Documentation
+The report can be found under the name `informe.pdf` under this same repository.
+
 ## Build & Run
 To build and run
 ```bash
@@ -23,17 +26,6 @@ or try it in the javascript console of a modern browser.
 
 ## Requirements
 The project was tested in pampero@itba environment with `node v8.2.1` and `npm v5.3.0`. The compiled code runs with both `node` and the console for the latest browsers (such as `chrome v62`).
-
-## Optimizations
-To compile the code with optimizations run the following line to build your code
-
-```bash
-./compiler input.lta --optimize
-```
-or
-```bash
-cat input.lta | ./compiler --optimize
-```
 
 ## Code examples
 Check the  `programs/` folder to see some of valid LTA languages organized by features.
@@ -67,11 +59,10 @@ These are some of the features that we included in the LTA language
 This is a list of considerations to take into account when using or programming in LTA:
 
 * The resulting code is valid ES2017 code. It should be tested on modern browsers, the latest versions of nodejs or by transpiling it to older Ecmascript versions.
-* The optimizations are achieved through the use of `prepack`. A Javascript to Javascript compiler which optimizes function calls and improves code benchmarks.
 * To achieve several functionalities we leverage on the power of Javascript. For example, our native `Math` library is just a wrapper for Javascript `Math` library. The self-reference keyword `this` is just a wrapper for javascript's `arguments.callee`. The asynchronous functions with `|>` leverages on javascript event loop, `async` functions and `setTimeout`.
 
 ## Dependencies
-We used [`prepack`](https://prepack.io/) to optimize javascript code and [`prompt-sync`](https://github.com/0x00A/prompt-sync) to enable stdin input from nodejs.
+We used [`prompt-sync`](https://github.com/0x00A/prompt-sync) to enable stdin input from nodejs.
 
 ## Authors
 * Julian Antonielli (@jant) jantonielli@itba.edu.ar

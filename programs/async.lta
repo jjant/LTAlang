@@ -11,9 +11,9 @@ async = ~ |> {
 }
 
 (: With the async version you see the message BEFORE the input is requested
-async("SYNC")
+async()
 puts("Hi :)")
 
 (: With the sync version you see the message AFTER the input is requested
-sync("SYNC")
+sync()
 puts("Hi :)")
