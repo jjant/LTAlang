@@ -68,6 +68,7 @@ This is a list of considerations to take into account when using or programming 
 
 * The resulting code is valid ES2017 code. It should be tested on modern browsers, the latest versions of nodejs or by transpiling it to older Ecmascript versions.
 * The optimizations are achieved through the use of `prepack`. A Javascript to Javascript compiler which optimizes function calls and improves code benchmarks.
+* To achieve several functionalities we leverage on the power of Javascript. For example, our native `Math` library is just a wrapper for Javascript `Math` library. The self-reference keyword `this` is just a wrapper for javascript's `arguments.callee`. The asynchronous functions with `|>` leverages on javascript event loop, `async` functions and `setTimeout`.
 
 ## Dependencies
 We used [`prepack`](https://prepack.io/) to optimize javascript code and [`prompt-sync`](https://github.com/0x00A/prompt-sync) to enable stdin input from nodejs.
