@@ -12,7 +12,7 @@ prime = |n| => {
   m = Math.sqrt(n);
 
   i = 3;
-  while(i<=m) {
+  loop(i<=m) {
     if (n % i == 0) {
       return(false)
     }

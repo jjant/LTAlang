@@ -1,4 +1,4 @@
-(: Functions as first-class citizens implemented in LTA language :)
+(: Functions as first-class citizens
 (: TODO: Check que onda fns sin params
 applyToString = |a, b| => {
   return(puts(b(a)))

@@ -1,5 +1,5 @@
 %{
-	#include "structures.h"
+	#include "./code_generator/structures.h"
 	#include "./code_generator/main.h"
 
 	#define NULL 0

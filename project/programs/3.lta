@@ -1,7 +1,8 @@
 (: Fibonacci with `this` reference implemented in LTA language
 
 fibonacci = |n| => {
-  if (n == 0 || n == 1) { return(n)
+  if (n == 0 || n == 1) {
+    return(n)
   (: Note how the else have to be inline with the closing curly brace
   } else { return(this(n - 1) + this(n - 2)) }
 }

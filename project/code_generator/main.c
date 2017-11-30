@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
-#include "../structures.h"
+#include "structures.h"
 
 // TODO: checkear readline
 char * stdlib = "puts___ = console.log; read___ = readline;\nfalse___=false; true___=true;\nMath___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach\n\n";

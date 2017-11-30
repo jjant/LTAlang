@@ -1,0 +1,10 @@
+(: Objects are so damn versatile
+
+a = | a: 1.43,
+      b: " Hi :)",
+      c: |x| => {
+        puts(x.upper())
+      },
+      d: 4 |
+
+puts(a.c(a.a + a.d + a.b)) (: 5.43 HI :)

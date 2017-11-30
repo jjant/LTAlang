@@ -1,7 +1,7 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
-#include "../structures.h"
+#include "structures.h"
 
 char * handleNodeString(Node * node);
 char * handleNodeNumber(Node * node);

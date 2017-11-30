@@ -18,7 +18,7 @@ exit        ("exit"|"quit")
 "if"			{ return(IF); }
 "_"			{ return(PLACEHOLDER); }
 "return"		{ return(RETURN); }
-"while"			{ return(WHILE); }
+"loop"			{ return(WHILE); }
 "this"			{ return(THIS); }
 "+="			{ return(ADD_ASSIGN); }
 "-="			{ return(SUB_ASSIGN); }

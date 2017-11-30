@@ -1,4 +1,14 @@
-# Ignored compiled files
+#
+Ignored compiled files
 /dist
 *.o
 *.out
+.DS_Store
+grammar.tab.o
+lex.yy.o
+main.o
+structures.o
+compiler.out
+grammar.tab.c
+grammar.tab.h
+lex.yy.c

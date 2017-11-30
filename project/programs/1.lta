@@ -1,10 +1,16 @@
-(: Objects and functions accessing implemented in LTA language :)
+(: Native asynchronic procedures
 
-a = | a:2,
-      b:3 |
-
-b = |a| => {
-  return(this(|b: a.b|))
+sync = |x| => {
+  i = 0
+  loop(i < 1000000) {
+    1 == 1
+  }
 }
 
-b(a) + a.b (:)
+async = |x| |> {
+  sync(x)
+}
+
+(: TODO: Check the best way to test the asynchronicity
+async("SYNC")
+puts("HOLA :)")
