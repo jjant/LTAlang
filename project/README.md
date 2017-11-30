@@ -1,6 +1,6 @@
-# LTAlang 💻
+# :shipit: LTA language
 
-LTAlang is a simple programming language featuring
+LTA language is a programming language with great features compiling to Ecmascript 2017
 
 ## Build & Run
 To build and run
