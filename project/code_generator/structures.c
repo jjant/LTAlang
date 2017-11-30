@@ -5,6 +5,11 @@
 #define TRUE 1
 #define FALSE 0
 
+// Here we define the structure for our AST
+// The Idea is to allow YACC to build a tree containing these nodes instead
+// of strings or just tokens. After the AST is built, it's quite easy to
+// compile to our objective language.
+
 NodeString * newNodeString(const char * constant) {
   NodeString * node = malloc(sizeof(NodeString));
   node->type = NODE_STRING;

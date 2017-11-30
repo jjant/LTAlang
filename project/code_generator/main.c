@@ -6,8 +6,12 @@
 
 // TODO: checkear readline
 // TODO: Check Math proxy.
+// This is a JS snippet to allow the program to work both in NodeJS and in the latest browsers.
+// It defines the input/output operations
+// It also sets some variables and some utility funcions, like `true`, `false`, String, and Math objects
 char * stdlib = "var inputGlobal = {}; try{inputGlobal=require('prompt-sync')();}catch(e){try{inputGlobal=window.prompt;}catch(x){};};puts___ = console.log; read___ = inputGlobal;\nfalse___=false; true___=true;\n//Math___=new Proxy(Math, { get: function(target, property, receiver) { return target[property.slice(0, -3)] } });\nString.prototype.upper___=String.prototype.toUpperCase\nString.prototype.lower___=String.prototype.toLowerCase\nString.prototype.each___=String.prototype.forEach;\nArray.prototype.each___=Array.prototype.forEach;\nArray.prototype.map___=Array.prototype.map;\nArray.prototype.reduce___=Array.prototype.reduce;\n\n";
 
+// A set of useful strings for debugging Node types.
 char * emptyString = "";
 char *(strings)[] = {
   "NODE_STRING",
@@ -39,6 +43,15 @@ char *(strings)[] = {
 
 static char * iterateOverObjectBody(NodeList * body);
 static char * eval(Node * node);
+static char * iterateOverFunctionParams(NodeList * paramList);
+
+// The next functions are AST node handlers.
+// The idea is to let every node handle itself according to its type.
+// For example, a String node will be handled by the `handleNodeString` function.
+// We had set a handling function for every type of node in our AST.
+// This pattern allows us to add and handle a new type of node really easily,
+// By just adding it to the grammar, defining it's handling function, and adding its type
+// to the handling functions array.
 
 char * handleNodeString(Node * node) {
   char * raw_str = ((NodeString *)node)->value;
@@ -103,7 +116,7 @@ char * handleNodeObjectDeclaration(Node * node) {
   NodeList * body = ((NodeObjectDeclaration *)node)->body;
   const char * keyValuePairsParsed = iterateOverObjectBody(body);
 
-  const size_t punctuation_length = strlen("({})"); // 2 for wrapping in parens and 2 for "{" "}"
+  const size_t punctuation_length = strlen("({})");
   const size_t buffer_length = punctuation_length + strlen(keyValuePairsParsed) + 1;
   char * buffer = malloc(buffer_length);
   snprintf(buffer, buffer_length, "({%s})", keyValuePairsParsed);
@@ -111,17 +124,10 @@ char * handleNodeObjectDeclaration(Node * node) {
   return buffer;
 }
 
-//
 char * handleFunctionCall(Node * node) {
   NodeFunctionCall * node_posta = (NodeFunctionCall *)node;
 
   char * callerCode = eval(node_posta->caller);
-  // printf("%d\n", *((uint32_t *)node_posta->args));
-  // printf("%p\n", node_posta->args);
-
-  // char * callerCode = emptyString;
-  // char * argsCode   = emptyString;
-  // node_posta->args;
   char * argsCode   = eval((Node *)node_posta->args);
 
   const size_t punctuation_length = strlen("()()");
@@ -148,7 +154,7 @@ char * handleNodeOperation(Node * node) {
     snprintf(buffer, buffer_length, "var %s%s%s",compiledFirst, operation, compiledSecond);
     return buffer;
   } else {
-    const size_t punctuation_length = strlen("()"); // for wrapping in parenthesis
+    const size_t punctuation_length = strlen("()");
     const size_t buffer_length = strlen(compiledFirst) + strlen(operation) + strlen(compiledSecond) + punctuation_length + 1;
     char * buffer = malloc(buffer_length);
     snprintf(buffer, buffer_length, "(%s%s%s)", compiledFirst, operation, compiledSecond);
@@ -203,7 +209,7 @@ char * handleNodeObjectAccessor(Node * node) {
   char * compiledLeft = eval(node_posta->left);
   char * compiledSecond = eval(node_posta->right);
 
-  const size_t punctuation_length = strlen("(()[\"\"])"); // 2 for parens, 2 for parens on left, 1 for "[" "]".
+  const size_t punctuation_length = strlen("(()[\"\"])");
   const size_t buffer_length = strlen(compiledLeft) + strlen(compiledSecond) + punctuation_length + 2;
   char * buffer = malloc(buffer_length);
   snprintf(buffer, buffer_length, "((%s)[\"%s\"])", compiledLeft, compiledSecond);
@@ -218,7 +224,7 @@ char * handleNodeIf(Node * node) {
   char * compiledThen = eval(node_posta->then);
   char * compiledElseBlock = eval(node_posta->elseBlock);
 
-  const size_t punctuation_length = 4 + 2 + 6; // "if()" "{}" "else{}"
+  const size_t punctuation_length = strlen("if(){}else{}");
   const size_t buffer_length = strlen(compiledCondition) + strlen(compiledThen) + strlen(compiledElseBlock) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
   snprintf(buffer, buffer_length, "if(%s){%s}else{%s}", compiledCondition, compiledThen, compiledElseBlock);
@@ -258,8 +264,6 @@ char * handleNodeReturn(Node * node) {
 
   return buffer;
 }
-
-static char * iterateOverFunctionParams(NodeList * paramList);
 
 static char * iterateOverFunctionParams(NodeList * node) {
   if (node == NULL) return emptyString;
@@ -353,7 +357,6 @@ char * handleNodeArrayDeclaration(Node * node) {
 
   char * compiledElements = eval((Node *)node_posta->elements);
 
-  // 2 for wrapping key in quotes, 1 for ':', 2 for wrapping value in parenthesis.
   const size_t punctuation_length = strlen("[]");
   const size_t buffer_length =  strlen(compiledElements) + punctuation_length + 1;
   char * buffer = malloc(buffer_length);
@@ -417,6 +420,8 @@ char * handleNodeNegation(Node * node) {
 
 typedef char * (* handler)(Node *);
 
+// A set of function pointers. Using this array, we are able to automatically
+// index the type of node, triggering the correct handling function.
 handler handlers[] = {
   handleNodeString,
   handleNodeNumber,
@@ -446,6 +451,7 @@ handler handlers[] = {
   handleNodeNegation,
 };
 
+// Dispatcher function. It lets every node handle itself.
 static char * eval(Node * node) {
   if (node == NULL || handlers[node->type] == NULL)
     return emptyString;
@@ -453,6 +459,7 @@ static char * eval(Node * node) {
   return handlers[node->type](node);
 }
 
+// Copies the JS snippet
 static char * append_stdlib(char * code) {
   const size_t buffer_length = strlen(stdlib) + strlen(code) + 1;
   char * buffer = malloc(buffer_length);
@@ -461,6 +468,7 @@ static char * append_stdlib(char * code) {
   return buffer;
 }
 
+// Generates the final code
 char * generate_code(Node * node) {
   char * code = append_stdlib(eval(node));
 

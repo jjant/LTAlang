@@ -272,6 +272,8 @@ void yyerror(NodeList ** program, char *msg) {
 
 int main() {
   int i;
+
+	// We store the AST in this program variable.
 	NodeList * program;
   int ret = yyparse(&program);
 
@@ -282,6 +284,7 @@ int main() {
 		printf("%s", "There is not enough memory to parse your program");
 	}
 
+	// Print the final compiled code
 	printf("%s\n", generate_code(program));
 
 	return 0;

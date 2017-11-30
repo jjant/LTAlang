@@ -49,7 +49,7 @@ exit        ("exit"|"quit")
 "*"			{ return(PROD); }
 "%"			{ return(MOD); }
 "<"			{ return(LESS); }
-"(:".*  { /* IGNORE COMMENT */ }
+"(:".*  { /* IGNORE COMMENTS */ }
 "|>"		{ return(LAMDA_ASYNC); }
 ">"			{ return(GREATER); }
 "?"			{ return(THEN); }
