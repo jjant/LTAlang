@@ -23,6 +23,20 @@ node out.js
 
 or try it in the javascript console of a modern browser.
 
+## Example program
+```lta
+times = |n| => { return(|arr| => {
+    return(a.map(|el| => {
+      return(el * n)
+    }))
+  })
+}
+
+a = [1,2,3,4,5]
+puts(times(2)) (: [2, 4, 6, 8, 10]
+
+```
+
 ## Requirements
 The project was tested in `pampero.it.itba.edu.ar` environment with `node v8.2.1` and `npm v5.3.0`. The compiled code runs with both `node` and the console for the latest browsers (such as `chrome v62`).
 
