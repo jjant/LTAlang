@@ -1,58 +1,61 @@
 CC=gcc
 CFLAGS=-w
+
 DIST_FOLDER=dist
-OBJDIR=./dist
-SOURCES=$(wildcard dist/*.c)
-OBJECTS=objects
-HEADERS=headers
-DEP_COMPILER=dep_compiler
-DEP_COMPILER_OUT=dependency_compiler.out
+
+CP_SRC=cp_src
+
 PARSER=parser
 PARSER_SOURCE=src/grammar/grammar.y
 PARSER_C=dist/grammar.tab.c
+PARSER_OBJECT=dist/grammar.tab.o
+
 LEXER=lexer
-LEXER_OBJECT=dist/lex.yy.c
+LEXER_SOURCE=src/grammar/lexer.l
+LEXER_C=dist/lex.yy.c
+LEXER_OBJECT=dist/lex.yy.o
+
 CODE_GENERATOR=code_generator
-CODE_GENERATOR_SRC=$(wildcard src/code_generator/*.c)
-CODE_GENERATOR_OBJ=$(CODE_GENERATOR_SRC:.c=.o)
-OBJS_SRC=$(wildcard dist/*.o)
-OBJS_2=$(SOURCES:.c=.o)
-CP_CODE_GENERATOR_SRC=cp_code_gen
-CP_SRC=cp_src
-OBJS_1=OBJS_1
-MAKE_OBJS=objs__
+CODE_GENERATOR_C=dist/main.c
+CODE_GENERATOR_OBJECT=dist/main.o
 
-all: $(DIST_FOLDER) $(PARSER) $(LEXER) $(OBJS_1) $(DEP_COMPILER)
+STRUCTURES_C=dist/structures.c
+STRUCTURES_OBJECT=dist/structures.o
 
-$(OBJDIR)/%.o: %.c $(HEADERS)
-	$(HEADERS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+OBJECTS=objects
+
+DEP_COMPILER=dep_compiler
+DEP_COMPILER_OUT=dependency_compiler.out
+DEP_COMPILER_SOURCES=$(wildcard dist/*.o)
+
+all: $(DEP_COMPILER)
 
 $(DIST_FOLDER):
 	mkdir -p $(DIST_FOLDER)
 
 $(PARSER): $(DIST_FOLDER)
-	bison -d $(PARSER_SOURCE) -o $(PARSER_C)
+	bison -o $(PARSER_C) -d $(PARSER_SOURCE)
 
 $(LEXER): $(DIST_FOLDER)
-	flex -o $(LEXER_OBJECT) src/grammar/lexer.l
+	flex -o $(LEXER_C) $(LEXER_SOURCE)
 
 $(CP_SRC): $(DIST_FOLDER)
-	cp src/code_generator/* dist/
+	cp src/code_generator/* $(DIST_FOLDER)
 
-$(OBJS_1): $(CP_SRC) $(OBJS_2)
+$(PARSER_OBJECT): $(PARSER)
+	$(CC) $(CFLAGS) -c -o $(PARSER_OBJECT) $(PARSER_C)
 
-$(MAKE_OBJS)%.o: $(wildcard dist/*.c)
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(LEXER_OBJECT): $(LEXER)
+	$(CC) $(CFLAGS) -c -o $(LEXER_OBJECT) $(LEXER_C)
 
+$(CODE_GENERATOR_OBJECT):
+	$(CC) $(CFLAGS) -c -o $(CODE_GENERATOR_OBJECT) $(CODE_GENERATOR_C)
+	$(CC) $(CFLAGS) -c -o $(STRUCTURES_OBJECT) $(STRUCTURES_C)
 
-$(CP_CODE_GENERATOR_SRC):
-	cp -f src/code_generator/* dist
+$(OBJECTS): $(CP_SRC) $(PARSER_OBJECT) $(LEXER_OBJECT) $(CODE_GENERATOR_OBJECT)
 
-$(CODE_GENERATOR): $(CP_CODE_GENERATOR_SRC) $(CODE_GENERATOR_OBJ)
-
-$(DEP_COMPILER): $(OBJS_1)
-	$(CC) $(OBJS_SRC) -o $(DEP_COMPILER_OUT)
+$(DEP_COMPILER): $(OBJECTS)
+	$(CC) $(DEP_COMPILER_SOURCES) -o $(DEP_COMPILER_OUT)
 
 dependencies:
 	npm install
