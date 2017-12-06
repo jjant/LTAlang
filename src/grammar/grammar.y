@@ -1,6 +1,6 @@
 %{
-	#include "../code_generator/structures.h"
-	#include "../code_generator/main.h"
+	#include "./structures.h"
+	#include "./main.h"
 
 	#define NULL 0
 

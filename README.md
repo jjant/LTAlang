@@ -33,8 +33,7 @@ times = |n| => { return(|arr| => {
 }
 
 a = [1,2,3,4,5]
-puts(times(2)) (: [2, 4, 6, 8, 10]
-
+puts(times(2)(a)) (: [2, 4, 6, 8, 10]
 ```
 
 ## Requirements
